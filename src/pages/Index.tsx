@@ -348,8 +348,21 @@ const Index = () => {
 
 
 
+  // Lock body scroll while on the intro flow — the user cannot scroll away
+  // until they've signed up (auth redirects them to their dashboard).
+  useEffect(() => {
+    const prevHtml = document.documentElement.style.overflow;
+    const prevBody = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-background">
+    <div className="h-[100svh] overflow-hidden bg-background">
       {showIntro && (
         <Logo3DIntro
           onDone={() => {
