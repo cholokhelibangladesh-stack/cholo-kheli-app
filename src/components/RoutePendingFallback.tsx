@@ -30,15 +30,21 @@ export function RoutePendingFallback() {
           style={{ width: "min(58vw, 220px)", aspectRatio: "1.49 / 1" }}
           aria-hidden
         >
-          <img
-            src={logoMark.url}
-            alt=""
-            className="absolute inset-0 h-full w-full object-contain select-none"
-            draggable={false}
-            decoding="sync"
+          <div
+            className="absolute inset-0"
             style={{
+              maskImage: `url(${logoMark.url})`,
+              maskRepeat: "no-repeat",
+              maskPosition: "center",
+              maskSize: "contain",
+              WebkitMaskImage: `url(${logoMark.url})`,
+              WebkitMaskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              WebkitMaskSize: "contain",
+              background:
+                "linear-gradient(135deg, #ffffff 0%, #eef3f7 24%, #b9c2cc 42%, #ffffff 55%, #8f99a5 72%, #f8fbff 100%)",
               filter:
-                "brightness(0) invert(1) saturate(0) drop-shadow(0 8px 20px rgba(20,50,90,0.34)) drop-shadow(0 2px 5px rgba(255,255,255,0.45))",
+                "drop-shadow(0 8px 20px rgba(20,50,90,0.36)) drop-shadow(0 2px 5px rgba(255,255,255,0.5))",
             }}
           />
         </motion.div>

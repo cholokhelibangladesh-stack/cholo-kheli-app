@@ -58,7 +58,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
-            style={{ width: "min(72vw, 320px)", aspectRatio: "1.49 / 1" }}
+            style={{ width: "min(78vw, 360px)", aspectRatio: "1.49 / 1" }}
           >
             {/* Soft glow behind mark */}
             <div
@@ -71,16 +71,24 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            <img
-              src={logoMark.url}
-              alt="Cholo Kheli"
+            <div
+              role="img"
+              aria-label="Cholo Kheli"
               data-logo-mark
-              className="absolute inset-0 h-full w-full object-contain select-none"
-              draggable={false}
-              decoding="sync"
+              className="absolute inset-0"
               style={{
+                maskImage: `url(${logoMark.url})`,
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+                WebkitMaskImage: `url(${logoMark.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+                background:
+                  "linear-gradient(135deg, #ffffff 0%, #eef3f7 24%, #b9c2cc 42%, #ffffff 55%, #8f99a5 72%, #f8fbff 100%)",
                 filter:
-                  "brightness(0) invert(1) saturate(0) drop-shadow(0 10px 24px rgba(20,50,90,0.38)) drop-shadow(0 2px 5px rgba(255,255,255,0.45))",
+                  "drop-shadow(0 12px 26px rgba(20,50,90,0.42)) drop-shadow(0 2px 5px rgba(255,255,255,0.5))",
               }}
             />
 
