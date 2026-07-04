@@ -133,6 +133,10 @@ export default function HeroScrollVideo({
   // canvas. -1 while the video is animating between beats or while the
   // reveal panel is open.
   const [settledBeat, setSettledBeat] = useState<number>(0);
+  // Imperative handles set by the driver effect so the Next/Back buttons
+  // in slides mode can advance the sequence.
+  const goForwardRef = useRef<() => void>(() => {});
+  const goBackwardRef = useRef<() => void>(() => {});
 
   // Full preloading pipeline for both atlases before the observer starts:
   //   1. download bytes (img.onload)
