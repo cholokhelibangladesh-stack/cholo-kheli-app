@@ -25,6 +25,8 @@ interface HeroScrollVideoProps {
   openDashboardLabel: string;
   isAuthed: boolean;
   dashboardHref: string;
+  /** "scroll" = original scroll-driven; "slides" = Next-button driven (mobile app). */
+  mode?: "scroll" | "slides";
 }
 
 /**
