@@ -388,22 +388,32 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-start justify-center pt-24 pb-24 px-4 overflow-y-auto bg-gradient-to-b from-[hsl(var(--paper))] via-[hsl(var(--paper))] to-[hsl(var(--teal-deep)/0.08)]">
+    <div className="min-h-screen flex items-start justify-center pt-10 pb-24 px-4 overflow-y-auto bg-gradient-to-b from-[hsl(var(--paper))] via-[hsl(var(--paper))] to-[hsl(var(--teal-deep)/0.08)]">
       <div className="w-full max-w-md">
-        <div className="text-center mb-6">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-4 group">
-            <CholoKheliMark className="h-10 w-10" />
-            <span className="font-display text-2xl tracking-[0.04em] text-[hsl(var(--teal-deep))] font-semibold">
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center mb-8 mt-2"
+        >
+          <Link to="/" className="inline-flex flex-col items-center gap-3 group">
+            <CholoKheliMark className="h-20 w-20 sm:h-24 sm:w-24 transition-transform duration-500 group-hover:scale-105" />
+            <span className="font-display text-3xl sm:text-[34px] tracking-[0.14em] text-[hsl(var(--teal-deep))] font-semibold leading-none">
               CHOLO <span className="font-bold">KHELI</span>
             </span>
+            <span className="text-[10px] tracking-[0.42em] uppercase text-[hsl(var(--teal-deep)/0.55)]">
+              Let's Play
+            </span>
           </Link>
-          <h1 className="font-display text-3xl text-[hsl(var(--teal-deep))]">
+          <div className="h-px w-16 bg-[hsl(var(--teal-deep)/0.2)] mx-auto my-6" />
+          <h1 className="font-display text-2xl sm:text-3xl text-[hsl(var(--teal-deep))]">
             {isLogin ? t("auth.welcomeBack") : t("auth.joinTheGame")}
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
             {isLogin ? t("auth.signInSub") : t("auth.signUpSub")}
           </p>
-        </div>
+        </motion.div>
+
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
