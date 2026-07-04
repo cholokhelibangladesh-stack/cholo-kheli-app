@@ -608,7 +608,8 @@ export default function HeroScrollVideo({
           {BEATS.map((b, i) => {
             const active = beat === i;
             const baseClass =
-              "absolute inset-0 flex items-center px-6 sm:px-12 transition-all duration-300 ease-out";
+              "absolute inset-0 flex items-center px-6 sm:px-12 transition-all duration-300 ease-out" +
+              (isSlides ? " pb-28 sm:pb-32" : "");
 
             const opacity = active ? 1 : 0;
             const blur = active ? "blur(0px)" : "blur(6px)";
@@ -629,7 +630,7 @@ export default function HeroScrollVideo({
                       {b.titleA}
                     </h2>
                   </div>
-                  <div className="max-w-[45%] text-right self-end mb-8 sm:mb-16">
+                  <div className={`max-w-[45%] text-right self-end ${isSlides ? "mb-2" : "mb-8 sm:mb-16"}`}>
                     <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-medium text-white tracking-[0.02em] leading-[1.05] drop-shadow-[0_4px_24px_rgba(0,0,0,0.7)]">
                       {b.titleB}
                     </h2>
