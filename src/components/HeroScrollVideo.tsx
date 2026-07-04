@@ -463,9 +463,11 @@ export default function HeroScrollVideo({
           }, TEXT_SETTLE_MS);
         } else if (anim.r < 1) {
           animateRevealTo(1, () => {
-            // Release the pin — allow the rest of the page to scroll.
-            released = true;
-            observer?.disable();
+            if (!isSlides) {
+              // Release the pin — allow the rest of the page to scroll.
+              released = true;
+              observer?.disable();
+            }
           });
         }
       };
