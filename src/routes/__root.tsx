@@ -15,7 +15,7 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 import { reportError } from "@/lib/errors";
 import appCss from "@/index.css?url";
-import logoMark from "@/assets/logo-mark-2d.png.asset.json";
+import logoMark from "@/assets/cholo-kheli-mark.png.asset.json";
 import AppFrame from "@/components/app/AppFrame";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -133,9 +133,8 @@ function AppShell() {
 function ShellRouter() {
   const inApp = useInAppShell();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  // Mobile app intro: on the landing route, render ONLY the intro/hero
-  // sign-up flow — no floating header, no site footer.
-  const isAppIntro = pathname === "/";
+  // Mobile app intro/auth routes render without web chrome.
+  const isAppIntro = pathname === "/" || pathname.startsWith("/auth");
   if (inApp) {
     return (
       <AppFrame>

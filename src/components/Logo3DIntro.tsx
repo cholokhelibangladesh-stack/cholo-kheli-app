@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoMark from "@/assets/logo-mark-2d.png.asset.json";
+import logoMark from "@/assets/cholo-kheli-mark.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
@@ -32,6 +32,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
       {visible && (
         <motion.div
           key="logo-intro"
+          data-logo-intro
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.08, filter: "blur(12px)" }}
@@ -57,7 +58,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
-            style={{ width: "min(62vw, 320px)", aspectRatio: "1 / 1" }}
+            style={{ width: "min(72vw, 320px)", aspectRatio: "1.49 / 1" }}
           >
             {/* Soft glow behind mark */}
             <div
@@ -70,26 +71,20 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            {/* Metallic silver fill, masked by the logo shape */}
-            <div
-              className="absolute inset-0"
+            <img
+              src={logoMark.url}
+              alt="Cholo Kheli"
+              data-logo-mark
+              className="absolute inset-0 h-full w-full object-contain select-none"
+              draggable={false}
+              decoding="sync"
               style={{
-                maskImage: `url(${logoMark.url})`,
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskImage: `url(${logoMark.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                WebkitMaskSize: "contain",
-                background:
-                  "linear-gradient(135deg, #f7f9fb 0%, #d9dee3 22%, #f4f6f8 42%, #8f97a1 62%, #eef1f4 82%, #b6bcc4 100%)",
                 filter:
-                  "drop-shadow(0 6px 18px rgba(20,50,90,0.35)) drop-shadow(0 2px 4px rgba(255,255,255,0.35))",
+                  "brightness(0) invert(1) saturate(0) drop-shadow(0 10px 24px rgba(20,50,90,0.38)) drop-shadow(0 2px 5px rgba(255,255,255,0.45))",
               }}
             />
 
-            {/* Sweeping specular sheen — clipped by the same mask */}
+            {/* Sweeping specular sheen */}
             <div
               className="absolute inset-0 overflow-hidden pointer-events-none"
               style={{

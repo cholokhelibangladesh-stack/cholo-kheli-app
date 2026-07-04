@@ -23,7 +23,7 @@ const AppTabBar = () => {
   if (role === "player") {
     tabs = [
       { label: "Home", to: "/player", Icon: Home },
-      { label: "Explore", to: "/player/explore", Icon: Compass },
+      { label: "Players", to: "/player/explore", Icon: Compass },
       { label: "Upload", to: "/player/upload", Icon: Upload },
       { label: "Profile", to: "/player/profile", Icon: User },
     ];

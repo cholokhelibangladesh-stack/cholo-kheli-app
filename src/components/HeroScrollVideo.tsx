@@ -133,6 +133,7 @@ export default function HeroScrollVideo({
   // canvas. -1 while the video is animating between beats or while the
   // reveal panel is open.
   const [settledBeat, setSettledBeat] = useState<number>(0);
+  const [controlsBusy, setControlsBusy] = useState(false);
   // Imperative handles set by the driver effect so the Next/Back buttons
   // in slides mode can advance the sequence.
   const goForwardRef = useRef<() => void>(() => {});
@@ -383,6 +384,7 @@ export default function HeroScrollVideo({
       const anim = { f: BEATS[0].frame, r: 0 };
       let currentBeat = 0;
       let animating = false;
+      let queuedDirection: 1 | -1 | 0 = 0;
       let released = false;
       let observer: { disable: () => void; enable: () => void; kill: () => void } | null = null;
 
@@ -393,11 +395,18 @@ export default function HeroScrollVideo({
       setBeat(0);
 
       // ─── frame tween (constant PLAYBACK_FPS) ──────────────────────
+      const runQueued = () => {
+        const direction = queuedDirection;
+        queuedDirection = 0;
+        if (direction === 1) window.setTimeout(() => goForward(), 0);
+        if (direction === -1) window.setTimeout(() => goBackward(), 0);
+      };
+
       const animateFrameTo = (target: number, done?: () => void, settleMs = 0) => {
         animating = true;
+        setControlsBusy(true);
         const delta = Math.abs(target - anim.f);
-        const MAX_TRANSITION = 1.2; // seconds, cap so long hops never feel stuck
-        const duration = Math.min(MAX_TRANSITION, Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS));
+        const duration = Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS);
 
 
 
@@ -411,9 +420,15 @@ export default function HeroScrollVideo({
           onComplete: () => {
             done?.();
             if (settleMs > 0) {
-              setTimeout(() => { animating = false; }, settleMs);
+              setTimeout(() => {
+                animating = false;
+                setControlsBusy(false);
+                runQueued();
+              }, settleMs);
             } else {
               animating = false;
+              setControlsBusy(false);
+              runQueued();
             }
           },
         });
@@ -421,6 +436,7 @@ export default function HeroScrollVideo({
 
       const animateRevealTo = (target: number, done?: () => void) => {
         animating = true;
+        setControlsBusy(true);
         gsap.to(anim, {
           r: target,
           duration: REVEAL_DURATION,
@@ -438,7 +454,9 @@ export default function HeroScrollVideo({
             revealRef.current = target;
             setRevealCTA(target);
             animating = false;
+            setControlsBusy(false);
             done?.();
+            runQueued();
           },
         });
       };
@@ -450,11 +468,8 @@ export default function HeroScrollVideo({
       const goForward = () => {
         if (released) return;
         if (animating) {
-          // Safety: if a previous tween is still running (or wedged),
-          // kill it so the next tap always advances instead of feeling
-          // "stuck" on the current frame.
-          gsap.killTweensOf(anim);
-          animating = false;
+          queuedDirection = 1;
+          return;
         }
 
         setSettledBeat(-1);
@@ -485,8 +500,8 @@ export default function HeroScrollVideo({
       const goBackward = () => {
         if (released) return;
         if (animating) {
-          gsap.killTweensOf(anim);
-          animating = false;
+          queuedDirection = -1;
+          return;
         }
 
         setSettledBeat(-1);
@@ -876,7 +891,7 @@ export default function HeroScrollVideo({
               style={{
                 opacity: revealCTA > 0.85 ? 0 : 1,
                 transform: `translateY(${revealCTA > 0.85 ? 16 : 0}px)`,
-                pointerEvents: revealCTA > 0.85 ? "none" : "auto",
+                  pointerEvents: revealCTA > 0.85 || controlsBusy ? "none" : "auto",
               }}
             >
               <button
@@ -884,6 +899,7 @@ export default function HeroScrollVideo({
                 onClick={() => goBackwardRef.current?.()}
                 aria-label="Previous"
                 className="h-11 w-11 rounded-full flex items-center justify-center border border-white/25 text-white/85 bg-white/10 backdrop-blur-md transition-all active:scale-95"
+                disabled={controlsBusy}
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -891,6 +907,7 @@ export default function HeroScrollVideo({
                 type="button"
                 onClick={() => goForwardRef.current?.()}
                 className="flex-1 max-w-[280px] h-12 rounded-full flex items-center justify-center gap-2 font-medium tracking-wide text-white shadow-[0_10px_30px_-6px_rgba(0,0,0,0.45)] border border-white/25 transition-all active:scale-[0.98]"
+                disabled={controlsBusy}
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.12) 100%)",
