@@ -730,27 +730,28 @@ export default function HeroScrollVideo({
             <div
               className={
                 isSlides
-                  ? "relative z-10 h-full flex flex-col justify-end px-5 transition-all duration-700 ease-out"
+                  ? "relative z-10 h-full flex flex-col justify-end transition-all duration-700 ease-out"
                   : "relative z-10 h-full flex flex-col items-center justify-center px-6 text-center transition-all duration-700 ease-out"
               }
               style={{
                 opacity: revealCTA > 0.35 ? 1 : 0,
                 transform: `translateY(${revealCTA > 0.35 ? 0 : 24}px)`,
-                paddingBottom: isSlides ? "calc(env(safe-area-inset-bottom, 0px) + 28px)" : undefined,
               }}
             >
               <div
                 className={
                   isSlides
-                    ? "w-full max-w-md mx-auto rounded-3xl border border-white/25 p-7 sm:p-8 shadow-[0_24px_60px_-10px_rgba(0,20,40,0.55)]"
+                    ? "w-full rounded-t-[28px] border-t border-x border-white/25 px-6 pt-8 shadow-[0_-24px_60px_-10px_rgba(0,20,40,0.55)] transition-transform duration-700 ease-out"
                     : ""
                 }
                 style={
                   isSlides
                     ? {
                         background:
-                          "linear-gradient(160deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)",
+                          "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 100%)",
                         backdropFilter: "blur(24px) saturate(160%)",
+                        paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 28px)",
+                        transform: `translateY(${(1 - Math.min(1, Math.max(0, (revealCTA - 0.15) / 0.85))) * 100}%)`,
                       }
                     : undefined
                 }
@@ -833,8 +834,7 @@ export default function HeroScrollVideo({
                 )}
               </div>
             </div>
-          </div>
-        </div>
+
 
 
         {/* Scroll nudge — hidden in slides mode. */}
