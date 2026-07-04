@@ -481,7 +481,12 @@ export default function HeroScrollVideo({
 
 
       const goBackward = () => {
-        if (animating || released) return;
+        if (released) return;
+        if (animating) {
+          gsap.killTweensOf(anim);
+          animating = false;
+        }
+
         setSettledBeat(-1);
         if (beatRef.current !== -1) {
           beatRef.current = -1;
