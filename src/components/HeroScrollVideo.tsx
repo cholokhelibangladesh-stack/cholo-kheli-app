@@ -725,7 +725,7 @@ export default function HeroScrollVideo({
           style={{
             transform: `translateY(${(1 - revealCTA) * 100}%)`,
             transition: "transform 120ms linear",
-            pointerEvents: revealCTA > 0.55 ? "auto" : "none",
+            pointerEvents: "auto",
           }}
         >
           <div className="relative w-full h-full">

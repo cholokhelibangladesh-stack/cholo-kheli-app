@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoMark from "@/assets/cholo-kheli-mark.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
@@ -11,6 +10,34 @@ import logoMark from "@/assets/cholo-kheli-mark.png.asset.json";
 
 const CANDY_BLUE = "#7EC8FF";
 const CANDY_BLUE_DEEP = "#4DA9F7";
+
+const SilverLogoMark = ({ className = "" }: { className?: string }) => (
+  <svg viewBox="0 0 360 240" className={className} role="img" aria-label="Cholo Kheli" data-logo-mark>
+    <defs>
+      <linearGradient id="ck-silver" x1="35" y1="20" x2="326" y2="220" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#ffffff" />
+        <stop offset="0.22" stopColor="#dce3ea" />
+        <stop offset="0.42" stopColor="#ffffff" />
+        <stop offset="0.64" stopColor="#9aa4af" />
+        <stop offset="0.82" stopColor="#f6f9fc" />
+        <stop offset="1" stopColor="#b5bec8" />
+      </linearGradient>
+      <filter id="ck-silver-shadow" x="-20%" y="-25%" width="140%" height="150%">
+        <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#14325a" floodOpacity="0.34" />
+        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#ffffff" floodOpacity="0.45" />
+      </filter>
+    </defs>
+    <g fill="none" stroke="url(#ck-silver)" strokeWidth="18" strokeLinecap="round" filter="url(#ck-silver-shadow)">
+      <path d="M35 166C125 150 224 103 259 18" />
+      <path d="M89 185C183 162 289 94 302 9" />
+    </g>
+    <path
+      d="M281 111 342 218h-82l-45-62 37-58z"
+      fill="url(#ck-silver)"
+      filter="url(#ck-silver-shadow)"
+    />
+  </svg>
+);
 
 interface Props {
   onDone: () => void;
@@ -71,40 +98,11 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            <div
-              role="img"
-              aria-label="Cholo Kheli"
-              data-logo-mark
-              className="absolute inset-0"
-              style={{
-                maskImage: `url(${logoMark.url})`,
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskImage: `url(${logoMark.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                WebkitMaskSize: "contain",
-                background:
-                  "linear-gradient(135deg, #ffffff 0%, #eef3f7 24%, #b9c2cc 42%, #ffffff 55%, #8f99a5 72%, #f8fbff 100%)",
-                filter:
-                  "drop-shadow(0 12px 26px rgba(20,50,90,0.42)) drop-shadow(0 2px 5px rgba(255,255,255,0.5))",
-              }}
-            />
+            <SilverLogoMark className="absolute inset-0 h-full w-full" />
 
             {/* Sweeping specular sheen */}
             <div
-              className="absolute inset-0 overflow-hidden pointer-events-none"
-              style={{
-                maskImage: `url(${logoMark.url})`,
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskImage: `url(${logoMark.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                WebkitMaskSize: "contain",
-              }}
+              className="absolute inset-0 overflow-hidden pointer-events-none rounded-[42%] mix-blend-screen"
             >
               <motion.div
                 className="absolute top-0 bottom-0 w-1/3"
