@@ -311,6 +311,16 @@ const Index = () => {
   const T = COPY[lang];
   const [verifiedScouts, setVerifiedScouts] = useState<ScoutProfile[]>(FALLBACK_SCOUTS);
   const [scoutIndex, setScoutIndex] = useState(0);
+  // 3D logo intro — plays once per page load. Session-storage guarded so
+  // it doesn't replay on client-side re-renders / route re-mounts.
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return sessionStorage.getItem("ck_intro_seen") !== "1";
+    } catch {
+      return true;
+    }
+  });
 
 
   useEffect(() => {
