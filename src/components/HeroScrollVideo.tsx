@@ -396,7 +396,9 @@ export default function HeroScrollVideo({
       const animateFrameTo = (target: number, done?: () => void, settleMs = 0) => {
         animating = true;
         const delta = Math.abs(target - anim.f);
-        const duration = Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS);
+        const MAX_TRANSITION = 1.2; // seconds, cap so long hops never feel stuck
+        const duration = Math.min(MAX_TRANSITION, Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS));
+
 
 
         gsap.to(anim, {
