@@ -12,29 +12,15 @@ const CANDY_BLUE = "#7EC8FF";
 const CANDY_BLUE_DEEP = "#4DA9F7";
 
 const SilverLogoMark = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 360 240" className={className} role="img" aria-label="Cholo Kheli" data-logo-mark>
-    <defs>
-      <linearGradient id="ck-silver" x1="35" y1="20" x2="326" y2="220" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stopColor="#ffffff" />
-        <stop offset="0.22" stopColor="#dce3ea" />
-        <stop offset="0.42" stopColor="#ffffff" />
-        <stop offset="0.64" stopColor="#9aa4af" />
-        <stop offset="0.82" stopColor="#f6f9fc" />
-        <stop offset="1" stopColor="#b5bec8" />
-      </linearGradient>
-      <filter id="ck-silver-shadow" x="-20%" y="-25%" width="140%" height="150%">
-        <feDropShadow dx="0" dy="12" stdDeviation="10" floodColor="#14325a" floodOpacity="0.34" />
-        <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#ffffff" floodOpacity="0.45" />
-      </filter>
-    </defs>
-    <g fill="none" stroke="url(#ck-silver)" strokeWidth="18" strokeLinecap="round" filter="url(#ck-silver-shadow)">
+  <svg viewBox="0 0 360 240" className={className} role="img" aria-label="Cholo Kheli" data-logo-mark style={{ display: "block" }}>
+    <g fill="none" stroke="#f7f9fb" strokeWidth="20" strokeLinecap="round" style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}>
       <path d="M35 166C125 150 224 103 259 18" />
       <path d="M89 185C183 162 289 94 302 9" />
     </g>
     <path
       d="M281 111 342 218h-82l-45-62 37-58z"
-      fill="url(#ck-silver)"
-      filter="url(#ck-silver-shadow)"
+      fill="#f7f9fb"
+      style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}
     />
   </svg>
 );

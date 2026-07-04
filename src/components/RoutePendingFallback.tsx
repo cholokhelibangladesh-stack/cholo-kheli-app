@@ -1,24 +1,12 @@
 import { motion } from "framer-motion";
 
 const SilverLogoMark = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 360 240" className={className} aria-hidden>
-    <defs>
-      <linearGradient id="ck-pending-silver" x1="35" y1="20" x2="326" y2="220" gradientUnits="userSpaceOnUse">
-        <stop offset="0" stopColor="#ffffff" />
-        <stop offset="0.26" stopColor="#dce3ea" />
-        <stop offset="0.5" stopColor="#ffffff" />
-        <stop offset="0.72" stopColor="#9aa4af" />
-        <stop offset="1" stopColor="#f6f9fc" />
-      </linearGradient>
-      <filter id="ck-pending-shadow" x="-20%" y="-25%" width="140%" height="150%">
-        <feDropShadow dx="0" dy="8" stdDeviation="8" floodColor="#14325a" floodOpacity="0.3" />
-      </filter>
-    </defs>
-    <g fill="none" stroke="url(#ck-pending-silver)" strokeWidth="18" strokeLinecap="round" filter="url(#ck-pending-shadow)">
+  <svg viewBox="0 0 360 240" className={className} aria-hidden style={{ display: "block" }}>
+    <g fill="none" stroke="#f7f9fb" strokeWidth="20" strokeLinecap="round" style={{ filter: "drop-shadow(0 8px 18px rgba(20,50,90,0.32))" }}>
       <path d="M35 166C125 150 224 103 259 18" />
       <path d="M89 185C183 162 289 94 302 9" />
     </g>
-    <path d="M281 111 342 218h-82l-45-62 37-58z" fill="url(#ck-pending-silver)" filter="url(#ck-pending-shadow)" />
+    <path d="M281 111 342 218h-82l-45-62 37-58z" fill="#f7f9fb" style={{ filter: "drop-shadow(0 8px 18px rgba(20,50,90,0.32))" }} />
   </svg>
 );
 
