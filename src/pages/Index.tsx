@@ -350,11 +350,22 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
+      {showIntro && (
+        <Logo3DIntro
+          onDone={() => {
+            try {
+              sessionStorage.setItem("ck_intro_seen", "1");
+            } catch { /* ignore */ }
+            setShowIntro(false);
+          }}
+        />
+      )}
 
       {/* ══════════════════════════════════════════
-          HERO — Scroll-scrubbed cinematic video (GSAP)
+          HERO — Slide-driven cinematic (Next button, mobile app)
       ══════════════════════════════════════════ */}
       <HeroScrollVideo
+        mode="slides"
         tagline={T.heroTagline}
         scrollLabel={T.scroll}
         joinLabel={T.joinAsPlayer}
@@ -363,6 +374,7 @@ const Index = () => {
         isAuthed={!!(user && role)}
         dashboardHref={role === "admin" ? "/admin" : role === "scout" ? "/scout" : "/player"}
       />
+
 
 
       {/* ══════════════════════════════════════════
