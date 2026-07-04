@@ -15,6 +15,16 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 import { reportError } from "@/lib/errors";
 import appCss from "@/index.css?url";
+import AppFrame from "@/components/app/AppFrame";
+import { useRouterState } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/useAuth";
+
+const APP_PREFIXES = ["/player", "/scout", "/admin"];
+function useInAppShell() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { user } = useAuth();
+  return !!user && APP_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"));
+}
 
 function RootRouteError({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
@@ -66,6 +76,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Cholo Kheli connects Bangladesh's grassroots talent with verified scouts. Safe, transparent, beautifully simple." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Cholo Kheli" },
+      { name: "theme-color", content: "#0a0a0a" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -96,14 +111,35 @@ function AppShell() {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <FloatingHeader />
-            <Outlet />
-            <SiteFooter />
+            <ShellRouter />
             <CookieConsentBanner />
           </TooltipProvider>
         </AuthProvider>
       </LanguageProvider>
     </ThemeProvider>
+  );
+}
+
+/**
+ * Chooses between the marketing shell (FloatingHeader + SiteFooter) and
+ * the app-style shell (AppFrame with header + bottom tab bar). Keeps all
+ * existing routes unchanged — only the outer chrome swaps.
+ */
+function ShellRouter() {
+  const inApp = useInAppShell();
+  if (inApp) {
+    return (
+      <AppFrame>
+        <Outlet />
+      </AppFrame>
+    );
+  }
+  return (
+    <>
+      <FloatingHeader />
+      <Outlet />
+      <SiteFooter />
+    </>
   );
 }
 
