@@ -728,82 +728,109 @@ export default function HeroScrollVideo({
 
 
             <div
-              className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center transition-all duration-700 ease-out"
+              className={
+                isSlides
+                  ? "relative z-10 h-full flex flex-col justify-end px-5 transition-all duration-700 ease-out"
+                  : "relative z-10 h-full flex flex-col items-center justify-center px-6 text-center transition-all duration-700 ease-out"
+              }
               style={{
                 opacity: revealCTA > 0.35 ? 1 : 0,
                 transform: `translateY(${revealCTA > 0.35 ? 0 : 24}px)`,
+                paddingBottom: isSlides ? "calc(env(safe-area-inset-bottom, 0px) + 28px)" : undefined,
               }}
             >
               <div
                 className={
                   isSlides
-                    ? "w-full max-w-md mx-auto rounded-3xl border border-white/25 p-7 sm:p-9 shadow-[0_20px_60px_-10px_rgba(0,20,40,0.55)]"
+                    ? "w-full max-w-md mx-auto rounded-3xl border border-white/25 p-7 sm:p-8 shadow-[0_24px_60px_-10px_rgba(0,20,40,0.55)]"
                     : ""
                 }
                 style={
                   isSlides
                     ? {
                         background:
-                          "linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%)",
-                        backdropFilter: "blur(22px) saturate(160%)",
+                          "linear-gradient(160deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)",
+                        backdropFilter: "blur(24px) saturate(160%)",
                       }
                     : undefined
                 }
               >
-                <div className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-[hsl(188_60%_82%)] mb-4 font-medium">
-                  YOUR MOVE
-                </div>
-                <h2 className={`font-display font-medium text-white tracking-[0.02em] leading-tight ${isSlides ? "text-3xl sm:text-4xl" : "text-4xl sm:text-6xl lg:text-7xl max-w-3xl"}`}>
-                  Step onto the field.
+                {!isSlides && (
+                  <div className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-[hsl(188_60%_82%)] mb-4 font-medium">
+                    YOUR MOVE
+                  </div>
+                )}
+                <h2 className={`font-display font-medium text-white tracking-[0.01em] leading-[1.1] ${isSlides ? "text-[28px] sm:text-3xl" : "text-4xl sm:text-6xl lg:text-7xl max-w-3xl"}`}>
+                  {isSlides ? (<>Sign in for<br/>Cholo Kheli</>) : "Step onto the field."}
                 </h2>
-                <p className={`mt-4 text-sm sm:text-base text-white/85 leading-relaxed ${isSlides ? "" : "mt-6 max-w-lg"}`}>
-                  Join Cholo Kheli as a player to be discovered, or as a scout to discover the next generation.
+                <p className={`text-white/85 leading-relaxed ${isSlides ? "mt-3 text-[13px]" : "mt-4 sm:mt-6 text-sm sm:text-base max-w-lg"}`}>
+                  {isSlides
+                    ? "Fuel your journey with the platform built to connect Bangladesh's grassroots talent with verified scouts."
+                    : "Join Cholo Kheli as a player to be discovered, or as a scout to discover the next generation."}
                 </p>
 
-                <div className={`mt-8 flex ${isSlides ? "flex-col w-full" : "flex-col sm:flex-row"} gap-3`}>
-                  {isAuthed ? (
-                    <Link to={dashboardHref as any} className={isSlides ? "w-full" : ""}>
-                      <Button
-                        size="lg"
-                        className={`font-medium text-base px-9 py-6 rounded-full ${isSlides ? "w-full" : ""}`}
-                        style={{
-                          background: "hsl(var(--teal-deep))",
-                          color: "hsl(var(--primary-foreground))",
-                        }}
-                      >
-                        {openDashboardLabel} <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  ) : (
-                    <>
-                      <Link to="/auth" className={isSlides ? "w-full" : ""}>
-                        <Button
-                          size="lg"
-                          className={`font-medium text-base px-9 py-6 rounded-full ${isSlides ? "w-full" : ""}`}
-                          style={{
-                            background: "hsl(var(--teal-deep))",
-                            color: "hsl(var(--primary-foreground))",
-                          }}
+                {isSlides ? (
+                  <div className="mt-6 flex items-center gap-3">
+                    {isAuthed ? (
+                      <Link to={dashboardHref as any} className="flex-1">
+                        <button
+                          type="button"
+                          className="w-full h-14 rounded-full bg-white text-black font-semibold text-sm tracking-wide flex items-center justify-between pl-6 pr-2 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-transform"
                         >
-                          {joinLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                          <span className="uppercase tracking-[0.14em]">Dashboard</span>
+                          <span className="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center">
+                            <ArrowRight className="h-4 w-4" />
+                          </span>
+                        </button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link to="/auth" search={{ mode: "signup" } as any} className="flex-1">
+                          <button
+                            type="button"
+                            className="w-full h-14 rounded-full bg-white text-black font-semibold text-sm flex items-center justify-between pl-6 pr-2 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-transform"
+                          >
+                            <span className="uppercase tracking-[0.14em]">Sign up</span>
+                            <span className="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center">
+                              <ArrowRight className="h-4 w-4" />
+                            </span>
+                          </button>
+                        </Link>
+                        <Link to="/auth" className="shrink-0">
+                          <button
+                            type="button"
+                            className="h-14 px-5 rounded-full border border-white/30 text-white/90 text-sm font-medium bg-white/10 backdrop-blur-sm active:scale-[0.98] transition-transform"
+                          >
+                            or Log in
+                          </button>
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                    {isAuthed ? (
+                      <Link to={dashboardHref as any}>
+                        <Button size="lg" className="font-medium text-base px-9 py-6 rounded-full" style={{ background: "hsl(var(--teal-deep))", color: "hsl(var(--primary-foreground))" }}>
+                          {openDashboardLabel} <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </Link>
-                      <Link to="/auth" search={{ role: "scout" }} className={isSlides ? "w-full" : ""}>
-                        <Button
-                          size="lg"
-                          variant="outline"
-                          className={`font-medium text-base px-9 py-6 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 ${isSlides ? "w-full" : ""}`}
-                          style={{
-                            borderColor: "rgba(255,255,255,0.45)",
-                            color: "#ffffff",
-                          }}
-                        >
-                          {scoutLabel}
-                        </Button>
-                      </Link>
-                    </>
-                  )}
-                </div>
+                    ) : (
+                      <>
+                        <Link to="/auth">
+                          <Button size="lg" className="font-medium text-base px-9 py-6 rounded-full" style={{ background: "hsl(var(--teal-deep))", color: "hsl(var(--primary-foreground))" }}>
+                            {joinLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Link to="/auth" search={{ role: "scout" }}>
+                          <Button size="lg" variant="outline" className="font-medium text-base px-9 py-6 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20" style={{ borderColor: "rgba(255,255,255,0.45)", color: "#ffffff" }}>
+                            {scoutLabel}
+                          </Button>
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>

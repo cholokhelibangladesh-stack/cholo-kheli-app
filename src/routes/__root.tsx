@@ -132,12 +132,19 @@ function AppShell() {
  */
 function ShellRouter() {
   const inApp = useInAppShell();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Mobile app intro: on the landing route, render ONLY the intro/hero
+  // sign-up flow — no floating header, no site footer.
+  const isAppIntro = pathname === "/";
   if (inApp) {
     return (
       <AppFrame>
         <Outlet />
       </AppFrame>
     );
+  }
+  if (isAppIntro) {
+    return <Outlet />;
   }
   return (
     <>
