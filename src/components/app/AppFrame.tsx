@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
-import AppHeader from "./AppHeader";
 import AppTabBar from "./AppTabBar";
 import { initNative, isNative } from "@/lib/native";
 
@@ -43,7 +42,6 @@ const AppFrame = ({ children }: { children: React.ReactNode }) => {
         boxShadow: isNative() ? "none" : "0 0 0 1px hsl(var(--border) / 0.4)",
       }}
     >
-      <AppHeader />
       <main
         className="flex-1 pb-24"
         style={{ paddingBottom: "calc(5.5rem + env(safe-area-inset-bottom))" }}

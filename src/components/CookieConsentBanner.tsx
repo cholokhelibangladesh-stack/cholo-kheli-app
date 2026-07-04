@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
@@ -19,7 +19,10 @@ export const hasAnalyticsConsent = (): boolean => {
 
 const CookieConsentBanner = () => {
   const { t } = useLanguage();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [visible, setVisible] = useState(false);
+
+  const mobileAppEntry = pathname === "/" || pathname.startsWith("/auth");
 
   useEffect(() => {
     try {
@@ -37,6 +40,8 @@ const CookieConsentBanner = () => {
     setVisible(false);
     window.dispatchEvent(new CustomEvent("ck:cookie-consent", { detail: value }));
   };
+
+  if (mobileAppEntry) return null;
 
   return (
     <AnimatePresence>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoMark from "@/assets/logo-mark-2d.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
@@ -11,6 +10,20 @@ import logoMark from "@/assets/logo-mark-2d.png.asset.json";
 
 const CANDY_BLUE = "#7EC8FF";
 const CANDY_BLUE_DEEP = "#4DA9F7";
+
+const SilverLogoMark = ({ className = "" }: { className?: string }) => (
+  <svg viewBox="0 0 360 240" className={className} role="img" aria-label="Cholo Kheli" data-logo-mark style={{ display: "block" }}>
+    <g fill="none" stroke="#f7f9fb" strokeWidth="20" strokeLinecap="round" style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}>
+      <path d="M35 166C125 150 224 103 259 18" />
+      <path d="M89 185C183 162 289 94 302 9" />
+    </g>
+    <path
+      d="M281 111 342 218h-82l-45-62 37-58z"
+      fill="#f7f9fb"
+      style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}
+    />
+  </svg>
+);
 
 interface Props {
   onDone: () => void;
@@ -32,6 +45,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
       {visible && (
         <motion.div
           key="logo-intro"
+          data-logo-intro
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.08, filter: "blur(12px)" }}
@@ -57,7 +71,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
-            style={{ width: "min(62vw, 320px)", aspectRatio: "1 / 1" }}
+            style={{ width: "min(78vw, 360px)", aspectRatio: "1.49 / 1" }}
           >
             {/* Soft glow behind mark */}
             <div
@@ -70,38 +84,11 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            {/* Metallic silver fill, masked by the logo shape */}
-            <div
-              className="absolute inset-0"
-              style={{
-                maskImage: `url(${logoMark.url})`,
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskImage: `url(${logoMark.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                WebkitMaskSize: "contain",
-                background:
-                  "linear-gradient(135deg, #f7f9fb 0%, #d9dee3 22%, #f4f6f8 42%, #8f97a1 62%, #eef1f4 82%, #b6bcc4 100%)",
-                filter:
-                  "drop-shadow(0 6px 18px rgba(20,50,90,0.35)) drop-shadow(0 2px 4px rgba(255,255,255,0.35))",
-              }}
-            />
+            <SilverLogoMark className="absolute inset-0 h-full w-full" />
 
-            {/* Sweeping specular sheen — clipped by the same mask */}
+            {/* Sweeping specular sheen */}
             <div
-              className="absolute inset-0 overflow-hidden pointer-events-none"
-              style={{
-                maskImage: `url(${logoMark.url})`,
-                maskRepeat: "no-repeat",
-                maskPosition: "center",
-                maskSize: "contain",
-                WebkitMaskImage: `url(${logoMark.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                WebkitMaskSize: "contain",
-              }}
+              className="absolute inset-0 overflow-hidden pointer-events-none rounded-[42%] mix-blend-screen"
             >
               <motion.div
                 className="absolute top-0 bottom-0 w-1/3"
