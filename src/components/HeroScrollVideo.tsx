@@ -446,8 +446,15 @@ export default function HeroScrollVideo({
       // dedicated frame. During the between-beat animation, all overlays
       // are hidden so the viewer sees clean video.
       const goForward = () => {
-        if (animating || released) return;
-        // Hide overlays for the beat we're leaving.
+        if (released) return;
+        if (animating) {
+          // Safety: if a previous tween is still running (or wedged),
+          // kill it so the next tap always advances instead of feeling
+          // "stuck" on the current frame.
+          gsap.killTweensOf(anim);
+          animating = false;
+        }
+
         setSettledBeat(-1);
         if (beatRef.current !== -1) {
           beatRef.current = -1;
