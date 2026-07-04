@@ -396,7 +396,9 @@ export default function HeroScrollVideo({
       const animateFrameTo = (target: number, done?: () => void, settleMs = 0) => {
         animating = true;
         const delta = Math.abs(target - anim.f);
-        const duration = Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS);
+        const MAX_TRANSITION = 1.2; // seconds, cap so long hops never feel stuck
+        const duration = Math.min(MAX_TRANSITION, Math.max(MIN_TRANSITION, delta / PLAYBACK_FPS));
+
 
 
         gsap.to(anim, {
@@ -446,8 +448,15 @@ export default function HeroScrollVideo({
       // dedicated frame. During the between-beat animation, all overlays
       // are hidden so the viewer sees clean video.
       const goForward = () => {
-        if (animating || released) return;
-        // Hide overlays for the beat we're leaving.
+        if (released) return;
+        if (animating) {
+          // Safety: if a previous tween is still running (or wedged),
+          // kill it so the next tap always advances instead of feeling
+          // "stuck" on the current frame.
+          gsap.killTweensOf(anim);
+          animating = false;
+        }
+
         setSettledBeat(-1);
         if (beatRef.current !== -1) {
           beatRef.current = -1;
@@ -474,7 +483,12 @@ export default function HeroScrollVideo({
 
 
       const goBackward = () => {
-        if (animating || released) return;
+        if (released) return;
+        if (animating) {
+          gsap.killTweensOf(anim);
+          animating = false;
+        }
+
         setSettledBeat(-1);
         if (beatRef.current !== -1) {
           beatRef.current = -1;
@@ -730,27 +744,28 @@ export default function HeroScrollVideo({
             <div
               className={
                 isSlides
-                  ? "relative z-10 h-full flex flex-col justify-end px-5 transition-all duration-700 ease-out"
+                  ? "relative z-10 h-full flex flex-col justify-end transition-all duration-700 ease-out"
                   : "relative z-10 h-full flex flex-col items-center justify-center px-6 text-center transition-all duration-700 ease-out"
               }
               style={{
                 opacity: revealCTA > 0.35 ? 1 : 0,
                 transform: `translateY(${revealCTA > 0.35 ? 0 : 24}px)`,
-                paddingBottom: isSlides ? "calc(env(safe-area-inset-bottom, 0px) + 28px)" : undefined,
               }}
             >
               <div
                 className={
                   isSlides
-                    ? "w-full max-w-md mx-auto rounded-3xl border border-white/25 p-7 sm:p-8 shadow-[0_24px_60px_-10px_rgba(0,20,40,0.55)]"
+                    ? "w-full rounded-t-[28px] border-t border-x border-white/25 px-6 pt-8 shadow-[0_-24px_60px_-10px_rgba(0,20,40,0.55)] transition-transform duration-700 ease-out"
                     : ""
                 }
                 style={
                   isSlides
                     ? {
                         background:
-                          "linear-gradient(160deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.08) 100%)",
+                          "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 100%)",
                         backdropFilter: "blur(24px) saturate(160%)",
+                        paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 28px)",
+                        transform: `translateY(${(1 - Math.min(1, Math.max(0, (revealCTA - 0.15) / 0.85))) * 100}%)`,
                       }
                     : undefined
                 }
@@ -835,6 +850,9 @@ export default function HeroScrollVideo({
             </div>
           </div>
         </div>
+
+
+
 
 
         {/* Scroll nudge — hidden in slides mode. */}

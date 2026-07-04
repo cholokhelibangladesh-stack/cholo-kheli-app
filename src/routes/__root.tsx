@@ -15,7 +15,7 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 import { reportError } from "@/lib/errors";
 import appCss from "@/index.css?url";
-import logoGlb from "@/assets/logo.glb.asset.json";
+import logoMark from "@/assets/logo-mark-2d.png.asset.json";
 import AppFrame from "@/components/app/AppFrame";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
@@ -88,10 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" },
       { rel: "stylesheet", href: appCss },
-      // Preload the 3D intro model so the loading animation appears
-      // instantly on first paint — no flicker between the pending
-      // fallback and the Canvas render.
-      { rel: "preload", href: logoGlb.url, as: "fetch", crossOrigin: "anonymous", type: "model/gltf-binary" },
+      // Preload the intro logo mark so the loading screen paints
+      // instantly on first paint.
+      { rel: "preload", href: logoMark.url, as: "image", type: "image/png" },
+
     ],
   }),
   errorComponent: RootRouteError,

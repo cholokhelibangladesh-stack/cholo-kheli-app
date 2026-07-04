@@ -1,53 +1,23 @@
-import { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useGLTF, Environment, Center, ContactShadows } from "@react-three/drei";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import * as THREE from "three";
-import logoAsset from "@/assets/logo.glb.asset.json";
+import logoMark from "@/assets/logo-mark-2d.png.asset.json";
 
 /**
- * Full-screen loading intro that renders the 3D Cholo Kheli logo on a
- * soft candy-blue backdrop. Auto-dismisses after ~2.6s (or when the user
- * taps the screen). Emits `onDone` when finished.
+ * Full-screen loading intro on a soft candy-blue backdrop. Renders the
+ * Cholo Kheli mark as shiny silver (via CSS mask + metallic gradient) with
+ * a sweeping sheen, then animates OUT with a scale + fade + blur exit so
+ * the transition never snaps. Auto-dismisses after ~2.2s (or on tap).
  */
 
-// Soft candy blue — vivid enough for the logo to pop, gentle on the eye.
 const CANDY_BLUE = "#7EC8FF";
 const CANDY_BLUE_DEEP = "#4DA9F7";
-
-useGLTF.preload(logoAsset.url);
-
-function LogoModel() {
-  const { scene } = useGLTF(logoAsset.url);
-  const ref = useRef<THREE.Group>(null);
-  const start = useRef<number>(performance.now());
-
-  useFrame(() => {
-    if (!ref.current) return;
-    const t = (performance.now() - start.current) / 1000;
-    // Gentle entrance: scale up + rotate in first 0.9s, then continuous spin.
-    const enter = Math.min(1, t / 0.9);
-    const eased = 1 - Math.pow(1 - enter, 3);
-    ref.current.scale.setScalar(eased);
-    ref.current.rotation.y = eased * Math.PI * 0.5 + t * 0.6;
-    ref.current.position.y = Math.sin(t * 1.4) * 0.05;
-  });
-
-  return (
-    <Center>
-      <group ref={ref}>
-        <primitive object={scene} />
-      </group>
-    </Center>
-  );
-}
 
 interface Props {
   onDone: () => void;
   duration?: number; // ms
 }
 
-export default function Logo3DIntro({ onDone, duration = 2600 }: Props) {
+export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -62,16 +32,16 @@ export default function Logo3DIntro({ onDone, duration = 2600 }: Props) {
       {visible && (
         <motion.div
           key="logo-intro"
-          className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0, scale: 1.08, filter: "blur(12px)" }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           onClick={finish}
           style={{
             background: `radial-gradient(120% 90% at 50% 40%, ${CANDY_BLUE} 0%, ${CANDY_BLUE_DEEP} 55%, #2E86D6 100%)`,
           }}
         >
-          {/* Soft ambient blobs */}
+          {/* Soft ambient light blobs */}
           <div
             aria-hidden
             className="absolute inset-0 pointer-events-none"
@@ -81,34 +51,78 @@ export default function Logo3DIntro({ onDone, duration = 2600 }: Props) {
             }}
           />
 
-          <div className="relative w-full h-full">
-            <Canvas
-              camera={{ position: [0, 0.2, 3.4], fov: 40 }}
-              dpr={[1, 2]}
-              gl={{ antialias: true, alpha: true }}
-            >
-              <ambientLight intensity={0.75} />
-              <directionalLight position={[3, 4, 3]} intensity={1.6} color="#ffffff" />
-              <directionalLight position={[-3, -2, 2]} intensity={0.6} color="#bfe0ff" />
-              <Suspense fallback={null}>
-                <LogoModel />
-                <Environment preset="city" />
-                <ContactShadows
-                  position={[0, -1.05, 0]}
-                  opacity={0.35}
-                  scale={5}
-                  blur={2.4}
-                  far={2}
-                />
-              </Suspense>
-            </Canvas>
-          </div>
-
+          {/* Silver logo mark */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ scale: 0.6, opacity: 0, y: 8 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="relative"
+            style={{ width: "min(62vw, 320px)", aspectRatio: "1 / 1" }}
+          >
+            {/* Soft glow behind mark */}
+            <div
+              aria-hidden
+              className="absolute inset-0 -m-8 rounded-full pointer-events-none"
+              style={{
+                background:
+                  "radial-gradient(closest-side, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 45%, transparent 75%)",
+                filter: "blur(6px)",
+              }}
+            />
+
+            {/* Metallic silver fill, masked by the logo shape */}
+            <div
+              className="absolute inset-0"
+              style={{
+                maskImage: `url(${logoMark.url})`,
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+                WebkitMaskImage: `url(${logoMark.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+                background:
+                  "linear-gradient(135deg, #f7f9fb 0%, #d9dee3 22%, #f4f6f8 42%, #8f97a1 62%, #eef1f4 82%, #b6bcc4 100%)",
+                filter:
+                  "drop-shadow(0 6px 18px rgba(20,50,90,0.35)) drop-shadow(0 2px 4px rgba(255,255,255,0.35))",
+              }}
+            />
+
+            {/* Sweeping specular sheen — clipped by the same mask */}
+            <div
+              className="absolute inset-0 overflow-hidden pointer-events-none"
+              style={{
+                maskImage: `url(${logoMark.url})`,
+                maskRepeat: "no-repeat",
+                maskPosition: "center",
+                maskSize: "contain",
+                WebkitMaskImage: `url(${logoMark.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                WebkitMaskSize: "contain",
+              }}
+            >
+              <motion.div
+                className="absolute top-0 bottom-0 w-1/3"
+                initial={{ x: "-160%" }}
+                animate={{ x: "260%" }}
+                transition={{ delay: 0.5, duration: 1.3, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  background:
+                    "linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.9) 50%, transparent 80%)",
+                  filter: "blur(2px)",
+                }}
+              />
+            </div>
+          </motion.div>
+
+          {/* Wordmark */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
-            className="pointer-events-none absolute bottom-24 left-0 right-0 flex flex-col items-center gap-2"
+            transition={{ delay: 0.55, duration: 0.6 }}
+            className="pointer-events-none mt-10 flex flex-col items-center gap-2"
           >
             <div className="font-display text-white tracking-[0.22em] text-xl font-semibold drop-shadow-[0_2px_10px_rgba(0,40,80,0.35)]">
               CHOLO <span className="font-bold">KHELI</span>
