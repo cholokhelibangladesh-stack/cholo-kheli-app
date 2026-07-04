@@ -15,7 +15,7 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
 import { reportError } from "@/lib/errors";
 import appCss from "@/index.css?url";
-import logoGlb from "@/assets/logo.glb.asset.json";
+import logoMark from "@/assets/logo-mark-2d.png.asset.json";
 import AppFrame from "@/components/app/AppFrame";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
