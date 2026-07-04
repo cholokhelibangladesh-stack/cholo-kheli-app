@@ -733,63 +733,81 @@ export default function HeroScrollVideo({
                 transform: `translateY(${revealCTA > 0.35 ? 0 : 24}px)`,
               }}
             >
-              <div className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-[hsl(188_60%_72%)] mb-4 font-medium">
-                YOUR MOVE
-              </div>
-              <h2 className="font-display text-4xl sm:text-6xl lg:text-7xl font-medium text-white tracking-[0.02em] leading-tight max-w-3xl">
-                Step onto the field.
-              </h2>
-              <p className="mt-6 text-sm sm:text-base text-white/80 max-w-lg leading-relaxed">
-                Join Cholo Kheli as a player to be discovered, or as a scout to discover the next generation.
-              </p>
+              <div
+                className={
+                  isSlides
+                    ? "w-full max-w-md mx-auto rounded-3xl border border-white/25 p-7 sm:p-9 shadow-[0_20px_60px_-10px_rgba(0,20,40,0.55)]"
+                    : ""
+                }
+                style={
+                  isSlides
+                    ? {
+                        background:
+                          "linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%)",
+                        backdropFilter: "blur(22px) saturate(160%)",
+                      }
+                    : undefined
+                }
+              >
+                <div className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-[hsl(188_60%_82%)] mb-4 font-medium">
+                  YOUR MOVE
+                </div>
+                <h2 className={`font-display font-medium text-white tracking-[0.02em] leading-tight ${isSlides ? "text-3xl sm:text-4xl" : "text-4xl sm:text-6xl lg:text-7xl max-w-3xl"}`}>
+                  Step onto the field.
+                </h2>
+                <p className={`mt-4 text-sm sm:text-base text-white/85 leading-relaxed ${isSlides ? "" : "mt-6 max-w-lg"}`}>
+                  Join Cholo Kheli as a player to be discovered, or as a scout to discover the next generation.
+                </p>
 
-              <div className="mt-10 flex flex-col sm:flex-row gap-3">
-                {isAuthed ? (
-                  <Link to={dashboardHref as any}>
-                    <Button
-                      size="lg"
-                      className="font-medium text-base px-9 py-6 rounded-full"
-                      style={{
-                        background: "hsl(var(--teal-deep))",
-                        color: "hsl(var(--primary-foreground))",
-                      }}
-                    >
-                      {openDashboardLabel} <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                ) : (
-                  <>
-                    <Link to="/auth">
+                <div className={`mt-8 flex ${isSlides ? "flex-col w-full" : "flex-col sm:flex-row"} gap-3`}>
+                  {isAuthed ? (
+                    <Link to={dashboardHref as any} className={isSlides ? "w-full" : ""}>
                       <Button
                         size="lg"
-                        className="font-medium text-base px-9 py-6 rounded-full"
+                        className={`font-medium text-base px-9 py-6 rounded-full ${isSlides ? "w-full" : ""}`}
                         style={{
                           background: "hsl(var(--teal-deep))",
                           color: "hsl(var(--primary-foreground))",
                         }}
                       >
-                        {joinLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                        {openDashboardLabel} <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
-                    <Link to="/auth" search={{ role: "scout" }}>
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        className="font-medium text-base px-9 py-6 rounded-full bg-white/5 backdrop-blur-sm hover:bg-white/15"
-                        style={{
-                          borderColor: "rgba(255,255,255,0.4)",
-                          color: "#ffffff",
-                        }}
-                      >
-                        {scoutLabel}
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <Link to="/auth" className={isSlides ? "w-full" : ""}>
+                        <Button
+                          size="lg"
+                          className={`font-medium text-base px-9 py-6 rounded-full ${isSlides ? "w-full" : ""}`}
+                          style={{
+                            background: "hsl(var(--teal-deep))",
+                            color: "hsl(var(--primary-foreground))",
+                          }}
+                        >
+                          {joinLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                      <Link to="/auth" search={{ role: "scout" }} className={isSlides ? "w-full" : ""}>
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          className={`font-medium text-base px-9 py-6 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 ${isSlides ? "w-full" : ""}`}
+                          style={{
+                            borderColor: "rgba(255,255,255,0.45)",
+                            color: "#ffffff",
+                          }}
+                        >
+                          {scoutLabel}
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
+
 
         {/* Scroll nudge */}
         <div
