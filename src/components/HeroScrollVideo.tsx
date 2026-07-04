@@ -508,6 +508,18 @@ export default function HeroScrollVideo({
       // preview frames from getting trapped on a blank painted background.
       window.scrollTo(0, 0);
 
+      // Expose imperative controls for slides mode (Next / Back buttons).
+      goForwardRef.current = goForward;
+      goBackwardRef.current = goBackward;
+
+      if (isSlides) {
+        // No scroll interception — buttons drive progression.
+        cleanup = () => {
+          gsap.killTweensOf(anim);
+        };
+        return;
+      }
+
       // ─── one-gesture-per-scroll interception ──────────────────────
       // Observer coalesces wheel/touch/key into discrete up/down events,
       // so a giant trackpad flick and a single wheel tick both count as
@@ -525,10 +537,6 @@ export default function HeroScrollVideo({
       });
 
       // ─── re-engage when user scrolls back to the top ──────────────
-      // After the reveal panel is showing, the pin is released and the
-      // page scrolls normally. If the user scrolls back up to the very
-      // top of the page and keeps scrolling up, re-lock the pin and let
-      // them rewind through the animation.
       const onReengageWheel = (e: WheelEvent) => {
         if (!released) return;
         if (e.deltaY < 0 && window.scrollY <= 0) {
@@ -544,6 +552,7 @@ export default function HeroScrollVideo({
         window.removeEventListener("wheel", onReengageWheel);
         gsap.killTweensOf(anim);
       };
+
 
 
     })();
