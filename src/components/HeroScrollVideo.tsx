@@ -565,7 +565,7 @@ export default function HeroScrollVideo({
       }
       cleanup?.();
     };
-  }, [ready]);
+  }, [ready, isSlides]);
 
   return (
     <section ref={wrapRef} className="relative w-full" style={{ background: "hsl(0 0% 3%)" }}>
