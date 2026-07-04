@@ -899,7 +899,7 @@ export default function HeroScrollVideo({
                 onClick={() => goBackwardRef.current?.()}
                 aria-label="Previous"
                 className="h-11 w-11 rounded-full flex items-center justify-center border border-white/25 text-white/85 bg-white/10 backdrop-blur-md transition-all active:scale-95"
-                aria-disabled={controlsBusy}
+                data-busy={controlsBusy ? "true" : "false"}
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -907,7 +907,7 @@ export default function HeroScrollVideo({
                 type="button"
                 onClick={() => goForwardRef.current?.()}
                 className="flex-1 max-w-[280px] h-12 rounded-full flex items-center justify-center gap-2 font-medium tracking-wide text-white shadow-[0_10px_30px_-6px_rgba(0,0,0,0.45)] border border-white/25 transition-all active:scale-[0.98]"
-                aria-disabled={controlsBusy}
+                data-busy={controlsBusy ? "true" : "false"}
                 style={{
                   background:
                     "linear-gradient(135deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.12) 100%)",
