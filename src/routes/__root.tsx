@@ -88,6 +88,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap" },
       { rel: "stylesheet", href: appCss },
+      // Preload the 3D intro model so the loading animation appears
+      // instantly on first paint — no flicker between the pending
+      // fallback and the Canvas render.
+      { rel: "preload", href: logoGlb.url, as: "fetch", crossOrigin: "anonymous", type: "model/gltf-binary" },
     ],
   }),
   errorComponent: RootRouteError,
