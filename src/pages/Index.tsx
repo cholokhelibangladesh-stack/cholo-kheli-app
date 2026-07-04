@@ -13,6 +13,7 @@ import VideoHighlights from "@/components/VideoHighlights";
 import CholoKheliMark from "@/components/CholoKheliMark";
 import HeroMistCursor from "@/components/HeroMistCursor";
 import HeroScrollVideo from "@/components/HeroScrollVideo";
+import Logo3DIntro from "@/components/Logo3DIntro";
 import heroImg from "@/assets/hero-cricket.jpg.asset.json";
 import statsImg from "@/assets/stats-football.jpg.asset.json";
 import stadiumImg from "@/assets/stadium-dusk.jpg.asset.json";
@@ -310,6 +311,16 @@ const Index = () => {
   const T = COPY[lang];
   const [verifiedScouts, setVerifiedScouts] = useState<ScoutProfile[]>(FALLBACK_SCOUTS);
   const [scoutIndex, setScoutIndex] = useState(0);
+  // 3D logo intro — plays once per page load. Session-storage guarded so
+  // it doesn't replay on client-side re-renders / route re-mounts.
+  const [showIntro, setShowIntro] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return sessionStorage.getItem("ck_intro_seen") !== "1";
+    } catch {
+      return true;
+    }
+  });
 
 
   useEffect(() => {
@@ -339,11 +350,22 @@ const Index = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-background">
+      {showIntro && (
+        <Logo3DIntro
+          onDone={() => {
+            try {
+              sessionStorage.setItem("ck_intro_seen", "1");
+            } catch { /* ignore */ }
+            setShowIntro(false);
+          }}
+        />
+      )}
 
       {/* ══════════════════════════════════════════
-          HERO — Scroll-scrubbed cinematic video (GSAP)
+          HERO — Slide-driven cinematic (Next button, mobile app)
       ══════════════════════════════════════════ */}
       <HeroScrollVideo
+        mode="slides"
         tagline={T.heroTagline}
         scrollLabel={T.scroll}
         joinLabel={T.joinAsPlayer}
@@ -352,6 +374,7 @@ const Index = () => {
         isAuthed={!!(user && role)}
         dashboardHref={role === "admin" ? "/admin" : role === "scout" ? "/scout" : "/player"}
       />
+
 
 
       {/* ══════════════════════════════════════════
