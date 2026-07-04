@@ -111,7 +111,9 @@ export default function HeroScrollVideo({
   isAuthed,
   dashboardHref,
   tagline,
+  mode = "scroll",
 }: HeroScrollVideoProps) {
+  const isSlides = mode === "slides";
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
