@@ -608,7 +608,8 @@ export default function HeroScrollVideo({
           {BEATS.map((b, i) => {
             const active = beat === i;
             const baseClass =
-              "absolute inset-0 flex items-center px-6 sm:px-12 transition-all duration-300 ease-out";
+              "absolute inset-0 flex items-center px-6 sm:px-12 transition-all duration-300 ease-out" +
+              (isSlides ? " pb-28 sm:pb-32" : "");
 
             const opacity = active ? 1 : 0;
             const blur = active ? "blur(0px)" : "blur(6px)";
