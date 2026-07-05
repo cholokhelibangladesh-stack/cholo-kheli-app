@@ -54,6 +54,8 @@ const PlayerUpload = () => {
   const [showNewUpload, setShowNewUpload] = useState(false);
   const [uploadsHalted, setUploadsHalted] = useState(false);
   const [savingSport, setSavingSport] = useState(false);
+  const [customPosition, setCustomPosition] = useState("");
+  const [customTrait, setCustomTrait] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
@@ -122,6 +124,12 @@ const PlayerUpload = () => {
   const traitTags = traitsBySport[sport] || traitsBySport.football;
   const toggleTag = (tag: string, list: string[], setter: (v: string[]) => void) => {
     setter(list.includes(tag) ? list.filter((t) => t !== tag) : [...list, tag]);
+  };
+  const addCustomTag = (raw: string, list: string[], setter: (v: string[]) => void, reset: (v: string) => void) => {
+    const value = raw.trim().slice(0, 40);
+    if (!value) return;
+    if (!list.some((t) => t.toLowerCase() === value.toLowerCase())) setter([...list, value]);
+    reset("");
   };
 
   const resetUploadForm = () => {
@@ -405,22 +413,55 @@ const PlayerUpload = () => {
                     <div>
                       <Label className="text-xs text-muted-foreground uppercase tracking-wide">Position</Label>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {positionTags.map((tag) => (
+                        {Array.from(new Set([...positionTags, ...selectedPositions])).map((tag) => (
                           <Badge key={tag} variant={selectedPositions.includes(tag) ? "default" : "outline"}
                             className={`cursor-pointer transition-all ${selectedPositions.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
                             onClick={() => toggleTag(tag, selectedPositions, setSelectedPositions)}>{tag}</Badge>
                         ))}
                       </div>
+                      <div className="flex gap-2 mt-2">
+                        <Input
+                          placeholder="Add a custom position..."
+                          maxLength={40}
+                          value={customPosition}
+                          onChange={(e) => setCustomPosition(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(customPosition, selectedPositions, setSelectedPositions, setCustomPosition); } }}
+                          className="h-9 bg-secondary border-border rounded-xl text-sm"
+                        />
+                        <Button type="button" size="sm" variant="outline"
+                          onClick={() => addCustomTag(customPosition, selectedPositions, setSelectedPositions, setCustomPosition)}
+                          disabled={!customPosition.trim()}
+                          className="h-9 rounded-xl border-primary/40 text-primary hover:bg-primary/10 shrink-0">
+                          <Plus className="h-3.5 w-3.5 mr-1" /> Add
+                        </Button>
+                      </div>
                     </div>
                     <div>
                       <Label className="text-xs text-muted-foreground uppercase tracking-wide">Play Style / Traits</Label>
                       <div className="flex flex-wrap gap-2 mt-2">
-                        {traitTags.map((tag) => (
+                        {Array.from(new Set([...traitTags, ...selectedTraits])).map((tag) => (
                           <Badge key={tag} variant={selectedTraits.includes(tag) ? "default" : "outline"}
                             className={`cursor-pointer transition-all ${selectedTraits.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
                             onClick={() => toggleTag(tag, selectedTraits, setSelectedTraits)}>{tag}</Badge>
                         ))}
                       </div>
+                      <div className="flex gap-2 mt-2">
+                        <Input
+                          placeholder="Add a custom trait..."
+                          maxLength={40}
+                          value={customTrait}
+                          onChange={(e) => setCustomTrait(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomTag(customTrait, selectedTraits, setSelectedTraits, setCustomTrait); } }}
+                          className="h-9 bg-secondary border-border rounded-xl text-sm"
+                        />
+                        <Button type="button" size="sm" variant="outline"
+                          onClick={() => addCustomTag(customTrait, selectedTraits, setSelectedTraits, setCustomTrait)}
+                          disabled={!customTrait.trim()}
+                          className="h-9 rounded-xl border-primary/40 text-primary hover:bg-primary/10 shrink-0">
+                          <Plus className="h-3.5 w-3.5 mr-1" /> Add
+                        </Button>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-2">Tap a chip to toggle. Custom entries stay selected until you tap to remove.</p>
                     </div>
                   </div>
 
