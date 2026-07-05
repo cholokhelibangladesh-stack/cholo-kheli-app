@@ -78,7 +78,8 @@ const AppTabBar = () => {
             to === "/player" || to === "/scout" || to === "/"
               ? pathname === to
               : pathname === to || pathname.startsWith(to + "/");
-          const useGradient = emphasize || active;
+          const useGradient = active;
+          const isEmphasized = emphasize && !active;
           return (
             <li key={to} className="flex-1">
               <Link
