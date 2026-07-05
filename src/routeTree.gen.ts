@@ -30,8 +30,17 @@ import { Route as PlayerSettingsRouteImport } from './routes/player/settings'
 import { Route as PlayerProfileRouteImport } from './routes/player/profile'
 import { Route as PlayerExploreRouteImport } from './routes/player/explore'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as AdminVideosRouteImport } from './routes/admin.videos'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminModerationRouteImport } from './routes/admin.moderation'
+import { Route as ScoutSettingsIndexRouteImport } from './routes/scout/settings.index'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
+import { Route as ScoutSettingsVerificationRouteImport } from './routes/scout/settings.verification'
+import { Route as ScoutSettingsPreferencesRouteImport } from './routes/scout/settings.preferences'
 import { Route as PlayerSettingsVerifiedRouteImport } from './routes/player/settings.verified'
+import { Route as PlayerSettingsTwoFactorRouteImport } from './routes/player/settings.two-factor'
 import { Route as PlayerSettingsTimeRouteImport } from './routes/player/settings.time'
 import { Route as PlayerSettingsThreadsRouteImport } from './routes/player/settings.threads'
 import { Route as PlayerSettingsTagsRouteImport } from './routes/player/settings.tags'
@@ -42,6 +51,7 @@ import { Route as PlayerSettingsSavedRouteImport } from './routes/player/setting
 import { Route as PlayerSettingsRestrictedRouteImport } from './routes/player/settings.restricted'
 import { Route as PlayerSettingsPrivacyCenterRouteImport } from './routes/player/settings.privacy-center'
 import { Route as PlayerSettingsPrivacyRouteImport } from './routes/player/settings.privacy'
+import { Route as PlayerSettingsPasswordRouteImport } from './routes/player/settings.password'
 import { Route as PlayerSettingsOrdersRouteImport } from './routes/player/settings.orders'
 import { Route as PlayerSettingsNotificationsRouteImport } from './routes/player/settings.notifications'
 import { Route as PlayerSettingsMutedRouteImport } from './routes/player/settings.muted'
@@ -180,14 +190,61 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminVideosRoute = AdminVideosRouteImport.update({
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminModerationRoute = AdminModerationRouteImport.update({
+  id: '/moderation',
+  path: '/moderation',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ScoutSettingsIndexRoute = ScoutSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ScoutSettingsRoute,
+} as any)
 const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
+const ScoutSettingsVerificationRoute =
+  ScoutSettingsVerificationRouteImport.update({
+    id: '/verification',
+    path: '/verification',
+    getParentRoute: () => ScoutSettingsRoute,
+  } as any)
+const ScoutSettingsPreferencesRoute =
+  ScoutSettingsPreferencesRouteImport.update({
+    id: '/preferences',
+    path: '/preferences',
+    getParentRoute: () => ScoutSettingsRoute,
+  } as any)
 const PlayerSettingsVerifiedRoute = PlayerSettingsVerifiedRouteImport.update({
   id: '/verified',
   path: '/verified',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsTwoFactorRoute = PlayerSettingsTwoFactorRouteImport.update({
+  id: '/two-factor',
+  path: '/two-factor',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsTimeRoute = PlayerSettingsTimeRouteImport.update({
@@ -240,6 +297,11 @@ const PlayerSettingsPrivacyCenterRoute =
 const PlayerSettingsPrivacyRoute = PlayerSettingsPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsPasswordRoute = PlayerSettingsPasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsOrdersRoute = PlayerSettingsOrdersRouteImport.update({
@@ -417,13 +479,18 @@ const PlayerSettingsAboutRoute = PlayerSettingsAboutRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -433,7 +500,7 @@ export interface FileRoutesByFullPath {
   '/scout/explore': typeof ScoutExploreRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
-  '/scout/settings': typeof ScoutSettingsRoute
+  '/scout/settings': typeof ScoutSettingsRouteWithChildren
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -468,6 +535,7 @@ export interface FileRoutesByFullPath {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -478,19 +546,28 @@ export interface FileRoutesByFullPath {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
+  '/scout/settings/preferences': typeof ScoutSettingsPreferencesRoute
+  '/scout/settings/verification': typeof ScoutSettingsVerificationRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
+  '/scout/settings/': typeof ScoutSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -499,7 +576,6 @@ export interface FileRoutesByTo {
   '/scout/explore': typeof ScoutExploreRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
-  '/scout/settings': typeof ScoutSettingsRoute
   '/player': typeof PlayerIndexRoute
   '/scout': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -534,6 +610,7 @@ export interface FileRoutesByTo {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -544,20 +621,29 @@ export interface FileRoutesByTo {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
+  '/scout/settings/preferences': typeof ScoutSettingsPreferencesRoute
+  '/scout/settings/verification': typeof ScoutSettingsVerificationRoute
   '/player/settings': typeof PlayerSettingsIndexRoute
+  '/scout/settings': typeof ScoutSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/moderation': typeof AdminModerationRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
+  '/admin/videos': typeof AdminVideosRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -567,7 +653,7 @@ export interface FileRoutesById {
   '/scout/explore': typeof ScoutExploreRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
-  '/scout/settings': typeof ScoutSettingsRoute
+  '/scout/settings': typeof ScoutSettingsRouteWithChildren
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -602,6 +688,7 @@ export interface FileRoutesById {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -612,8 +699,12 @@ export interface FileRoutesById {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
+  '/scout/settings/preferences': typeof ScoutSettingsPreferencesRoute
+  '/scout/settings/verification': typeof ScoutSettingsVerificationRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
+  '/scout/settings/': typeof ScoutSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -627,6 +718,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/moderation'
+    | '/admin/reports'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/admin/videos'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -671,6 +767,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -681,8 +778,12 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
+    | '/scout/settings/preferences'
+    | '/scout/settings/verification'
     | '/player/settings/'
+    | '/scout/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -694,6 +795,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/moderation'
+    | '/admin/reports'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/admin/videos'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -702,7 +808,6 @@ export interface FileRouteTypes {
     | '/scout/explore'
     | '/scout/profile'
     | '/scout/selections'
-    | '/scout/settings'
     | '/player'
     | '/scout'
     | '/player/settings/about'
@@ -737,6 +842,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -747,8 +853,12 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
+    | '/scout/settings/preferences'
+    | '/scout/settings/verification'
     | '/player/settings'
+    | '/scout/settings'
   id:
     | '__root__'
     | '/'
@@ -760,6 +870,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/moderation'
+    | '/admin/reports'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/admin/videos'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -804,6 +919,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -814,14 +930,18 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
+    | '/scout/settings/preferences'
+    | '/scout/settings/verification'
     | '/player/settings/'
+    | '/scout/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   FaqRoute: typeof FaqRoute
   MissionRoute: typeof MissionRoute
@@ -837,7 +957,7 @@ export interface RootRouteChildren {
   ScoutExploreRoute: typeof ScoutExploreRoute
   ScoutProfileRoute: typeof ScoutProfileRoute
   ScoutSelectionsRoute: typeof ScoutSelectionsRoute
-  ScoutSettingsRoute: typeof ScoutSettingsRoute
+  ScoutSettingsRoute: typeof ScoutSettingsRouteWithChildren
   PlayerIndexRoute: typeof PlayerIndexRoute
   ScoutIndexRoute: typeof ScoutIndexRoute
 }
@@ -991,6 +1111,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/videos': {
+      id: '/admin/videos'
+      path: '/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AdminVideosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/moderation': {
+      id: '/admin/moderation'
+      path: '/moderation'
+      fullPath: '/admin/moderation'
+      preLoaderRoute: typeof AdminModerationRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/scout/settings/': {
+      id: '/scout/settings/'
+      path: '/'
+      fullPath: '/scout/settings/'
+      preLoaderRoute: typeof ScoutSettingsIndexRouteImport
+      parentRoute: typeof ScoutSettingsRoute
+    }
     '/player/settings/': {
       id: '/player/settings/'
       path: '/'
@@ -998,11 +1160,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsIndexRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/scout/settings/verification': {
+      id: '/scout/settings/verification'
+      path: '/verification'
+      fullPath: '/scout/settings/verification'
+      preLoaderRoute: typeof ScoutSettingsVerificationRouteImport
+      parentRoute: typeof ScoutSettingsRoute
+    }
+    '/scout/settings/preferences': {
+      id: '/scout/settings/preferences'
+      path: '/preferences'
+      fullPath: '/scout/settings/preferences'
+      preLoaderRoute: typeof ScoutSettingsPreferencesRouteImport
+      parentRoute: typeof ScoutSettingsRoute
+    }
     '/player/settings/verified': {
       id: '/player/settings/verified'
       path: '/verified'
       fullPath: '/player/settings/verified'
       preLoaderRoute: typeof PlayerSettingsVerifiedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/two-factor': {
+      id: '/player/settings/two-factor'
+      path: '/two-factor'
+      fullPath: '/player/settings/two-factor'
+      preLoaderRoute: typeof PlayerSettingsTwoFactorRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/time': {
@@ -1073,6 +1256,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/player/settings/privacy'
       preLoaderRoute: typeof PlayerSettingsPrivacyRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/password': {
+      id: '/player/settings/password'
+      path: '/password'
+      fullPath: '/player/settings/password'
+      preLoaderRoute: typeof PlayerSettingsPasswordRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/orders': {
@@ -1302,6 +1492,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminModerationRoute: typeof AdminModerationRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminVideosRoute: typeof AdminVideosRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminModerationRoute: AdminModerationRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminVideosRoute: AdminVideosRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface PlayerSettingsRouteChildren {
   PlayerSettingsAboutRoute: typeof PlayerSettingsAboutRoute
   PlayerSettingsAccessibilityRoute: typeof PlayerSettingsAccessibilityRoute
@@ -1335,6 +1543,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsMutedRoute: typeof PlayerSettingsMutedRoute
   PlayerSettingsNotificationsRoute: typeof PlayerSettingsNotificationsRoute
   PlayerSettingsOrdersRoute: typeof PlayerSettingsOrdersRoute
+  PlayerSettingsPasswordRoute: typeof PlayerSettingsPasswordRoute
   PlayerSettingsPrivacyRoute: typeof PlayerSettingsPrivacyRoute
   PlayerSettingsPrivacyCenterRoute: typeof PlayerSettingsPrivacyCenterRoute
   PlayerSettingsRestrictedRoute: typeof PlayerSettingsRestrictedRoute
@@ -1345,6 +1554,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsTagsRoute: typeof PlayerSettingsTagsRoute
   PlayerSettingsThreadsRoute: typeof PlayerSettingsThreadsRoute
   PlayerSettingsTimeRoute: typeof PlayerSettingsTimeRoute
+  PlayerSettingsTwoFactorRoute: typeof PlayerSettingsTwoFactorRoute
   PlayerSettingsVerifiedRoute: typeof PlayerSettingsVerifiedRoute
   PlayerSettingsIndexRoute: typeof PlayerSettingsIndexRoute
 }
@@ -1382,6 +1592,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsMutedRoute: PlayerSettingsMutedRoute,
   PlayerSettingsNotificationsRoute: PlayerSettingsNotificationsRoute,
   PlayerSettingsOrdersRoute: PlayerSettingsOrdersRoute,
+  PlayerSettingsPasswordRoute: PlayerSettingsPasswordRoute,
   PlayerSettingsPrivacyRoute: PlayerSettingsPrivacyRoute,
   PlayerSettingsPrivacyCenterRoute: PlayerSettingsPrivacyCenterRoute,
   PlayerSettingsRestrictedRoute: PlayerSettingsRestrictedRoute,
@@ -1392,6 +1603,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsTagsRoute: PlayerSettingsTagsRoute,
   PlayerSettingsThreadsRoute: PlayerSettingsThreadsRoute,
   PlayerSettingsTimeRoute: PlayerSettingsTimeRoute,
+  PlayerSettingsTwoFactorRoute: PlayerSettingsTwoFactorRoute,
   PlayerSettingsVerifiedRoute: PlayerSettingsVerifiedRoute,
   PlayerSettingsIndexRoute: PlayerSettingsIndexRoute,
 }
@@ -1400,10 +1612,26 @@ const PlayerSettingsRouteWithChildren = PlayerSettingsRoute._addFileChildren(
   PlayerSettingsRouteChildren,
 )
 
+interface ScoutSettingsRouteChildren {
+  ScoutSettingsPreferencesRoute: typeof ScoutSettingsPreferencesRoute
+  ScoutSettingsVerificationRoute: typeof ScoutSettingsVerificationRoute
+  ScoutSettingsIndexRoute: typeof ScoutSettingsIndexRoute
+}
+
+const ScoutSettingsRouteChildren: ScoutSettingsRouteChildren = {
+  ScoutSettingsPreferencesRoute: ScoutSettingsPreferencesRoute,
+  ScoutSettingsVerificationRoute: ScoutSettingsVerificationRoute,
+  ScoutSettingsIndexRoute: ScoutSettingsIndexRoute,
+}
+
+const ScoutSettingsRouteWithChildren = ScoutSettingsRoute._addFileChildren(
+  ScoutSettingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   FaqRoute: FaqRoute,
   MissionRoute: MissionRoute,
@@ -1419,7 +1647,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScoutExploreRoute: ScoutExploreRoute,
   ScoutProfileRoute: ScoutProfileRoute,
   ScoutSelectionsRoute: ScoutSelectionsRoute,
-  ScoutSettingsRoute: ScoutSettingsRoute,
+  ScoutSettingsRoute: ScoutSettingsRouteWithChildren,
   PlayerIndexRoute: PlayerIndexRoute,
   ScoutIndexRoute: ScoutIndexRoute,
 }
