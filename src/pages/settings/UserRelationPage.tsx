@@ -102,9 +102,8 @@ const UserRelationPage = ({
 
   const add = async (r: UserRelation) => {
     if (!user) return;
-    const { error } = await supabase
-      .from(table)
-      .insert({ [ownerColumn]: user.id, [targetColumn]: r.target_id });
+    const payload = { [ownerColumn]: user.id, [targetColumn]: r.target_id } as never;
+    const { error } = await supabase.from(table).insert(payload);
     if (error) return toast({ title: "Failed", description: error.message, variant: "destructive" });
     toast({ title: `${addLabel}: ${r.full_name}` });
     setQ("");
