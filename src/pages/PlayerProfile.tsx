@@ -78,7 +78,7 @@ const PlayerProfile = () => {
             </Link>
           </div>
 
-          <ProfileTab showVideos={allVideos} onDeleteVideo={handleDeleteVideo} deletingVideoId={deletingVideoId} />
+          <ProfileTab showVideos={allVideos} onDeleteVideo={handleDeleteVideo} deletingVideoId={deletingVideoId} stats={playerStats} />
         </motion.div>
       </div>
     </div>
