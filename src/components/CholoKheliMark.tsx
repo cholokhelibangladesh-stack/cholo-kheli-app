@@ -14,14 +14,19 @@ const CholoKheliMark = ({ className = "" }: Props) => (
   <span
     aria-label="Cholo Kheli"
     role="img"
-    className={`relative block h-[18px] w-[24px] overflow-hidden ${className}`}
+    className={`relative block overflow-hidden ${className || "h-[18px] w-[24px]"}`}
   >
     <img
       src={markAsset.url}
       alt=""
       aria-hidden="true"
-      className="pointer-events-none absolute h-[47px] w-[83px] max-w-none select-none"
-      style={{ left: "-30px", top: "-10px" }}
+      className="pointer-events-none absolute max-w-none select-none"
+      style={{
+        width: "359.24%",
+        height: "263.64%",
+        left: "-132.07%",
+        top: "-57.34%",
+      }}
       draggable={false}
     />
   </span>
