@@ -1,15 +1,12 @@
 import {
-  Bookmark, History, Activity, Bell, Clock, Tablet,
-  Lock, Star, LayoutGrid, Ban, EyeOff, Users,
-  MessageCircle, AtSign, MessageSquare, Share2, CircleSlash,
-  AlertCircle, Type, UserPlus,
-  Sparkles, VolumeX, ListFilter, Heart,
-  Smartphone, Download, Accessibility, Languages, Signal, Globe,
-  BarChart3, BadgeCheck,
-  Receipt,
-  LifeBuoy, ShieldCheck, UserCircle2, Info,
-  Bot, MessagesSquare, Infinity as InfinityIcon,
-  Plus, LogOut,
+  Bookmark, Archive as ArchiveIcon, Activity, Bell, Clock,
+  Lock, Users, Ban, EyeOff, CircleSlash, MessageSquare,
+  AtSign, Share2, Type, UserPlus, Star, VolumeX, ListFilter, Heart,
+  Smartphone, Download, Accessibility, Languages, Signal,
+  BadgeCheck, Receipt, LifeBuoy, ShieldCheck, UserCircle2, Info,
+  Bot, KeyRound, Fingerprint, MonitorSmartphone, AlertTriangle,
+  Flag, Trophy, Video,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
 
@@ -21,85 +18,115 @@ export type CatalogItem = {
   group: string;
   tint?: "default" | "destructive" | "accent";
   keywords?: string;
+  /** Which app roles the item is visible to. Default: all. */
+  roles?: Array<"player" | "scout" | "admin">;
 };
 
+const G = {
+  account: "Your account",
+  usage: "How you use Cholo Kheli",
+  visibility: "Who can see your profile",
+  interactions: "How others can reach you",
+  feed: "What you see in the feed",
+  device: "Device and playback",
+  creator: "Creator and verification",
+  scout: "Scouting tools",
+  admin: "Admin controls",
+  billing: "Payments and receipts",
+  support: "Help and safety",
+  session: "Session",
+} as const;
+
 /**
- * Full catalog of settings rows shown in the hub, mirroring Instagram's
- * "Settings and activity" screen but renamed & scoped for Cholo Kheli.
+ * Cholo Kheli settings catalog — trimmed to features the platform actually
+ * offers, reworded so it doesn't read as a straight Instagram clone. Accounts
+ * Center is removed; the rows it used to hide (password, sign-in devices,
+ * personal details) are embedded here directly under "Your account".
  */
 export const SETTINGS_CATALOG: CatalogItem[] = [
+  // Your account (former Accounts Center rows, inlined)
+  { id: "personal-details", label: "Personal details", to: "/player/settings/account-status", icon: UserCircle2, group: G.account, keywords: "name email phone dob" },
+  { id: "password", label: "Password and passkeys", to: "/player/settings/password", icon: KeyRound, group: G.account, keywords: "change password reset" },
+  { id: "sign-in-devices", label: "Sign-in devices", to: "/player/settings/devices", icon: MonitorSmartphone, group: G.account, keywords: "sessions logout everywhere" },
+  { id: "two-factor", label: "Two-step verification", to: "/player/settings/two-factor", icon: Fingerprint, group: G.account, keywords: "2fa otp security" },
+
   // How you use Cholo Kheli
-  { id: "saved", label: "Saved", to: "/player/settings/saved", icon: Bookmark, group: "How you use Cholo Kheli", keywords: "bookmarks collection" },
-  { id: "archive", label: "Archive", to: "/player/settings/archive", icon: History, group: "How you use Cholo Kheli", keywords: "hidden uploads" },
-  { id: "activity", label: "Your activity", to: "/player/settings/activity", icon: Activity, group: "How you use Cholo Kheli", keywords: "history likes comments" },
-  { id: "notifications", label: "Notifications", to: "/player/settings/notifications", icon: Bell, group: "How you use Cholo Kheli", keywords: "push email alerts" },
-  { id: "time", label: "Time management", to: "/player/settings/time", icon: Clock, group: "How you use Cholo Kheli", keywords: "daily limit break reminder" },
-  { id: "tablets", label: "Cholo Kheli for tablets", to: "/player/settings/tablets", icon: Tablet, group: "How you use Cholo Kheli" },
+  { id: "saved", label: "Saved plays", to: "/player/settings/saved", icon: Bookmark, group: G.usage, keywords: "bookmarks collection" },
+  { id: "archive", label: "Archived uploads", to: "/player/settings/archive", icon: ArchiveIcon, group: G.usage, keywords: "hidden videos" },
+  { id: "activity", label: "Your activity", to: "/player/settings/activity", icon: Activity, group: G.usage, keywords: "history likes comments" },
+  { id: "notifications", label: "Notifications", to: "/player/settings/notifications", icon: Bell, group: G.usage, keywords: "push email alerts" },
+  { id: "time", label: "Screen time", to: "/player/settings/time", icon: Clock, group: G.usage, keywords: "daily limit break reminder" },
 
-  // Who can see your content
-  { id: "privacy", label: "Account privacy", to: "/player/settings/privacy", icon: Lock, group: "Who can see your content", keywords: "private public" },
-  { id: "close-friends", label: "Close Friends", to: "/player/settings/close-friends", icon: Star, group: "Who can see your content" },
-  { id: "crossposting", label: "Crossposting", to: "/player/settings/crossposting", icon: LayoutGrid, group: "Who can see your content" },
-  { id: "blocked", label: "Blocked", to: "/player/settings/blocked", icon: Ban, group: "Who can see your content", keywords: "block ignore" },
-  { id: "story", label: "Story, live and location", to: "/player/settings/story", icon: EyeOff, group: "Who can see your content" },
-  { id: "friends-feed", label: "Activity in Friends feed", to: "/player/settings/friends-feed", icon: Users, group: "Who can see your content" },
+  // Who can see your profile
+  { id: "privacy", label: "Profile visibility", to: "/player/settings/privacy", icon: Lock, group: G.visibility, keywords: "private public" },
+  { id: "close-friends", label: "Trusted circle", to: "/player/settings/close-friends", icon: Star, group: G.visibility, keywords: "close friends" },
+  { id: "blocked", label: "Blocked accounts", to: "/player/settings/blocked", icon: Ban, group: G.visibility, keywords: "block ignore" },
+  { id: "story", label: "Live and location", to: "/player/settings/story", icon: EyeOff, group: G.visibility },
 
-  // How others can interact with you
-  { id: "messages", label: "Messages and story replies", to: "/player/settings/messages", icon: MessageCircle, group: "How others can interact with you" },
-  { id: "tags", label: "Tags and mentions", to: "/player/settings/tags", icon: AtSign, group: "How others can interact with you" },
-  { id: "comments", label: "Comments", to: "/player/settings/comments", icon: MessageSquare, group: "How others can interact with you" },
-  { id: "sharing", label: "Sharing", to: "/player/settings/sharing", icon: Share2, group: "How others can interact with you" },
-  { id: "restricted", label: "Restricted", to: "/player/settings/restricted", icon: CircleSlash, group: "How others can interact with you" },
-  { id: "limit", label: "Limit interactions", to: "/player/settings/limit", icon: AlertCircle, group: "How others can interact with you" },
-  { id: "hidden-words", label: "Hidden Words", to: "/player/settings/hidden-words", icon: Type, group: "How others can interact with you" },
-  { id: "invite", label: "Follow and invite friends", to: "/player/settings/invite", icon: UserPlus, group: "How others can interact with you" },
+  // How others can reach you
+  { id: "messages", label: "Direct messages", to: "/player/settings/messages", icon: MessageSquare, group: G.interactions },
+  { id: "tags", label: "Tags and mentions", to: "/player/settings/tags", icon: AtSign, group: G.interactions },
+  { id: "sharing", label: "Sharing and reposts", to: "/player/settings/sharing", icon: Share2, group: G.interactions },
+  { id: "restricted", label: "Restricted accounts", to: "/player/settings/restricted", icon: CircleSlash, group: G.interactions },
+  { id: "hidden-words", label: "Muted words", to: "/player/settings/hidden-words", icon: Type, group: G.interactions },
+  { id: "invite", label: "Invite teammates", to: "/player/settings/invite", icon: UserPlus, group: G.interactions },
 
-  // What you see
-  { id: "favorites", label: "Favorites", to: "/player/settings/favorites", icon: Star, group: "What you see" },
-  { id: "muted", label: "Muted accounts", to: "/player/settings/muted", icon: VolumeX, group: "What you see" },
-  { id: "content-prefs", label: "Content preferences", to: "/player/settings/content-preferences", icon: ListFilter, group: "What you see" },
-  { id: "counts", label: "Like and share counts", to: "/player/settings/counts", icon: Heart, group: "What you see" },
+  // What you see in the feed
+  { id: "favorites", label: "Favourite creators", to: "/player/settings/favorites", icon: Star, group: G.feed },
+  { id: "muted", label: "Muted accounts", to: "/player/settings/muted", icon: VolumeX, group: G.feed },
+  { id: "content-prefs", label: "Feed preferences", to: "/player/settings/content-preferences", icon: ListFilter, group: G.feed, keywords: "sport position" },
+  { id: "counts", label: "Like and share counts", to: "/player/settings/counts", icon: Heart, group: G.feed },
 
-  // Your app and media
-  { id: "devices", label: "Device permissions", to: "/player/settings/devices", icon: Smartphone, group: "Your app and media" },
-  { id: "downloads", label: "Archiving and downloading", to: "/player/settings/downloads", icon: Download, group: "Your app and media" },
-  { id: "accessibility", label: "Accessibility", to: "/player/settings/accessibility", icon: Accessibility, group: "Your app and media" },
-  { id: "language", label: "Language and translations", to: "/player/settings/language", icon: Languages, group: "Your app and media" },
-  { id: "data-usage", label: "Data usage and media quality", to: "/player/settings/data-usage", icon: Signal, group: "Your app and media" },
-  { id: "app-web", label: "App website permissions", to: "/player/settings/app-web", icon: Globe, group: "Your app and media" },
+  // Device and playback
+  { id: "device-perms", label: "App permissions", to: "/player/settings/devices", icon: Smartphone, group: G.device, keywords: "camera microphone" },
+  { id: "downloads", label: "Downloads and offline", to: "/player/settings/downloads", icon: Download, group: G.device },
+  { id: "accessibility", label: "Accessibility", to: "/player/settings/accessibility", icon: Accessibility, group: G.device },
+  { id: "language", label: "Language", to: "/player/settings/language", icon: Languages, group: G.device, keywords: "english bangla" },
+  { id: "data-usage", label: "Data and video quality", to: "/player/settings/data-usage", icon: Signal, group: G.device },
 
-  // Your insights and tools
-  { id: "account-type", label: "Account type and tools", to: "/player/settings/account-type", icon: BarChart3, group: "Your insights and tools" },
-  { id: "verified", label: "Cholo Kheli Verified", to: "/player/settings/verified", icon: BadgeCheck, group: "Your insights and tools" },
+  // Creator and verification (players only)
+  { id: "verified", label: "Cholo Kheli Verified", to: "/player/settings/verified", icon: BadgeCheck, group: G.creator, roles: ["player"] },
+  { id: "ck-ai", label: "Cholo Kheli AI assistant", to: "/player/settings/ai", icon: Bot, group: G.creator, roles: ["player"] },
 
-  // Your orders and fundraisers
-  { id: "orders", label: "Orders and payments", to: "/player/settings/orders", icon: Receipt, group: "Your orders and fundraisers" },
+  // Scouting tools (scouts only)
+  { id: "scout-prefs", label: "Scouting preferences", to: "/scout/settings/preferences", icon: ListFilter, group: G.scout, roles: ["scout"], keywords: "sport position filter" },
+  { id: "scout-selections", label: "Your selections", to: "/scout/selections", icon: Trophy, group: G.scout, roles: ["scout"] },
+  { id: "scout-verification", label: "Scout verification", to: "/scout/settings/verification", icon: ShieldCheck, group: G.scout, roles: ["scout"] },
 
-  // More info and support
-  { id: "help", label: "Help", to: "/player/settings/help", icon: LifeBuoy, group: "More info and support" },
-  { id: "privacy-center", label: "Privacy Center", to: "/player/settings/privacy-center", icon: ShieldCheck, group: "More info and support" },
-  { id: "account-status", label: "Account Status", to: "/player/settings/account-status", icon: UserCircle2, group: "More info and support" },
-  { id: "about", label: "About", to: "/player/settings/about", icon: Info, group: "More info and support" },
+  // Admin controls (admin only)
+  { id: "admin-users", label: "User management", to: "/admin/users", icon: Users, group: G.admin, roles: ["admin"] },
+  { id: "admin-moderation", label: "Moderation queue", to: "/admin/moderation", icon: AlertTriangle, group: G.admin, roles: ["admin"] },
+  { id: "admin-videos", label: "Video oversight", to: "/admin/videos", icon: Video, group: G.admin, roles: ["admin"] },
+  { id: "admin-reports", label: "Reports and appeals", to: "/admin/reports", icon: Flag, group: G.admin, roles: ["admin"] },
 
-  // Also from Cholo Kheli
-  { id: "ck-ai", label: "Cholo Kheli AI", to: "/player/settings/ai", icon: Bot, group: "Also from Cholo Kheli", keywords: "assistant" },
-  { id: "threads", label: "Threads", to: "/player/settings/threads", icon: MessagesSquare, group: "Also from Cholo Kheli" },
-  { id: "more", label: "More from Cholo Kheli", to: "/player/settings/more", icon: InfinityIcon, group: "Also from Cholo Kheli" },
+  // Payments (players)
+  { id: "orders", label: "Payments and receipts", to: "/player/settings/orders", icon: Receipt, group: G.billing, roles: ["player"] },
 
-  // Login
-  { id: "add-account", label: "Add account", to: "/player/settings/add-account", icon: Plus, group: "Login", tint: "accent" },
-  { id: "logout", label: "Log out", to: "/player/settings/logout", icon: LogOut, group: "Login", tint: "destructive" },
+  // Help and safety
+  { id: "help", label: "Help centre", to: "/player/settings/help", icon: LifeBuoy, group: G.support },
+  { id: "privacy-center", label: "Privacy centre", to: "/player/settings/privacy-center", icon: ShieldCheck, group: G.support },
+  { id: "about", label: "About Cholo Kheli", to: "/player/settings/about", icon: Info, group: G.support },
+
+  // Session
+  { id: "logout", label: "Log out", to: "/player/settings/logout", icon: LogOut, group: G.session, tint: "destructive" },
 ];
 
 export const SETTINGS_GROUP_ORDER = [
-  "How you use Cholo Kheli",
-  "Who can see your content",
-  "How others can interact with you",
-  "What you see",
-  "Your app and media",
-  "Your insights and tools",
-  "Your orders and fundraisers",
-  "More info and support",
-  "Also from Cholo Kheli",
-  "Login",
+  G.account,
+  G.usage,
+  G.visibility,
+  G.interactions,
+  G.feed,
+  G.device,
+  G.creator,
+  G.scout,
+  G.admin,
+  G.billing,
+  G.support,
+  G.session,
 ];
+
+export function filterCatalogForRole(role: "player" | "scout" | "admin" | null | undefined): CatalogItem[] {
+  const r = role ?? "player";
+  return SETTINGS_CATALOG.filter((i) => !i.roles || i.roles.includes(r));
+}
