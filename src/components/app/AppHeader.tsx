@@ -58,7 +58,7 @@ const AppHeader = () => {
         }}
       />
 
-      <div className="mx-auto flex h-12 max-w-[430px] items-center justify-between gap-2 px-4">
+      <div className="mx-auto flex h-14 max-w-[430px] items-center justify-between gap-2 px-4">
         <div className="flex min-w-0 items-center gap-2">
           {!isTabRoot ? (
             <button
@@ -68,13 +68,13 @@ const AppHeader = () => {
                 router.history.back();
               }}
               aria-label="Back"
-              className="-ml-2 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-foreground backdrop-blur-md active:scale-95 transition-transform"
+              className="-ml-2 grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-foreground backdrop-blur-md active:scale-95 transition-transform"
             >
               <ChevronLeft className="h-5 w-5" strokeWidth={2} />
             </button>
           ) : (
             <Link to="/" aria-label="Cholo Kheli home" className="flex shrink-0 items-center">
-              <CholoKheliMark className="h-8 w-8 drop-shadow-[0_2px_6px_hsl(var(--teal-deep)/0.35)]" />
+              <CholoKheliMark className="h-11 w-11 drop-shadow-[0_2px_8px_hsl(var(--teal-deep)/0.4)]" />
             </Link>
           )}
         </div>

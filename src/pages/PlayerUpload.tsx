@@ -53,10 +53,34 @@ const PlayerUpload = () => {
   const [allVideos, setAllVideos] = useState<VideoRecord[]>([]);
   const [showNewUpload, setShowNewUpload] = useState(false);
   const [uploadsHalted, setUploadsHalted] = useState(false);
+  const [savingSport, setSavingSport] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  const SPORTS: { id: "football" | "cricket" | "basketball"; label: string }[] = [
+    { id: "football", label: "Football" },
+    { id: "cricket", label: "Cricket" },
+    { id: "basketball", label: "Basketball" },
+  ];
+
+  const handleSportChange = async (newSport: "football" | "cricket" | "basketball") => {
+    if (!user || newSport === sport) return;
+    setSport(newSport);
+    setSelectedPositions([]);
+    setSelectedTraits([]);
+    setSavingSport(true);
+    try {
+      const { error } = await supabase.from("profiles").update({ sport: newSport } as any).eq("user_id", user.id);
+      if (error) throw error;
+      toast({ title: "Sport updated", description: `Your profile sport is now ${newSport}.` });
+    } catch (err: any) {
+      toast({ title: "Failed to save sport", description: err.message, variant: "destructive" });
+    } finally {
+      setSavingSport(false);
+    }
+  };
 
   const loadUserData = async (userId: string) => {
     const [profileRes, videosRes] = await Promise.all([
@@ -290,6 +314,49 @@ const PlayerUpload = () => {
                 </div>
               ) : (
                 <div className="space-y-6">
+                  {/* Sport */}
+                  <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Tag className="h-5 w-5 text-primary" />
+                      <h2 className="font-display text-xl text-foreground">YOUR SPORT</h2>
+                      {savingSport && <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {SPORTS.map((s) => {
+                        const active = sport === s.id;
+                        return (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => handleSportChange(s.id)}
+                            disabled={savingSport}
+                            className="px-4 py-2 rounded-full text-sm transition-all"
+                            style={
+                              active
+                                ? {
+                                    background:
+                                      "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
+                                    color: "white",
+                                    boxShadow:
+                                      "0 6px 18px -6px hsl(var(--teal-deep) / 0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
+                                  }
+                                : {
+                                    background: "hsl(var(--secondary))",
+                                    color: "hsl(var(--muted-foreground))",
+                                    border: "1px solid hsl(var(--border))",
+                                  }
+                            }
+                          >
+                            {s.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-3">
+                      Changing your sport resets position and play-style selections below.
+                    </p>
+                  </div>
+
                   {/* File pick */}
                   <div className="bg-card border border-border rounded-xl p-6">
                     <div className="flex items-center gap-3 mb-4">
