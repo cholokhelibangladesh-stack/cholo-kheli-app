@@ -30,8 +30,10 @@ import { Route as PlayerSettingsRouteImport } from './routes/player/settings'
 import { Route as PlayerProfileRouteImport } from './routes/player/profile'
 import { Route as PlayerExploreRouteImport } from './routes/player/explore'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
 import { Route as PlayerSettingsVerifiedRouteImport } from './routes/player/settings.verified'
+import { Route as PlayerSettingsTwoFactorRouteImport } from './routes/player/settings.two-factor'
 import { Route as PlayerSettingsTimeRouteImport } from './routes/player/settings.time'
 import { Route as PlayerSettingsThreadsRouteImport } from './routes/player/settings.threads'
 import { Route as PlayerSettingsTagsRouteImport } from './routes/player/settings.tags'
@@ -42,6 +44,7 @@ import { Route as PlayerSettingsSavedRouteImport } from './routes/player/setting
 import { Route as PlayerSettingsRestrictedRouteImport } from './routes/player/settings.restricted'
 import { Route as PlayerSettingsPrivacyCenterRouteImport } from './routes/player/settings.privacy-center'
 import { Route as PlayerSettingsPrivacyRouteImport } from './routes/player/settings.privacy'
+import { Route as PlayerSettingsPasswordRouteImport } from './routes/player/settings.password'
 import { Route as PlayerSettingsOrdersRouteImport } from './routes/player/settings.orders'
 import { Route as PlayerSettingsNotificationsRouteImport } from './routes/player/settings.notifications'
 import { Route as PlayerSettingsMutedRouteImport } from './routes/player/settings.muted'
@@ -180,6 +183,11 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
 const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -188,6 +196,11 @@ const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
 const PlayerSettingsVerifiedRoute = PlayerSettingsVerifiedRouteImport.update({
   id: '/verified',
   path: '/verified',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsTwoFactorRoute = PlayerSettingsTwoFactorRouteImport.update({
+  id: '/two-factor',
+  path: '/two-factor',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsTimeRoute = PlayerSettingsTimeRouteImport.update({
@@ -240,6 +253,11 @@ const PlayerSettingsPrivacyCenterRoute =
 const PlayerSettingsPrivacyRoute = PlayerSettingsPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsPasswordRoute = PlayerSettingsPasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsOrdersRoute = PlayerSettingsOrdersRouteImport.update({
@@ -417,13 +435,14 @@ const PlayerSettingsAboutRoute = PlayerSettingsAboutRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -468,6 +487,7 @@ export interface FileRoutesByFullPath {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -478,19 +498,21 @@ export interface FileRoutesByFullPath {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -534,6 +556,7 @@ export interface FileRoutesByTo {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -544,6 +567,7 @@ export interface FileRoutesByTo {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings': typeof PlayerSettingsIndexRoute
 }
@@ -551,13 +575,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
@@ -602,6 +627,7 @@ export interface FileRoutesById {
   '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
+  '/player/settings/password': typeof PlayerSettingsPasswordRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -612,6 +638,7 @@ export interface FileRoutesById {
   '/player/settings/tags': typeof PlayerSettingsTagsRoute
   '/player/settings/threads': typeof PlayerSettingsThreadsRoute
   '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/two-factor': typeof PlayerSettingsTwoFactorRoute
   '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
@@ -627,6 +654,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/settings'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -671,6 +699,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -681,6 +710,7 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
     | '/player/settings/'
   fileRoutesByTo: FileRoutesByTo
@@ -694,6 +724,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/settings'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -737,6 +768,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -747,6 +779,7 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
     | '/player/settings'
   id:
@@ -760,6 +793,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/settings'
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
@@ -804,6 +838,7 @@ export interface FileRouteTypes {
     | '/player/settings/muted'
     | '/player/settings/notifications'
     | '/player/settings/orders'
+    | '/player/settings/password'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -814,6 +849,7 @@ export interface FileRouteTypes {
     | '/player/settings/tags'
     | '/player/settings/threads'
     | '/player/settings/time'
+    | '/player/settings/two-factor'
     | '/player/settings/verified'
     | '/player/settings/'
   fileRoutesById: FileRoutesById
@@ -821,7 +857,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   FaqRoute: typeof FaqRoute
   MissionRoute: typeof MissionRoute
@@ -991,6 +1027,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/player/settings/': {
       id: '/player/settings/'
       path: '/'
@@ -1003,6 +1046,13 @@ declare module '@tanstack/react-router' {
       path: '/verified'
       fullPath: '/player/settings/verified'
       preLoaderRoute: typeof PlayerSettingsVerifiedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/two-factor': {
+      id: '/player/settings/two-factor'
+      path: '/two-factor'
+      fullPath: '/player/settings/two-factor'
+      preLoaderRoute: typeof PlayerSettingsTwoFactorRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/time': {
@@ -1073,6 +1123,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/player/settings/privacy'
       preLoaderRoute: typeof PlayerSettingsPrivacyRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/password': {
+      id: '/player/settings/password'
+      path: '/password'
+      fullPath: '/player/settings/password'
+      preLoaderRoute: typeof PlayerSettingsPasswordRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/orders': {
@@ -1302,6 +1359,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminSettingsRoute: typeof AdminSettingsRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminSettingsRoute: AdminSettingsRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface PlayerSettingsRouteChildren {
   PlayerSettingsAboutRoute: typeof PlayerSettingsAboutRoute
   PlayerSettingsAccessibilityRoute: typeof PlayerSettingsAccessibilityRoute
@@ -1335,6 +1402,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsMutedRoute: typeof PlayerSettingsMutedRoute
   PlayerSettingsNotificationsRoute: typeof PlayerSettingsNotificationsRoute
   PlayerSettingsOrdersRoute: typeof PlayerSettingsOrdersRoute
+  PlayerSettingsPasswordRoute: typeof PlayerSettingsPasswordRoute
   PlayerSettingsPrivacyRoute: typeof PlayerSettingsPrivacyRoute
   PlayerSettingsPrivacyCenterRoute: typeof PlayerSettingsPrivacyCenterRoute
   PlayerSettingsRestrictedRoute: typeof PlayerSettingsRestrictedRoute
@@ -1345,6 +1413,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsTagsRoute: typeof PlayerSettingsTagsRoute
   PlayerSettingsThreadsRoute: typeof PlayerSettingsThreadsRoute
   PlayerSettingsTimeRoute: typeof PlayerSettingsTimeRoute
+  PlayerSettingsTwoFactorRoute: typeof PlayerSettingsTwoFactorRoute
   PlayerSettingsVerifiedRoute: typeof PlayerSettingsVerifiedRoute
   PlayerSettingsIndexRoute: typeof PlayerSettingsIndexRoute
 }
@@ -1382,6 +1451,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsMutedRoute: PlayerSettingsMutedRoute,
   PlayerSettingsNotificationsRoute: PlayerSettingsNotificationsRoute,
   PlayerSettingsOrdersRoute: PlayerSettingsOrdersRoute,
+  PlayerSettingsPasswordRoute: PlayerSettingsPasswordRoute,
   PlayerSettingsPrivacyRoute: PlayerSettingsPrivacyRoute,
   PlayerSettingsPrivacyCenterRoute: PlayerSettingsPrivacyCenterRoute,
   PlayerSettingsRestrictedRoute: PlayerSettingsRestrictedRoute,
@@ -1392,6 +1462,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsTagsRoute: PlayerSettingsTagsRoute,
   PlayerSettingsThreadsRoute: PlayerSettingsThreadsRoute,
   PlayerSettingsTimeRoute: PlayerSettingsTimeRoute,
+  PlayerSettingsTwoFactorRoute: PlayerSettingsTwoFactorRoute,
   PlayerSettingsVerifiedRoute: PlayerSettingsVerifiedRoute,
   PlayerSettingsIndexRoute: PlayerSettingsIndexRoute,
 }
@@ -1403,7 +1474,7 @@ const PlayerSettingsRouteWithChildren = PlayerSettingsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   FaqRoute: FaqRoute,
   MissionRoute: MissionRoute,
