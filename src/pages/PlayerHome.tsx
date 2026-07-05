@@ -102,23 +102,44 @@ const PlayerHome = () => {
               {stories.map((s) => {
                 const Icon = kindIcon(s.kind);
                 return (
-                  <div
+                  <motion.div
                     key={s.id}
-                    className="min-w-[220px] max-w-[220px] rounded-2xl border border-border/60 bg-card p-4 flex flex-col justify-between"
+                    whileHover={{ y: -2 }}
+                    className="min-w-[230px] max-w-[230px] relative overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl p-4 flex flex-col justify-between"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(126,200,255,0.16) 0%, hsl(var(--teal-deep) / 0.14) 55%, rgba(126,200,255,0.06) 100%)",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 hsl(var(--teal-deep) / 0.25), 0 10px 30px -18px hsl(var(--teal-deep) / 0.6)",
+                    }}
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 rounded-full bg-[hsl(var(--teal-deep)/0.12)] flex items-center justify-center">
-                        <Icon className="h-4 w-4 text-[hsl(var(--teal-deep))]" strokeWidth={1.75} />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-14 -right-10 h-32 w-32 rounded-full opacity-60 blur-2xl"
+                      style={{ background: "radial-gradient(circle, #7EC8FF 0%, transparent 70%)" }}
+                    />
+                    <div className="relative flex items-center gap-2 mb-4">
+                      <div
+                        className="w-9 h-9 rounded-2xl flex items-center justify-center border border-white/15"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35)",
+                        }}
+                      >
+                        <Icon className="h-4 w-4 text-white" strokeWidth={2} />
                       </div>
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                      <span className="text-[10px] uppercase tracking-[0.22em] text-foreground/70 font-semibold">
                         {s.tag}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-foreground leading-snug">
-                      {s.title}
-                    </p>
-                    <p className="text-[11px] text-muted-foreground mt-2">{s.date}</p>
-                  </div>
+                    <div className="relative">
+                      <p className="text-sm font-semibold text-foreground leading-snug">
+                        {s.title}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground mt-2">{s.date}</p>
+                    </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -135,16 +156,35 @@ const PlayerHome = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
-                className="rounded-2xl border border-border/60 bg-card p-4"
+                whileHover={{ y: -1 }}
+                className="relative overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl p-4"
+                style={{
+                  background:
+                    "linear-gradient(135deg, hsl(var(--background) / 0.55) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
+                  boxShadow:
+                    "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 hsl(var(--teal-deep) / 0.18), 0 8px 24px -18px rgba(20,50,90,0.6)",
+                }}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
-                    <Icon className="h-3.5 w-3.5 text-foreground/80" strokeWidth={1.75} />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -top-16 -left-10 h-32 w-32 rounded-full opacity-40 blur-2xl"
+                  style={{ background: "radial-gradient(circle, #7EC8FF 0%, transparent 70%)" }}
+                />
+                <div className="relative flex items-center gap-2 mb-2">
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center border border-white/15"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(126,200,255,0.28) 0%, hsl(var(--teal-deep) / 0.20) 100%)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.20)",
+                    }}
+                  >
+                    <Icon className="h-3.5 w-3.5 text-foreground" strokeWidth={2} />
                   </div>
                   {item.tag && (
                     <Badge
                       variant="outline"
-                      className="text-[10px] border-border text-muted-foreground rounded-full"
+                      className="text-[10px] border-white/10 bg-white/5 text-foreground/80 rounded-full backdrop-blur-sm"
                     >
                       {item.tag}
                     </Badge>
@@ -153,10 +193,10 @@ const PlayerHome = () => {
                     {item.date}
                   </span>
                 </div>
-                <h2 className="text-[15px] font-semibold text-foreground leading-snug">
+                <h2 className="relative text-[15px] font-semibold text-foreground leading-snug">
                   {item.title}
                 </h2>
-                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
+                <p className="relative text-sm text-muted-foreground mt-1 leading-relaxed">
                   {item.body}
                 </p>
               </motion.article>
@@ -166,15 +206,25 @@ const PlayerHome = () => {
           {/* CTA card */}
           <button
             onClick={() => navigate({ to: "/player/upload" as any })}
-            className="w-full text-left rounded-2xl bg-[hsl(var(--teal-deep))] text-white p-4 flex items-center justify-between"
+            className="w-full text-left rounded-3xl text-white p-4 flex items-center justify-between border border-white/15 relative overflow-hidden active:scale-[0.99] transition-transform"
+            style={{
+              background:
+                "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 30px -14px hsl(var(--teal-deep) / 0.7)",
+            }}
           >
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/70">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full opacity-40 blur-2xl bg-white"
+            />
+            <div className="relative">
+              <p className="text-[10px] uppercase tracking-[0.24em] text-white/80">
                 Your next step
               </p>
               <p className="text-sm font-semibold mt-1">Upload a new highlight</p>
             </div>
-            <ArrowRight className="h-5 w-5" strokeWidth={2} />
+            <ArrowRight className="relative h-5 w-5" strokeWidth={2} />
           </button>
         </div>
       </div>
