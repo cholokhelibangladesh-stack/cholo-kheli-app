@@ -4,9 +4,15 @@ export const Route = createFileRoute("/player/settings/two-factor")({
   component: () => (
     <ScaffoldPage
       title="Two-step verification"
-      description="Add a second step when signing in from a new device."
+      description="Add a second step whenever you sign in on a new device"
       emptyTitle="Two-step verification"
-      emptyText="Choose an authenticator app or SMS to secure your Cholo Kheli account."
+      emptyText="Use an authenticator app or a code sent to your phone to protect your Cholo Kheli account from unauthorised sign-ins."
+      eta="Next update"
+      points={[
+        "Authenticator app (Google Authenticator, 1Password, Authy)",
+        "SMS backup code delivery",
+        "Trusted device list you can revoke at any time",
+      ]}
     />
   ),
 });
