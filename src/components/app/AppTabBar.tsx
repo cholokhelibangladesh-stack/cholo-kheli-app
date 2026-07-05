@@ -98,11 +98,19 @@ const AppTabBar = () => {
                           boxShadow:
                             "0 6px 18px -6px hsl(var(--teal-deep) / 0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
                         }
+                      : isEmphasized
+                      ? {
+                          background:
+                            "linear-gradient(135deg, rgba(126,200,255,0.18) 0%, hsl(var(--teal-deep) / 0.22) 100%)",
+                          border: "1px solid hsl(var(--teal-deep) / 0.35)",
+                          boxShadow:
+                            "inset 0 1px 0 rgba(255,255,255,0.10), 0 2px 10px -6px hsl(var(--teal-deep) / 0.35)",
+                        }
                       : {
                           background:
-                            "linear-gradient(135deg, rgba(126,200,255,0.10) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
-                          border: "1px solid hsl(var(--teal-deep) / 0.18)",
-                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                            "linear-gradient(135deg, rgba(126,200,255,0.06) 0%, hsl(var(--teal-deep) / 0.06) 100%)",
+                          border: "1px solid hsl(var(--teal-deep) / 0.14)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
                         }
                   }
                 >
