@@ -72,72 +72,47 @@ const AppTabBar = () => {
         }}
       />
 
-      <ul className="mx-auto flex h-14 max-w-[430px] items-stretch justify-around px-2">
+      <ul className="mx-auto flex h-16 max-w-[430px] items-stretch justify-around px-3">
         {tabs.map(({ label, to, Icon, emphasize }) => {
           const active =
             to === "/player" || to === "/scout" || to === "/"
               ? pathname === to
               : pathname === to || pathname.startsWith(to + "/");
+          const useGradient = emphasize || active;
           return (
             <li key={to} className="flex-1">
               <Link
                 to={to}
                 onClick={() => haptic("light")}
                 aria-label={label}
-                className="relative flex h-full flex-col items-center justify-center gap-0.5"
+                className="relative flex h-full items-center justify-center"
               >
                 <span
-                  className="relative grid h-10 w-14 place-items-center rounded-2xl transition-all"
+                  className="relative grid h-11 w-16 place-items-center rounded-2xl transition-all"
                   style={
-                    emphasize
+                    useGradient
                       ? {
                           background:
                             "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
                           boxShadow:
                             "0 6px 18px -6px hsl(var(--teal-deep) / 0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
                         }
-                      : active
-                        ? {
-                            background:
-                              "linear-gradient(135deg, rgba(126,200,255,0.18) 0%, hsl(var(--teal-deep) / 0.22) 100%)",
-                            border: "1px solid hsl(var(--teal-deep) / 0.35)",
-                            boxShadow:
-                              "0 4px 14px -6px hsl(var(--teal-deep) / 0.45), inset 0 0 0 1px rgba(126,200,255,0.15)",
-                          }
-                        : undefined
+                      : {
+                          background:
+                            "linear-gradient(135deg, rgba(126,200,255,0.10) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
+                          border: "1px solid hsl(var(--teal-deep) / 0.18)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                        }
                   }
                 >
                   <Icon
                     className={
-                      emphasize
+                      useGradient
                         ? "h-[22px] w-[22px] text-white"
-                        : active
-                          ? "h-[22px] w-[22px]"
-                          : "h-[22px] w-[22px] text-foreground/60"
+                        : "h-[22px] w-[22px] text-foreground/70"
                     }
-                    strokeWidth={emphasize || active ? 2.2 : 1.75}
-                    style={
-                      !emphasize && active
-                        ? { color: "hsl(var(--teal-deep))" }
-                        : undefined
-                    }
+                    strokeWidth={useGradient ? 2.2 : 1.9}
                   />
-                </span>
-                <span
-                  className={`text-[9px] tracking-[0.14em] uppercase transition-colors ${
-                    active && !emphasize
-                      ? ""
-                      : emphasize
-                        ? "text-foreground/70"
-                        : "text-foreground/45"
-                  }`}
-                  style={
-                    active && !emphasize
-                      ? { color: "hsl(var(--teal-deep))" }
-                      : undefined
-                  }
-                >
-                  {label}
                 </span>
               </Link>
             </li>
