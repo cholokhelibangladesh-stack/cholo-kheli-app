@@ -54,6 +54,8 @@ const PlayerUpload = () => {
   const [showNewUpload, setShowNewUpload] = useState(false);
   const [uploadsHalted, setUploadsHalted] = useState(false);
   const [savingSport, setSavingSport] = useState(false);
+  const [customPosition, setCustomPosition] = useState("");
+  const [customTrait, setCustomTrait] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
