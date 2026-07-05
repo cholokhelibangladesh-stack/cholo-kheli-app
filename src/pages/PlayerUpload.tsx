@@ -125,6 +125,12 @@ const PlayerUpload = () => {
   const toggleTag = (tag: string, list: string[], setter: (v: string[]) => void) => {
     setter(list.includes(tag) ? list.filter((t) => t !== tag) : [...list, tag]);
   };
+  const addCustomTag = (raw: string, list: string[], setter: (v: string[]) => void, reset: (v: string) => void) => {
+    const value = raw.trim().slice(0, 40);
+    if (!value) return;
+    if (!list.some((t) => t.toLowerCase() === value.toLowerCase())) setter([...list, value]);
+    reset("");
+  };
 
   const resetUploadForm = () => {
     setVideoFile(null); setVideoId(null); setVideoStatus(null); setDescription("");
