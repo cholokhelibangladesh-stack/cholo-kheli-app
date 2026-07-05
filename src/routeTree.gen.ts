@@ -31,7 +31,14 @@ import { Route as PlayerProfileRouteImport } from './routes/player/profile'
 import { Route as PlayerExploreRouteImport } from './routes/player/explore'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
+import { Route as PlayerSettingsPrivacyRouteImport } from './routes/player/settings.privacy'
+import { Route as PlayerSettingsNotificationsRouteImport } from './routes/player/settings.notifications'
+import { Route as PlayerSettingsLogoutRouteImport } from './routes/player/settings.logout'
+import { Route as PlayerSettingsLanguageRouteImport } from './routes/player/settings.language'
+import { Route as PlayerSettingsBlockedRouteImport } from './routes/player/settings.blocked'
 import { Route as PlayerSettingsAccountsCenterRouteImport } from './routes/player/settings.accounts-center'
+import { Route as PlayerSettingsAccountStatusRouteImport } from './routes/player/settings.account-status'
+import { Route as PlayerSettingsAboutRouteImport } from './routes/player/settings.about'
 
 const SafeScoutingRoute = SafeScoutingRouteImport.update({
   id: '/safe-scouting',
@@ -143,12 +150,49 @@ const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
+const PlayerSettingsPrivacyRoute = PlayerSettingsPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsNotificationsRoute =
+  PlayerSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsLogoutRoute = PlayerSettingsLogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsLanguageRoute = PlayerSettingsLanguageRouteImport.update({
+  id: '/language',
+  path: '/language',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsBlockedRoute = PlayerSettingsBlockedRouteImport.update({
+  id: '/blocked',
+  path: '/blocked',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
 const PlayerSettingsAccountsCenterRoute =
   PlayerSettingsAccountsCenterRouteImport.update({
     id: '/accounts-center',
     path: '/accounts-center',
     getParentRoute: () => PlayerSettingsRoute,
   } as any)
+const PlayerSettingsAccountStatusRoute =
+  PlayerSettingsAccountStatusRouteImport.update({
+    id: '/account-status',
+    path: '/account-status',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsAboutRoute = PlayerSettingsAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -172,7 +216,14 @@ export interface FileRoutesByFullPath {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
+  '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -196,7 +247,14 @@ export interface FileRoutesByTo {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player': typeof PlayerIndexRoute
   '/scout': typeof ScoutIndexRoute
+  '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -222,7 +280,14 @@ export interface FileRoutesById {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
+  '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -249,7 +314,14 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player/'
     | '/scout/'
+    | '/player/settings/about'
+    | '/player/settings/account-status'
     | '/player/settings/accounts-center'
+    | '/player/settings/blocked'
+    | '/player/settings/language'
+    | '/player/settings/logout'
+    | '/player/settings/notifications'
+    | '/player/settings/privacy'
     | '/player/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -273,7 +345,14 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player'
     | '/scout'
+    | '/player/settings/about'
+    | '/player/settings/account-status'
     | '/player/settings/accounts-center'
+    | '/player/settings/blocked'
+    | '/player/settings/language'
+    | '/player/settings/logout'
+    | '/player/settings/notifications'
+    | '/player/settings/privacy'
     | '/player/settings'
   id:
     | '__root__'
@@ -298,7 +377,14 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player/'
     | '/scout/'
+    | '/player/settings/about'
+    | '/player/settings/account-status'
     | '/player/settings/accounts-center'
+    | '/player/settings/blocked'
+    | '/player/settings/language'
+    | '/player/settings/logout'
+    | '/player/settings/notifications'
+    | '/player/settings/privacy'
     | '/player/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -482,6 +568,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsIndexRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/privacy': {
+      id: '/player/settings/privacy'
+      path: '/privacy'
+      fullPath: '/player/settings/privacy'
+      preLoaderRoute: typeof PlayerSettingsPrivacyRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/notifications': {
+      id: '/player/settings/notifications'
+      path: '/notifications'
+      fullPath: '/player/settings/notifications'
+      preLoaderRoute: typeof PlayerSettingsNotificationsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/logout': {
+      id: '/player/settings/logout'
+      path: '/logout'
+      fullPath: '/player/settings/logout'
+      preLoaderRoute: typeof PlayerSettingsLogoutRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/language': {
+      id: '/player/settings/language'
+      path: '/language'
+      fullPath: '/player/settings/language'
+      preLoaderRoute: typeof PlayerSettingsLanguageRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/blocked': {
+      id: '/player/settings/blocked'
+      path: '/blocked'
+      fullPath: '/player/settings/blocked'
+      preLoaderRoute: typeof PlayerSettingsBlockedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/accounts-center': {
       id: '/player/settings/accounts-center'
       path: '/accounts-center'
@@ -489,16 +610,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsAccountsCenterRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/account-status': {
+      id: '/player/settings/account-status'
+      path: '/account-status'
+      fullPath: '/player/settings/account-status'
+      preLoaderRoute: typeof PlayerSettingsAccountStatusRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/about': {
+      id: '/player/settings/about'
+      path: '/about'
+      fullPath: '/player/settings/about'
+      preLoaderRoute: typeof PlayerSettingsAboutRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
   }
 }
 
 interface PlayerSettingsRouteChildren {
+  PlayerSettingsAboutRoute: typeof PlayerSettingsAboutRoute
+  PlayerSettingsAccountStatusRoute: typeof PlayerSettingsAccountStatusRoute
   PlayerSettingsAccountsCenterRoute: typeof PlayerSettingsAccountsCenterRoute
+  PlayerSettingsBlockedRoute: typeof PlayerSettingsBlockedRoute
+  PlayerSettingsLanguageRoute: typeof PlayerSettingsLanguageRoute
+  PlayerSettingsLogoutRoute: typeof PlayerSettingsLogoutRoute
+  PlayerSettingsNotificationsRoute: typeof PlayerSettingsNotificationsRoute
+  PlayerSettingsPrivacyRoute: typeof PlayerSettingsPrivacyRoute
   PlayerSettingsIndexRoute: typeof PlayerSettingsIndexRoute
 }
 
 const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
+  PlayerSettingsAboutRoute: PlayerSettingsAboutRoute,
+  PlayerSettingsAccountStatusRoute: PlayerSettingsAccountStatusRoute,
   PlayerSettingsAccountsCenterRoute: PlayerSettingsAccountsCenterRoute,
+  PlayerSettingsBlockedRoute: PlayerSettingsBlockedRoute,
+  PlayerSettingsLanguageRoute: PlayerSettingsLanguageRoute,
+  PlayerSettingsLogoutRoute: PlayerSettingsLogoutRoute,
+  PlayerSettingsNotificationsRoute: PlayerSettingsNotificationsRoute,
+  PlayerSettingsPrivacyRoute: PlayerSettingsPrivacyRoute,
   PlayerSettingsIndexRoute: PlayerSettingsIndexRoute,
 }
 
