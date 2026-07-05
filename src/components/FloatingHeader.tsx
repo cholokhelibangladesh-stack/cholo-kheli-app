@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 import NotificationBell from "@/components/NotificationBell";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
-import logoAsset from "@/assets/cholo-kheli-symbol-clean.png.asset.json";
+import logoAsset from "@/assets/cholo-kheli-mark-v2.png.asset.json";
 
 // Routes whose hero image is dark — icons stay white while at the top of these
 // pages regardless of theme.
