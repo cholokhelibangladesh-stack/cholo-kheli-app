@@ -85,15 +85,9 @@ const AppHeader = () => {
               to={homeHref as any}
               onClick={() => haptic("light")}
               aria-label="Cholo Kheli home"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/15 backdrop-blur-xl active:scale-95 transition-transform"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(126,200,255,0.22) 0%, hsl(var(--teal-deep) / 0.16) 100%)",
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 hsl(var(--teal-deep) / 0.28), 0 6px 18px -10px rgba(20,50,90,0.55)",
-              }}
+              className="flex shrink-0 items-center active:scale-[0.97] transition-transform"
             >
-              <CholoKheliMark className="h-8 w-8 drop-shadow-[0_2px_6px_hsl(var(--teal-deep)/0.55)]" />
+              <CholoKheliMark className="h-16 w-16 -my-2 drop-shadow-[0_3px_12px_hsl(var(--teal-deep)/0.55)]" />
             </Link>
           )}
         </div>
