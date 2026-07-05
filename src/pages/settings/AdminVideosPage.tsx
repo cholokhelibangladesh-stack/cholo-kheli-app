@@ -1,0 +1,91 @@
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import SettingsShell from "@/components/settings/SettingsShell";
+import { SettingsCard } from "@/components/settings/SettingsControls";
+import { Loader2, Video as VideoIcon, Flag, Play } from "lucide-react";
+
+type V = {
+  id: string;
+  title: string;
+  status: string;
+  flagged: boolean;
+  view_count: number;
+  like_count: number;
+  created_at: string;
+  video_url: string;
+};
+
+const AdminVideosPage = () => {
+  const [rows, setRows] = useState<V[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from("videos")
+        .select("id, title, status, flagged, view_count, like_count, created_at, video_url")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      setRows((data ?? []) as V[]);
+      setLoading(false);
+    })();
+  }, []);
+
+  const live = rows.filter((r) => r.status === "live" && !r.flagged).length;
+  const flagged = rows.filter((r) => r.flagged).length;
+
+  return (
+    <SettingsShell title="Video oversight" description={`${live} live · ${flagged} flagged`}>
+      {loading ? (
+        <div className="grid place-items-center py-16 text-foreground/60">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
+      ) : (
+        <SettingsCard>
+          {rows.map((v) => (
+            <div key={v.id} className="flex items-center gap-3 px-4 py-3">
+              <div className="grid h-10 w-14 shrink-0 place-items-center overflow-hidden rounded-lg bg-black/40">
+                <video src={v.video_url} className="h-full w-full object-cover" muted preload="metadata" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-sm font-medium">{v.title || "Untitled"}</div>
+                <div className="mt-0.5 flex items-center gap-2 text-[10px] text-foreground/60">
+                  <span className="inline-flex items-center gap-0.5">
+                    <Play className="h-2.5 w-2.5" /> {v.view_count}
+                  </span>
+                  <span>·</span>
+                  <span>{v.like_count} likes</span>
+                  <span>·</span>
+                  <span>{new Date(v.created_at).toLocaleDateString()}</span>
+                </div>
+              </div>
+              {v.flagged ? (
+                <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+                  <Flag className="h-3 w-3" /> Flag
+                </span>
+              ) : (
+                <span
+                  className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase ${
+                    v.status === "live"
+                      ? "border-emerald-400/40 text-emerald-300"
+                      : "border-white/15 text-foreground/60"
+                  }`}
+                >
+                  {v.status.replace("_", " ")}
+                </span>
+              )}
+            </div>
+          ))}
+          {rows.length === 0 && (
+            <div className="p-8 text-center">
+              <VideoIcon className="mx-auto h-6 w-6 text-foreground/50" />
+              <div className="mt-2 text-sm text-foreground/70">No videos yet.</div>
+            </div>
+          )}
+        </SettingsCard>
+      )}
+    </SettingsShell>
+  );
+};
+
+export default AdminVideosPage;
