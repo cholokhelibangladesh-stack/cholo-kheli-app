@@ -30,6 +30,8 @@ import { Route as PlayerSettingsRouteImport } from './routes/player/settings'
 import { Route as PlayerProfileRouteImport } from './routes/player/profile'
 import { Route as PlayerExploreRouteImport } from './routes/player/explore'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
+import { Route as PlayerSettingsAccountsCenterRouteImport } from './routes/player/settings.accounts-center'
 
 const SafeScoutingRoute = SafeScoutingRouteImport.update({
   id: '/safe-scouting',
@@ -136,6 +138,17 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsAccountsCenterRoute =
+  PlayerSettingsAccountsCenterRouteImport.update({
+    id: '/accounts-center',
+    path: '/accounts-center',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -150,7 +163,7 @@ export interface FileRoutesByFullPath {
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
-  '/player/settings': typeof PlayerSettingsRoute
+  '/player/settings': typeof PlayerSettingsRouteWithChildren
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
@@ -159,6 +172,8 @@ export interface FileRoutesByFullPath {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
+  '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -173,7 +188,6 @@ export interface FileRoutesByTo {
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
-  '/player/settings': typeof PlayerSettingsRoute
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
@@ -182,6 +196,8 @@ export interface FileRoutesByTo {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player': typeof PlayerIndexRoute
   '/scout': typeof ScoutIndexRoute
+  '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -197,7 +213,7 @@ export interface FileRoutesById {
   '/api/health': typeof ApiHealthRoute
   '/player/explore': typeof PlayerExploreRoute
   '/player/profile': typeof PlayerProfileRoute
-  '/player/settings': typeof PlayerSettingsRoute
+  '/player/settings': typeof PlayerSettingsRouteWithChildren
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
@@ -206,6 +222,8 @@ export interface FileRoutesById {
   '/scout/settings': typeof ScoutSettingsRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
+  '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -231,6 +249,8 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player/'
     | '/scout/'
+    | '/player/settings/accounts-center'
+    | '/player/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -245,7 +265,6 @@ export interface FileRouteTypes {
     | '/api/health'
     | '/player/explore'
     | '/player/profile'
-    | '/player/settings'
     | '/player/upload'
     | '/resume/$userId'
     | '/scout/explore'
@@ -254,6 +273,8 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player'
     | '/scout'
+    | '/player/settings/accounts-center'
+    | '/player/settings'
   id:
     | '__root__'
     | '/'
@@ -277,6 +298,8 @@ export interface FileRouteTypes {
     | '/scout/settings'
     | '/player/'
     | '/scout/'
+    | '/player/settings/accounts-center'
+    | '/player/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -292,7 +315,7 @@ export interface RootRouteChildren {
   ApiHealthRoute: typeof ApiHealthRoute
   PlayerExploreRoute: typeof PlayerExploreRoute
   PlayerProfileRoute: typeof PlayerProfileRoute
-  PlayerSettingsRoute: typeof PlayerSettingsRoute
+  PlayerSettingsRoute: typeof PlayerSettingsRouteWithChildren
   PlayerUploadRoute: typeof PlayerUploadRoute
   ResumeUserIdRoute: typeof ResumeUserIdRoute
   ScoutExploreRoute: typeof ScoutExploreRoute
@@ -452,8 +475,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/player/settings/': {
+      id: '/player/settings/'
+      path: '/'
+      fullPath: '/player/settings/'
+      preLoaderRoute: typeof PlayerSettingsIndexRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/accounts-center': {
+      id: '/player/settings/accounts-center'
+      path: '/accounts-center'
+      fullPath: '/player/settings/accounts-center'
+      preLoaderRoute: typeof PlayerSettingsAccountsCenterRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
   }
 }
+
+interface PlayerSettingsRouteChildren {
+  PlayerSettingsAccountsCenterRoute: typeof PlayerSettingsAccountsCenterRoute
+  PlayerSettingsIndexRoute: typeof PlayerSettingsIndexRoute
+}
+
+const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
+  PlayerSettingsAccountsCenterRoute: PlayerSettingsAccountsCenterRoute,
+  PlayerSettingsIndexRoute: PlayerSettingsIndexRoute,
+}
+
+const PlayerSettingsRouteWithChildren = PlayerSettingsRoute._addFileChildren(
+  PlayerSettingsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -468,7 +519,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHealthRoute: ApiHealthRoute,
   PlayerExploreRoute: PlayerExploreRoute,
   PlayerProfileRoute: PlayerProfileRoute,
-  PlayerSettingsRoute: PlayerSettingsRoute,
+  PlayerSettingsRoute: PlayerSettingsRouteWithChildren,
   PlayerUploadRoute: PlayerUploadRoute,
   ResumeUserIdRoute: ResumeUserIdRoute,
   ScoutExploreRoute: ScoutExploreRoute,
