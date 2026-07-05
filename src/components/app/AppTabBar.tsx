@@ -120,7 +120,15 @@ const AppTabBar = () => {
                         ? "h-[22px] w-[22px] text-white"
                         : "h-[22px] w-[22px] text-foreground/70"
                     }
-                    strokeWidth={useGradient ? 2.2 : 1.9}
+                  <Icon
+                    className={
+                      useGradient
+                        ? "h-[22px] w-[22px] text-white"
+                        : isEmphasized
+                        ? "h-[22px] w-[22px] text-foreground"
+                        : "h-[22px] w-[22px] text-foreground/60"
+                    }
+                    strokeWidth={useGradient ? 2.2 : isEmphasized ? 2 : 1.75}
                   />
                 </span>
               </Link>
