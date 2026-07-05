@@ -78,7 +78,8 @@ const AppTabBar = () => {
             to === "/player" || to === "/scout" || to === "/"
               ? pathname === to
               : pathname === to || pathname.startsWith(to + "/");
-          const useGradient = emphasize || active;
+          const useGradient = active;
+          const isEmphasized = emphasize && !active;
           return (
             <li key={to} className="flex-1">
               <Link
@@ -97,11 +98,19 @@ const AppTabBar = () => {
                           boxShadow:
                             "0 6px 18px -6px hsl(var(--teal-deep) / 0.55), inset 0 1px 0 rgba(255,255,255,0.35)",
                         }
+                      : isEmphasized
+                      ? {
+                          background:
+                            "linear-gradient(135deg, rgba(126,200,255,0.18) 0%, hsl(var(--teal-deep) / 0.22) 100%)",
+                          border: "1px solid hsl(var(--teal-deep) / 0.35)",
+                          boxShadow:
+                            "inset 0 1px 0 rgba(255,255,255,0.10), 0 2px 10px -6px hsl(var(--teal-deep) / 0.35)",
+                        }
                       : {
                           background:
-                            "linear-gradient(135deg, rgba(126,200,255,0.10) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
-                          border: "1px solid hsl(var(--teal-deep) / 0.18)",
-                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
+                            "linear-gradient(135deg, rgba(126,200,255,0.06) 0%, hsl(var(--teal-deep) / 0.06) 100%)",
+                          border: "1px solid hsl(var(--teal-deep) / 0.14)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
                         }
                   }
                 >
@@ -109,9 +118,11 @@ const AppTabBar = () => {
                     className={
                       useGradient
                         ? "h-[22px] w-[22px] text-white"
-                        : "h-[22px] w-[22px] text-foreground/70"
+                        : isEmphasized
+                        ? "h-[22px] w-[22px] text-foreground"
+                        : "h-[22px] w-[22px] text-foreground/60"
                     }
-                    strokeWidth={useGradient ? 2.2 : 1.9}
+                    strokeWidth={useGradient ? 2.2 : isEmphasized ? 2 : 1.75}
                   />
                 </span>
               </Link>

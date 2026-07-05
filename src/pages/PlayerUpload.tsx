@@ -384,39 +384,45 @@ const PlayerUpload = () => {
                     <input ref={fileRef} type="file" accept="video/*" className="hidden" onChange={(e) => e.target.files?.[0] && setVideoFile(e.target.files[0])} />
                   </div>
 
-                  {/* Tags */}
-                  {videoFile && (
-                    <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Tag className="h-5 w-5 text-primary" />
-                        <h2 className="font-display text-xl text-foreground">DETAILS</h2>
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground uppercase tracking-wide">Description</Label>
-                        <Textarea placeholder="Short description of your highlights..." className="mt-1 bg-secondary border-border resize-none rounded-xl" rows={2} value={description} onChange={(e) => setDescription(e.target.value)} />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground uppercase tracking-wide">Position</Label>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {positionTags.map((tag) => (
-                            <Badge key={tag} variant={selectedPositions.includes(tag) ? "default" : "outline"}
-                              className={`cursor-pointer transition-all ${selectedPositions.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
-                              onClick={() => toggleTag(tag, selectedPositions, setSelectedPositions)}>{tag}</Badge>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground uppercase tracking-wide">Play Style</Label>
-                        <div className="flex flex-wrap gap-2 mt-2">
-                          {traitTags.map((tag) => (
-                            <Badge key={tag} variant={selectedTraits.includes(tag) ? "default" : "outline"}
-                              className={`cursor-pointer transition-all ${selectedTraits.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
-                              onClick={() => toggleTag(tag, selectedTraits, setSelectedTraits)}>{tag}</Badge>
-                          ))}
-                        </div>
+                  {/* Details — always available so players can add caption, position & play style */}
+                  <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Tag className="h-5 w-5 text-primary" />
+                      <h2 className="font-display text-xl text-foreground">DETAILS</h2>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground uppercase tracking-wide">Caption</Label>
+                      <Textarea
+                        placeholder="Short description of your highlights..."
+                        className="mt-1 bg-secondary border-border resize-none rounded-xl"
+                        rows={2}
+                        maxLength={200}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                      <p className="text-[11px] text-muted-foreground mt-1 text-right">{description.length}/200</p>
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground uppercase tracking-wide">Position</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {positionTags.map((tag) => (
+                          <Badge key={tag} variant={selectedPositions.includes(tag) ? "default" : "outline"}
+                            className={`cursor-pointer transition-all ${selectedPositions.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
+                            onClick={() => toggleTag(tag, selectedPositions, setSelectedPositions)}>{tag}</Badge>
+                        ))}
                       </div>
                     </div>
-                  )}
+                    <div>
+                      <Label className="text-xs text-muted-foreground uppercase tracking-wide">Play Style / Traits</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {traitTags.map((tag) => (
+                          <Badge key={tag} variant={selectedTraits.includes(tag) ? "default" : "outline"}
+                            className={`cursor-pointer transition-all ${selectedTraits.includes(tag) ? "bg-primary text-primary-foreground" : "border-border text-muted-foreground hover:border-primary/40"}`}
+                            onClick={() => toggleTag(tag, selectedTraits, setSelectedTraits)}>{tag}</Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
 
                   {!videoId && videoFile && (
                     <Button onClick={handleUpload} disabled={uploading} className="w-full bg-primary text-primary-foreground font-bold hover:bg-primary/90">
