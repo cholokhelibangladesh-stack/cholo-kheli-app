@@ -53,10 +53,34 @@ const PlayerUpload = () => {
   const [allVideos, setAllVideos] = useState<VideoRecord[]>([]);
   const [showNewUpload, setShowNewUpload] = useState(false);
   const [uploadsHalted, setUploadsHalted] = useState(false);
+  const [savingSport, setSavingSport] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  const SPORTS: { id: "football" | "cricket" | "basketball"; label: string }[] = [
+    { id: "football", label: "Football" },
+    { id: "cricket", label: "Cricket" },
+    { id: "basketball", label: "Basketball" },
+  ];
+
+  const handleSportChange = async (newSport: "football" | "cricket" | "basketball") => {
+    if (!user || newSport === sport) return;
+    setSport(newSport);
+    setSelectedPositions([]);
+    setSelectedTraits([]);
+    setSavingSport(true);
+    try {
+      const { error } = await supabase.from("profiles").update({ sport: newSport } as any).eq("user_id", user.id);
+      if (error) throw error;
+      toast({ title: "Sport updated", description: `Your profile sport is now ${newSport}.` });
+    } catch (err: any) {
+      toast({ title: "Failed to save sport", description: err.message, variant: "destructive" });
+    } finally {
+      setSavingSport(false);
+    }
+  };
 
   const loadUserData = async (userId: string) => {
     const [profileRes, videosRes] = await Promise.all([
