@@ -60,7 +60,7 @@ const AppHeader = () => {
         }}
       />
 
-      <div className="mx-auto flex h-16 max-w-[430px] items-center justify-between gap-2 px-4">
+      <div className="mx-auto flex h-20 max-w-[430px] items-center justify-between gap-2 px-4">
         <div className="flex min-w-0 items-center gap-2">
           {!isTabRoot ? (
             <button
@@ -70,10 +70,12 @@ const AppHeader = () => {
                 router.history.back();
               }}
               aria-label="Back"
-              className="-ml-1 grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-foreground backdrop-blur-xl active:scale-95 transition-transform"
+              className="-ml-1 grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/15 text-foreground backdrop-blur-xl active:scale-95 transition-transform"
               style={{
+                background:
+                  "linear-gradient(135deg, rgba(126,200,255,0.18) 0%, hsl(var(--teal-deep) / 0.14) 100%)",
                 boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 0 1px hsl(var(--teal-deep) / 0.10), 0 4px 14px -8px rgba(20,50,90,0.4)",
+                  "inset 0 1px 0 rgba(255,255,255,0.20), inset 0 -1px 0 hsl(var(--teal-deep) / 0.25), 0 6px 18px -10px rgba(20,50,90,0.55)",
               }}
             >
               <ChevronLeft className="h-5 w-5" strokeWidth={2} />
@@ -85,17 +87,19 @@ const AppHeader = () => {
               aria-label="Cholo Kheli home"
               className="flex shrink-0 items-center active:scale-[0.97] transition-transform"
             >
-              <CholoKheliMark className="h-14 w-14 drop-shadow-[0_3px_12px_hsl(var(--teal-deep)/0.5)]" />
+              <CholoKheliMark className="h-20 w-20 -my-2 drop-shadow-[0_4px_16px_hsl(var(--teal-deep)/0.55)]" />
             </Link>
           )}
         </div>
 
         <div className="flex items-center gap-2.5">
           <div
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.06] backdrop-blur-xl"
+            className="grid h-11 w-11 place-items-center rounded-2xl border border-white/15 backdrop-blur-xl"
             style={{
+              background:
+                "linear-gradient(135deg, rgba(126,200,255,0.22) 0%, hsl(var(--teal-deep) / 0.16) 100%)",
               boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 0 1px hsl(var(--teal-deep) / 0.10), 0 4px 14px -8px rgba(20,50,90,0.4)",
+                "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 hsl(var(--teal-deep) / 0.28), 0 6px 18px -10px rgba(20,50,90,0.55)",
             }}
           >
             <NotificationBell />
@@ -104,13 +108,15 @@ const AppHeader = () => {
             to={settingsHref as any}
             onClick={() => haptic("light")}
             aria-label="Settings"
-            className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-foreground/90 hover:text-foreground backdrop-blur-xl active:scale-95 transition-transform"
+            className="grid h-11 w-11 place-items-center rounded-2xl border border-white/15 text-foreground/90 hover:text-foreground backdrop-blur-xl active:scale-95 transition-transform"
             style={{
+              background:
+                "linear-gradient(135deg, rgba(126,200,255,0.22) 0%, hsl(var(--teal-deep) / 0.16) 100%)",
               boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.10), inset 0 0 0 1px hsl(var(--teal-deep) / 0.10), 0 4px 14px -8px rgba(20,50,90,0.4)",
+                "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -1px 0 hsl(var(--teal-deep) / 0.28), 0 6px 18px -10px rgba(20,50,90,0.55)",
             }}
           >
-            <Settings className="h-[19px] w-[19px]" strokeWidth={1.75} />
+            <Settings className="h-[19px] w-[19px]" strokeWidth={1.9} />
           </Link>
         </div>
       </div>
