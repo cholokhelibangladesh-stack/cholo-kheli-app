@@ -31,13 +31,48 @@ import { Route as PlayerProfileRouteImport } from './routes/player/profile'
 import { Route as PlayerExploreRouteImport } from './routes/player/explore'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
+import { Route as PlayerSettingsVerifiedRouteImport } from './routes/player/settings.verified'
+import { Route as PlayerSettingsTimeRouteImport } from './routes/player/settings.time'
+import { Route as PlayerSettingsThreadsRouteImport } from './routes/player/settings.threads'
+import { Route as PlayerSettingsTagsRouteImport } from './routes/player/settings.tags'
+import { Route as PlayerSettingsTabletsRouteImport } from './routes/player/settings.tablets'
+import { Route as PlayerSettingsStoryRouteImport } from './routes/player/settings.story'
+import { Route as PlayerSettingsSharingRouteImport } from './routes/player/settings.sharing'
+import { Route as PlayerSettingsSavedRouteImport } from './routes/player/settings.saved'
+import { Route as PlayerSettingsRestrictedRouteImport } from './routes/player/settings.restricted'
+import { Route as PlayerSettingsPrivacyCenterRouteImport } from './routes/player/settings.privacy-center'
 import { Route as PlayerSettingsPrivacyRouteImport } from './routes/player/settings.privacy'
+import { Route as PlayerSettingsOrdersRouteImport } from './routes/player/settings.orders'
 import { Route as PlayerSettingsNotificationsRouteImport } from './routes/player/settings.notifications'
+import { Route as PlayerSettingsMutedRouteImport } from './routes/player/settings.muted'
+import { Route as PlayerSettingsMoreRouteImport } from './routes/player/settings.more'
+import { Route as PlayerSettingsMessagesRouteImport } from './routes/player/settings.messages'
 import { Route as PlayerSettingsLogoutRouteImport } from './routes/player/settings.logout'
+import { Route as PlayerSettingsLimitRouteImport } from './routes/player/settings.limit'
 import { Route as PlayerSettingsLanguageRouteImport } from './routes/player/settings.language'
+import { Route as PlayerSettingsInviteRouteImport } from './routes/player/settings.invite'
+import { Route as PlayerSettingsHiddenWordsRouteImport } from './routes/player/settings.hidden-words'
+import { Route as PlayerSettingsHelpRouteImport } from './routes/player/settings.help'
+import { Route as PlayerSettingsFriendsFeedRouteImport } from './routes/player/settings.friends-feed'
+import { Route as PlayerSettingsFavoritesRouteImport } from './routes/player/settings.favorites'
+import { Route as PlayerSettingsDownloadsRouteImport } from './routes/player/settings.downloads'
+import { Route as PlayerSettingsDevicesRouteImport } from './routes/player/settings.devices'
+import { Route as PlayerSettingsDataUsageRouteImport } from './routes/player/settings.data-usage'
+import { Route as PlayerSettingsCrosspostingRouteImport } from './routes/player/settings.crossposting'
+import { Route as PlayerSettingsCountsRouteImport } from './routes/player/settings.counts'
+import { Route as PlayerSettingsContentPreferencesRouteImport } from './routes/player/settings.content-preferences'
+import { Route as PlayerSettingsCommentsRouteImport } from './routes/player/settings.comments'
+import { Route as PlayerSettingsCloseFriendsRouteImport } from './routes/player/settings.close-friends'
 import { Route as PlayerSettingsBlockedRouteImport } from './routes/player/settings.blocked'
+import { Route as PlayerSettingsArchiveRouteImport } from './routes/player/settings.archive'
+import { Route as PlayerSettingsAppWebRouteImport } from './routes/player/settings.app-web'
+import { Route as PlayerSettingsAiRouteImport } from './routes/player/settings.ai'
+import { Route as PlayerSettingsAddAccountRouteImport } from './routes/player/settings.add-account'
+import { Route as PlayerSettingsActivityRouteImport } from './routes/player/settings.activity'
 import { Route as PlayerSettingsAccountsCenterRouteImport } from './routes/player/settings.accounts-center'
+import { Route as PlayerSettingsAccountTypeRouteImport } from './routes/player/settings.account-type'
 import { Route as PlayerSettingsAccountStatusRouteImport } from './routes/player/settings.account-status'
+import { Route as PlayerSettingsAccessibilityRouteImport } from './routes/player/settings.accessibility'
 import { Route as PlayerSettingsAboutRouteImport } from './routes/player/settings.about'
 
 const SafeScoutingRoute = SafeScoutingRouteImport.update({
@@ -150,9 +185,66 @@ const PlayerSettingsIndexRoute = PlayerSettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
+const PlayerSettingsVerifiedRoute = PlayerSettingsVerifiedRouteImport.update({
+  id: '/verified',
+  path: '/verified',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsTimeRoute = PlayerSettingsTimeRouteImport.update({
+  id: '/time',
+  path: '/time',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsThreadsRoute = PlayerSettingsThreadsRouteImport.update({
+  id: '/threads',
+  path: '/threads',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsTagsRoute = PlayerSettingsTagsRouteImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsTabletsRoute = PlayerSettingsTabletsRouteImport.update({
+  id: '/tablets',
+  path: '/tablets',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsStoryRoute = PlayerSettingsStoryRouteImport.update({
+  id: '/story',
+  path: '/story',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsSharingRoute = PlayerSettingsSharingRouteImport.update({
+  id: '/sharing',
+  path: '/sharing',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsSavedRoute = PlayerSettingsSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsRestrictedRoute =
+  PlayerSettingsRestrictedRouteImport.update({
+    id: '/restricted',
+    path: '/restricted',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsPrivacyCenterRoute =
+  PlayerSettingsPrivacyCenterRouteImport.update({
+    id: '/privacy-center',
+    path: '/privacy-center',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
 const PlayerSettingsPrivacyRoute = PlayerSettingsPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsOrdersRoute = PlayerSettingsOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsNotificationsRoute =
@@ -161,9 +253,29 @@ const PlayerSettingsNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => PlayerSettingsRoute,
   } as any)
+const PlayerSettingsMutedRoute = PlayerSettingsMutedRouteImport.update({
+  id: '/muted',
+  path: '/muted',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsMoreRoute = PlayerSettingsMoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsMessagesRoute = PlayerSettingsMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
 const PlayerSettingsLogoutRoute = PlayerSettingsLogoutRouteImport.update({
   id: '/logout',
   path: '/logout',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsLimitRoute = PlayerSettingsLimitRouteImport.update({
+  id: '/limit',
+  path: '/limit',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsLanguageRoute = PlayerSettingsLanguageRouteImport.update({
@@ -171,9 +283,105 @@ const PlayerSettingsLanguageRoute = PlayerSettingsLanguageRouteImport.update({
   path: '/language',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
+const PlayerSettingsInviteRoute = PlayerSettingsInviteRouteImport.update({
+  id: '/invite',
+  path: '/invite',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsHiddenWordsRoute =
+  PlayerSettingsHiddenWordsRouteImport.update({
+    id: '/hidden-words',
+    path: '/hidden-words',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsHelpRoute = PlayerSettingsHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsFriendsFeedRoute =
+  PlayerSettingsFriendsFeedRouteImport.update({
+    id: '/friends-feed',
+    path: '/friends-feed',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsFavoritesRoute = PlayerSettingsFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsDownloadsRoute = PlayerSettingsDownloadsRouteImport.update({
+  id: '/downloads',
+  path: '/downloads',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsDevicesRoute = PlayerSettingsDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsDataUsageRoute = PlayerSettingsDataUsageRouteImport.update({
+  id: '/data-usage',
+  path: '/data-usage',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsCrosspostingRoute =
+  PlayerSettingsCrosspostingRouteImport.update({
+    id: '/crossposting',
+    path: '/crossposting',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsCountsRoute = PlayerSettingsCountsRouteImport.update({
+  id: '/counts',
+  path: '/counts',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsContentPreferencesRoute =
+  PlayerSettingsContentPreferencesRouteImport.update({
+    id: '/content-preferences',
+    path: '/content-preferences',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsCommentsRoute = PlayerSettingsCommentsRouteImport.update({
+  id: '/comments',
+  path: '/comments',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsCloseFriendsRoute =
+  PlayerSettingsCloseFriendsRouteImport.update({
+    id: '/close-friends',
+    path: '/close-friends',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
 const PlayerSettingsBlockedRoute = PlayerSettingsBlockedRouteImport.update({
   id: '/blocked',
   path: '/blocked',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsArchiveRoute = PlayerSettingsArchiveRouteImport.update({
+  id: '/archive',
+  path: '/archive',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsAppWebRoute = PlayerSettingsAppWebRouteImport.update({
+  id: '/app-web',
+  path: '/app-web',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsAiRoute = PlayerSettingsAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsAddAccountRoute =
+  PlayerSettingsAddAccountRouteImport.update({
+    id: '/add-account',
+    path: '/add-account',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsActivityRoute = PlayerSettingsActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsAccountsCenterRoute =
@@ -182,10 +390,22 @@ const PlayerSettingsAccountsCenterRoute =
     path: '/accounts-center',
     getParentRoute: () => PlayerSettingsRoute,
   } as any)
+const PlayerSettingsAccountTypeRoute =
+  PlayerSettingsAccountTypeRouteImport.update({
+    id: '/account-type',
+    path: '/account-type',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
 const PlayerSettingsAccountStatusRoute =
   PlayerSettingsAccountStatusRouteImport.update({
     id: '/account-status',
     path: '/account-status',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
+const PlayerSettingsAccessibilityRoute =
+  PlayerSettingsAccessibilityRouteImport.update({
+    id: '/accessibility',
+    path: '/accessibility',
     getParentRoute: () => PlayerSettingsRoute,
   } as any)
 const PlayerSettingsAboutRoute = PlayerSettingsAboutRouteImport.update({
@@ -217,13 +437,48 @@ export interface FileRoutesByFullPath {
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/accessibility': typeof PlayerSettingsAccessibilityRoute
   '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
+  '/player/settings/account-type': typeof PlayerSettingsAccountTypeRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/activity': typeof PlayerSettingsActivityRoute
+  '/player/settings/add-account': typeof PlayerSettingsAddAccountRoute
+  '/player/settings/ai': typeof PlayerSettingsAiRoute
+  '/player/settings/app-web': typeof PlayerSettingsAppWebRoute
+  '/player/settings/archive': typeof PlayerSettingsArchiveRoute
   '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/close-friends': typeof PlayerSettingsCloseFriendsRoute
+  '/player/settings/comments': typeof PlayerSettingsCommentsRoute
+  '/player/settings/content-preferences': typeof PlayerSettingsContentPreferencesRoute
+  '/player/settings/counts': typeof PlayerSettingsCountsRoute
+  '/player/settings/crossposting': typeof PlayerSettingsCrosspostingRoute
+  '/player/settings/data-usage': typeof PlayerSettingsDataUsageRoute
+  '/player/settings/devices': typeof PlayerSettingsDevicesRoute
+  '/player/settings/downloads': typeof PlayerSettingsDownloadsRoute
+  '/player/settings/favorites': typeof PlayerSettingsFavoritesRoute
+  '/player/settings/friends-feed': typeof PlayerSettingsFriendsFeedRoute
+  '/player/settings/help': typeof PlayerSettingsHelpRoute
+  '/player/settings/hidden-words': typeof PlayerSettingsHiddenWordsRoute
+  '/player/settings/invite': typeof PlayerSettingsInviteRoute
   '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/limit': typeof PlayerSettingsLimitRoute
   '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/messages': typeof PlayerSettingsMessagesRoute
+  '/player/settings/more': typeof PlayerSettingsMoreRoute
+  '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
+  '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
+  '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
+  '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sharing': typeof PlayerSettingsSharingRoute
+  '/player/settings/story': typeof PlayerSettingsStoryRoute
+  '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
+  '/player/settings/tags': typeof PlayerSettingsTagsRoute
+  '/player/settings/threads': typeof PlayerSettingsThreadsRoute
+  '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -248,13 +503,48 @@ export interface FileRoutesByTo {
   '/player': typeof PlayerIndexRoute
   '/scout': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/accessibility': typeof PlayerSettingsAccessibilityRoute
   '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
+  '/player/settings/account-type': typeof PlayerSettingsAccountTypeRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/activity': typeof PlayerSettingsActivityRoute
+  '/player/settings/add-account': typeof PlayerSettingsAddAccountRoute
+  '/player/settings/ai': typeof PlayerSettingsAiRoute
+  '/player/settings/app-web': typeof PlayerSettingsAppWebRoute
+  '/player/settings/archive': typeof PlayerSettingsArchiveRoute
   '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/close-friends': typeof PlayerSettingsCloseFriendsRoute
+  '/player/settings/comments': typeof PlayerSettingsCommentsRoute
+  '/player/settings/content-preferences': typeof PlayerSettingsContentPreferencesRoute
+  '/player/settings/counts': typeof PlayerSettingsCountsRoute
+  '/player/settings/crossposting': typeof PlayerSettingsCrosspostingRoute
+  '/player/settings/data-usage': typeof PlayerSettingsDataUsageRoute
+  '/player/settings/devices': typeof PlayerSettingsDevicesRoute
+  '/player/settings/downloads': typeof PlayerSettingsDownloadsRoute
+  '/player/settings/favorites': typeof PlayerSettingsFavoritesRoute
+  '/player/settings/friends-feed': typeof PlayerSettingsFriendsFeedRoute
+  '/player/settings/help': typeof PlayerSettingsHelpRoute
+  '/player/settings/hidden-words': typeof PlayerSettingsHiddenWordsRoute
+  '/player/settings/invite': typeof PlayerSettingsInviteRoute
   '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/limit': typeof PlayerSettingsLimitRoute
   '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/messages': typeof PlayerSettingsMessagesRoute
+  '/player/settings/more': typeof PlayerSettingsMoreRoute
+  '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
+  '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
+  '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
+  '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sharing': typeof PlayerSettingsSharingRoute
+  '/player/settings/story': typeof PlayerSettingsStoryRoute
+  '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
+  '/player/settings/tags': typeof PlayerSettingsTagsRoute
+  '/player/settings/threads': typeof PlayerSettingsThreadsRoute
+  '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings': typeof PlayerSettingsIndexRoute
 }
 export interface FileRoutesById {
@@ -281,13 +571,48 @@ export interface FileRoutesById {
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
+  '/player/settings/accessibility': typeof PlayerSettingsAccessibilityRoute
   '/player/settings/account-status': typeof PlayerSettingsAccountStatusRoute
+  '/player/settings/account-type': typeof PlayerSettingsAccountTypeRoute
   '/player/settings/accounts-center': typeof PlayerSettingsAccountsCenterRoute
+  '/player/settings/activity': typeof PlayerSettingsActivityRoute
+  '/player/settings/add-account': typeof PlayerSettingsAddAccountRoute
+  '/player/settings/ai': typeof PlayerSettingsAiRoute
+  '/player/settings/app-web': typeof PlayerSettingsAppWebRoute
+  '/player/settings/archive': typeof PlayerSettingsArchiveRoute
   '/player/settings/blocked': typeof PlayerSettingsBlockedRoute
+  '/player/settings/close-friends': typeof PlayerSettingsCloseFriendsRoute
+  '/player/settings/comments': typeof PlayerSettingsCommentsRoute
+  '/player/settings/content-preferences': typeof PlayerSettingsContentPreferencesRoute
+  '/player/settings/counts': typeof PlayerSettingsCountsRoute
+  '/player/settings/crossposting': typeof PlayerSettingsCrosspostingRoute
+  '/player/settings/data-usage': typeof PlayerSettingsDataUsageRoute
+  '/player/settings/devices': typeof PlayerSettingsDevicesRoute
+  '/player/settings/downloads': typeof PlayerSettingsDownloadsRoute
+  '/player/settings/favorites': typeof PlayerSettingsFavoritesRoute
+  '/player/settings/friends-feed': typeof PlayerSettingsFriendsFeedRoute
+  '/player/settings/help': typeof PlayerSettingsHelpRoute
+  '/player/settings/hidden-words': typeof PlayerSettingsHiddenWordsRoute
+  '/player/settings/invite': typeof PlayerSettingsInviteRoute
   '/player/settings/language': typeof PlayerSettingsLanguageRoute
+  '/player/settings/limit': typeof PlayerSettingsLimitRoute
   '/player/settings/logout': typeof PlayerSettingsLogoutRoute
+  '/player/settings/messages': typeof PlayerSettingsMessagesRoute
+  '/player/settings/more': typeof PlayerSettingsMoreRoute
+  '/player/settings/muted': typeof PlayerSettingsMutedRoute
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
+  '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
+  '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
+  '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
+  '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sharing': typeof PlayerSettingsSharingRoute
+  '/player/settings/story': typeof PlayerSettingsStoryRoute
+  '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
+  '/player/settings/tags': typeof PlayerSettingsTagsRoute
+  '/player/settings/threads': typeof PlayerSettingsThreadsRoute
+  '/player/settings/time': typeof PlayerSettingsTimeRoute
+  '/player/settings/verified': typeof PlayerSettingsVerifiedRoute
   '/player/settings/': typeof PlayerSettingsIndexRoute
 }
 export interface FileRouteTypes {
@@ -315,13 +640,48 @@ export interface FileRouteTypes {
     | '/player/'
     | '/scout/'
     | '/player/settings/about'
+    | '/player/settings/accessibility'
     | '/player/settings/account-status'
+    | '/player/settings/account-type'
     | '/player/settings/accounts-center'
+    | '/player/settings/activity'
+    | '/player/settings/add-account'
+    | '/player/settings/ai'
+    | '/player/settings/app-web'
+    | '/player/settings/archive'
     | '/player/settings/blocked'
+    | '/player/settings/close-friends'
+    | '/player/settings/comments'
+    | '/player/settings/content-preferences'
+    | '/player/settings/counts'
+    | '/player/settings/crossposting'
+    | '/player/settings/data-usage'
+    | '/player/settings/devices'
+    | '/player/settings/downloads'
+    | '/player/settings/favorites'
+    | '/player/settings/friends-feed'
+    | '/player/settings/help'
+    | '/player/settings/hidden-words'
+    | '/player/settings/invite'
     | '/player/settings/language'
+    | '/player/settings/limit'
     | '/player/settings/logout'
+    | '/player/settings/messages'
+    | '/player/settings/more'
+    | '/player/settings/muted'
     | '/player/settings/notifications'
+    | '/player/settings/orders'
     | '/player/settings/privacy'
+    | '/player/settings/privacy-center'
+    | '/player/settings/restricted'
+    | '/player/settings/saved'
+    | '/player/settings/sharing'
+    | '/player/settings/story'
+    | '/player/settings/tablets'
+    | '/player/settings/tags'
+    | '/player/settings/threads'
+    | '/player/settings/time'
+    | '/player/settings/verified'
     | '/player/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -346,13 +706,48 @@ export interface FileRouteTypes {
     | '/player'
     | '/scout'
     | '/player/settings/about'
+    | '/player/settings/accessibility'
     | '/player/settings/account-status'
+    | '/player/settings/account-type'
     | '/player/settings/accounts-center'
+    | '/player/settings/activity'
+    | '/player/settings/add-account'
+    | '/player/settings/ai'
+    | '/player/settings/app-web'
+    | '/player/settings/archive'
     | '/player/settings/blocked'
+    | '/player/settings/close-friends'
+    | '/player/settings/comments'
+    | '/player/settings/content-preferences'
+    | '/player/settings/counts'
+    | '/player/settings/crossposting'
+    | '/player/settings/data-usage'
+    | '/player/settings/devices'
+    | '/player/settings/downloads'
+    | '/player/settings/favorites'
+    | '/player/settings/friends-feed'
+    | '/player/settings/help'
+    | '/player/settings/hidden-words'
+    | '/player/settings/invite'
     | '/player/settings/language'
+    | '/player/settings/limit'
     | '/player/settings/logout'
+    | '/player/settings/messages'
+    | '/player/settings/more'
+    | '/player/settings/muted'
     | '/player/settings/notifications'
+    | '/player/settings/orders'
     | '/player/settings/privacy'
+    | '/player/settings/privacy-center'
+    | '/player/settings/restricted'
+    | '/player/settings/saved'
+    | '/player/settings/sharing'
+    | '/player/settings/story'
+    | '/player/settings/tablets'
+    | '/player/settings/tags'
+    | '/player/settings/threads'
+    | '/player/settings/time'
+    | '/player/settings/verified'
     | '/player/settings'
   id:
     | '__root__'
@@ -378,13 +773,48 @@ export interface FileRouteTypes {
     | '/player/'
     | '/scout/'
     | '/player/settings/about'
+    | '/player/settings/accessibility'
     | '/player/settings/account-status'
+    | '/player/settings/account-type'
     | '/player/settings/accounts-center'
+    | '/player/settings/activity'
+    | '/player/settings/add-account'
+    | '/player/settings/ai'
+    | '/player/settings/app-web'
+    | '/player/settings/archive'
     | '/player/settings/blocked'
+    | '/player/settings/close-friends'
+    | '/player/settings/comments'
+    | '/player/settings/content-preferences'
+    | '/player/settings/counts'
+    | '/player/settings/crossposting'
+    | '/player/settings/data-usage'
+    | '/player/settings/devices'
+    | '/player/settings/downloads'
+    | '/player/settings/favorites'
+    | '/player/settings/friends-feed'
+    | '/player/settings/help'
+    | '/player/settings/hidden-words'
+    | '/player/settings/invite'
     | '/player/settings/language'
+    | '/player/settings/limit'
     | '/player/settings/logout'
+    | '/player/settings/messages'
+    | '/player/settings/more'
+    | '/player/settings/muted'
     | '/player/settings/notifications'
+    | '/player/settings/orders'
     | '/player/settings/privacy'
+    | '/player/settings/privacy-center'
+    | '/player/settings/restricted'
+    | '/player/settings/saved'
+    | '/player/settings/sharing'
+    | '/player/settings/story'
+    | '/player/settings/tablets'
+    | '/player/settings/tags'
+    | '/player/settings/threads'
+    | '/player/settings/time'
+    | '/player/settings/verified'
     | '/player/settings/'
   fileRoutesById: FileRoutesById
 }
@@ -568,11 +998,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsIndexRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/verified': {
+      id: '/player/settings/verified'
+      path: '/verified'
+      fullPath: '/player/settings/verified'
+      preLoaderRoute: typeof PlayerSettingsVerifiedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/time': {
+      id: '/player/settings/time'
+      path: '/time'
+      fullPath: '/player/settings/time'
+      preLoaderRoute: typeof PlayerSettingsTimeRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/threads': {
+      id: '/player/settings/threads'
+      path: '/threads'
+      fullPath: '/player/settings/threads'
+      preLoaderRoute: typeof PlayerSettingsThreadsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/tags': {
+      id: '/player/settings/tags'
+      path: '/tags'
+      fullPath: '/player/settings/tags'
+      preLoaderRoute: typeof PlayerSettingsTagsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/tablets': {
+      id: '/player/settings/tablets'
+      path: '/tablets'
+      fullPath: '/player/settings/tablets'
+      preLoaderRoute: typeof PlayerSettingsTabletsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/story': {
+      id: '/player/settings/story'
+      path: '/story'
+      fullPath: '/player/settings/story'
+      preLoaderRoute: typeof PlayerSettingsStoryRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/sharing': {
+      id: '/player/settings/sharing'
+      path: '/sharing'
+      fullPath: '/player/settings/sharing'
+      preLoaderRoute: typeof PlayerSettingsSharingRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/saved': {
+      id: '/player/settings/saved'
+      path: '/saved'
+      fullPath: '/player/settings/saved'
+      preLoaderRoute: typeof PlayerSettingsSavedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/restricted': {
+      id: '/player/settings/restricted'
+      path: '/restricted'
+      fullPath: '/player/settings/restricted'
+      preLoaderRoute: typeof PlayerSettingsRestrictedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/privacy-center': {
+      id: '/player/settings/privacy-center'
+      path: '/privacy-center'
+      fullPath: '/player/settings/privacy-center'
+      preLoaderRoute: typeof PlayerSettingsPrivacyCenterRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/privacy': {
       id: '/player/settings/privacy'
       path: '/privacy'
       fullPath: '/player/settings/privacy'
       preLoaderRoute: typeof PlayerSettingsPrivacyRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/orders': {
+      id: '/player/settings/orders'
+      path: '/orders'
+      fullPath: '/player/settings/orders'
+      preLoaderRoute: typeof PlayerSettingsOrdersRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/notifications': {
@@ -582,11 +1089,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsNotificationsRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/muted': {
+      id: '/player/settings/muted'
+      path: '/muted'
+      fullPath: '/player/settings/muted'
+      preLoaderRoute: typeof PlayerSettingsMutedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/more': {
+      id: '/player/settings/more'
+      path: '/more'
+      fullPath: '/player/settings/more'
+      preLoaderRoute: typeof PlayerSettingsMoreRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/messages': {
+      id: '/player/settings/messages'
+      path: '/messages'
+      fullPath: '/player/settings/messages'
+      preLoaderRoute: typeof PlayerSettingsMessagesRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/logout': {
       id: '/player/settings/logout'
       path: '/logout'
       fullPath: '/player/settings/logout'
       preLoaderRoute: typeof PlayerSettingsLogoutRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/limit': {
+      id: '/player/settings/limit'
+      path: '/limit'
+      fullPath: '/player/settings/limit'
+      preLoaderRoute: typeof PlayerSettingsLimitRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/language': {
@@ -596,11 +1131,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsLanguageRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/invite': {
+      id: '/player/settings/invite'
+      path: '/invite'
+      fullPath: '/player/settings/invite'
+      preLoaderRoute: typeof PlayerSettingsInviteRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/hidden-words': {
+      id: '/player/settings/hidden-words'
+      path: '/hidden-words'
+      fullPath: '/player/settings/hidden-words'
+      preLoaderRoute: typeof PlayerSettingsHiddenWordsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/help': {
+      id: '/player/settings/help'
+      path: '/help'
+      fullPath: '/player/settings/help'
+      preLoaderRoute: typeof PlayerSettingsHelpRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/friends-feed': {
+      id: '/player/settings/friends-feed'
+      path: '/friends-feed'
+      fullPath: '/player/settings/friends-feed'
+      preLoaderRoute: typeof PlayerSettingsFriendsFeedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/favorites': {
+      id: '/player/settings/favorites'
+      path: '/favorites'
+      fullPath: '/player/settings/favorites'
+      preLoaderRoute: typeof PlayerSettingsFavoritesRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/downloads': {
+      id: '/player/settings/downloads'
+      path: '/downloads'
+      fullPath: '/player/settings/downloads'
+      preLoaderRoute: typeof PlayerSettingsDownloadsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/devices': {
+      id: '/player/settings/devices'
+      path: '/devices'
+      fullPath: '/player/settings/devices'
+      preLoaderRoute: typeof PlayerSettingsDevicesRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/data-usage': {
+      id: '/player/settings/data-usage'
+      path: '/data-usage'
+      fullPath: '/player/settings/data-usage'
+      preLoaderRoute: typeof PlayerSettingsDataUsageRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/crossposting': {
+      id: '/player/settings/crossposting'
+      path: '/crossposting'
+      fullPath: '/player/settings/crossposting'
+      preLoaderRoute: typeof PlayerSettingsCrosspostingRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/counts': {
+      id: '/player/settings/counts'
+      path: '/counts'
+      fullPath: '/player/settings/counts'
+      preLoaderRoute: typeof PlayerSettingsCountsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/content-preferences': {
+      id: '/player/settings/content-preferences'
+      path: '/content-preferences'
+      fullPath: '/player/settings/content-preferences'
+      preLoaderRoute: typeof PlayerSettingsContentPreferencesRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/comments': {
+      id: '/player/settings/comments'
+      path: '/comments'
+      fullPath: '/player/settings/comments'
+      preLoaderRoute: typeof PlayerSettingsCommentsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/close-friends': {
+      id: '/player/settings/close-friends'
+      path: '/close-friends'
+      fullPath: '/player/settings/close-friends'
+      preLoaderRoute: typeof PlayerSettingsCloseFriendsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/blocked': {
       id: '/player/settings/blocked'
       path: '/blocked'
       fullPath: '/player/settings/blocked'
       preLoaderRoute: typeof PlayerSettingsBlockedRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/archive': {
+      id: '/player/settings/archive'
+      path: '/archive'
+      fullPath: '/player/settings/archive'
+      preLoaderRoute: typeof PlayerSettingsArchiveRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/app-web': {
+      id: '/player/settings/app-web'
+      path: '/app-web'
+      fullPath: '/player/settings/app-web'
+      preLoaderRoute: typeof PlayerSettingsAppWebRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/ai': {
+      id: '/player/settings/ai'
+      path: '/ai'
+      fullPath: '/player/settings/ai'
+      preLoaderRoute: typeof PlayerSettingsAiRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/add-account': {
+      id: '/player/settings/add-account'
+      path: '/add-account'
+      fullPath: '/player/settings/add-account'
+      preLoaderRoute: typeof PlayerSettingsAddAccountRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/activity': {
+      id: '/player/settings/activity'
+      path: '/activity'
+      fullPath: '/player/settings/activity'
+      preLoaderRoute: typeof PlayerSettingsActivityRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/accounts-center': {
@@ -610,11 +1271,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsAccountsCenterRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/account-type': {
+      id: '/player/settings/account-type'
+      path: '/account-type'
+      fullPath: '/player/settings/account-type'
+      preLoaderRoute: typeof PlayerSettingsAccountTypeRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/account-status': {
       id: '/player/settings/account-status'
       path: '/account-status'
       fullPath: '/player/settings/account-status'
       preLoaderRoute: typeof PlayerSettingsAccountStatusRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/accessibility': {
+      id: '/player/settings/accessibility'
+      path: '/accessibility'
+      fullPath: '/player/settings/accessibility'
+      preLoaderRoute: typeof PlayerSettingsAccessibilityRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/about': {
@@ -629,25 +1304,95 @@ declare module '@tanstack/react-router' {
 
 interface PlayerSettingsRouteChildren {
   PlayerSettingsAboutRoute: typeof PlayerSettingsAboutRoute
+  PlayerSettingsAccessibilityRoute: typeof PlayerSettingsAccessibilityRoute
   PlayerSettingsAccountStatusRoute: typeof PlayerSettingsAccountStatusRoute
+  PlayerSettingsAccountTypeRoute: typeof PlayerSettingsAccountTypeRoute
   PlayerSettingsAccountsCenterRoute: typeof PlayerSettingsAccountsCenterRoute
+  PlayerSettingsActivityRoute: typeof PlayerSettingsActivityRoute
+  PlayerSettingsAddAccountRoute: typeof PlayerSettingsAddAccountRoute
+  PlayerSettingsAiRoute: typeof PlayerSettingsAiRoute
+  PlayerSettingsAppWebRoute: typeof PlayerSettingsAppWebRoute
+  PlayerSettingsArchiveRoute: typeof PlayerSettingsArchiveRoute
   PlayerSettingsBlockedRoute: typeof PlayerSettingsBlockedRoute
+  PlayerSettingsCloseFriendsRoute: typeof PlayerSettingsCloseFriendsRoute
+  PlayerSettingsCommentsRoute: typeof PlayerSettingsCommentsRoute
+  PlayerSettingsContentPreferencesRoute: typeof PlayerSettingsContentPreferencesRoute
+  PlayerSettingsCountsRoute: typeof PlayerSettingsCountsRoute
+  PlayerSettingsCrosspostingRoute: typeof PlayerSettingsCrosspostingRoute
+  PlayerSettingsDataUsageRoute: typeof PlayerSettingsDataUsageRoute
+  PlayerSettingsDevicesRoute: typeof PlayerSettingsDevicesRoute
+  PlayerSettingsDownloadsRoute: typeof PlayerSettingsDownloadsRoute
+  PlayerSettingsFavoritesRoute: typeof PlayerSettingsFavoritesRoute
+  PlayerSettingsFriendsFeedRoute: typeof PlayerSettingsFriendsFeedRoute
+  PlayerSettingsHelpRoute: typeof PlayerSettingsHelpRoute
+  PlayerSettingsHiddenWordsRoute: typeof PlayerSettingsHiddenWordsRoute
+  PlayerSettingsInviteRoute: typeof PlayerSettingsInviteRoute
   PlayerSettingsLanguageRoute: typeof PlayerSettingsLanguageRoute
+  PlayerSettingsLimitRoute: typeof PlayerSettingsLimitRoute
   PlayerSettingsLogoutRoute: typeof PlayerSettingsLogoutRoute
+  PlayerSettingsMessagesRoute: typeof PlayerSettingsMessagesRoute
+  PlayerSettingsMoreRoute: typeof PlayerSettingsMoreRoute
+  PlayerSettingsMutedRoute: typeof PlayerSettingsMutedRoute
   PlayerSettingsNotificationsRoute: typeof PlayerSettingsNotificationsRoute
+  PlayerSettingsOrdersRoute: typeof PlayerSettingsOrdersRoute
   PlayerSettingsPrivacyRoute: typeof PlayerSettingsPrivacyRoute
+  PlayerSettingsPrivacyCenterRoute: typeof PlayerSettingsPrivacyCenterRoute
+  PlayerSettingsRestrictedRoute: typeof PlayerSettingsRestrictedRoute
+  PlayerSettingsSavedRoute: typeof PlayerSettingsSavedRoute
+  PlayerSettingsSharingRoute: typeof PlayerSettingsSharingRoute
+  PlayerSettingsStoryRoute: typeof PlayerSettingsStoryRoute
+  PlayerSettingsTabletsRoute: typeof PlayerSettingsTabletsRoute
+  PlayerSettingsTagsRoute: typeof PlayerSettingsTagsRoute
+  PlayerSettingsThreadsRoute: typeof PlayerSettingsThreadsRoute
+  PlayerSettingsTimeRoute: typeof PlayerSettingsTimeRoute
+  PlayerSettingsVerifiedRoute: typeof PlayerSettingsVerifiedRoute
   PlayerSettingsIndexRoute: typeof PlayerSettingsIndexRoute
 }
 
 const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsAboutRoute: PlayerSettingsAboutRoute,
+  PlayerSettingsAccessibilityRoute: PlayerSettingsAccessibilityRoute,
   PlayerSettingsAccountStatusRoute: PlayerSettingsAccountStatusRoute,
+  PlayerSettingsAccountTypeRoute: PlayerSettingsAccountTypeRoute,
   PlayerSettingsAccountsCenterRoute: PlayerSettingsAccountsCenterRoute,
+  PlayerSettingsActivityRoute: PlayerSettingsActivityRoute,
+  PlayerSettingsAddAccountRoute: PlayerSettingsAddAccountRoute,
+  PlayerSettingsAiRoute: PlayerSettingsAiRoute,
+  PlayerSettingsAppWebRoute: PlayerSettingsAppWebRoute,
+  PlayerSettingsArchiveRoute: PlayerSettingsArchiveRoute,
   PlayerSettingsBlockedRoute: PlayerSettingsBlockedRoute,
+  PlayerSettingsCloseFriendsRoute: PlayerSettingsCloseFriendsRoute,
+  PlayerSettingsCommentsRoute: PlayerSettingsCommentsRoute,
+  PlayerSettingsContentPreferencesRoute: PlayerSettingsContentPreferencesRoute,
+  PlayerSettingsCountsRoute: PlayerSettingsCountsRoute,
+  PlayerSettingsCrosspostingRoute: PlayerSettingsCrosspostingRoute,
+  PlayerSettingsDataUsageRoute: PlayerSettingsDataUsageRoute,
+  PlayerSettingsDevicesRoute: PlayerSettingsDevicesRoute,
+  PlayerSettingsDownloadsRoute: PlayerSettingsDownloadsRoute,
+  PlayerSettingsFavoritesRoute: PlayerSettingsFavoritesRoute,
+  PlayerSettingsFriendsFeedRoute: PlayerSettingsFriendsFeedRoute,
+  PlayerSettingsHelpRoute: PlayerSettingsHelpRoute,
+  PlayerSettingsHiddenWordsRoute: PlayerSettingsHiddenWordsRoute,
+  PlayerSettingsInviteRoute: PlayerSettingsInviteRoute,
   PlayerSettingsLanguageRoute: PlayerSettingsLanguageRoute,
+  PlayerSettingsLimitRoute: PlayerSettingsLimitRoute,
   PlayerSettingsLogoutRoute: PlayerSettingsLogoutRoute,
+  PlayerSettingsMessagesRoute: PlayerSettingsMessagesRoute,
+  PlayerSettingsMoreRoute: PlayerSettingsMoreRoute,
+  PlayerSettingsMutedRoute: PlayerSettingsMutedRoute,
   PlayerSettingsNotificationsRoute: PlayerSettingsNotificationsRoute,
+  PlayerSettingsOrdersRoute: PlayerSettingsOrdersRoute,
   PlayerSettingsPrivacyRoute: PlayerSettingsPrivacyRoute,
+  PlayerSettingsPrivacyCenterRoute: PlayerSettingsPrivacyCenterRoute,
+  PlayerSettingsRestrictedRoute: PlayerSettingsRestrictedRoute,
+  PlayerSettingsSavedRoute: PlayerSettingsSavedRoute,
+  PlayerSettingsSharingRoute: PlayerSettingsSharingRoute,
+  PlayerSettingsStoryRoute: PlayerSettingsStoryRoute,
+  PlayerSettingsTabletsRoute: PlayerSettingsTabletsRoute,
+  PlayerSettingsTagsRoute: PlayerSettingsTagsRoute,
+  PlayerSettingsThreadsRoute: PlayerSettingsThreadsRoute,
+  PlayerSettingsTimeRoute: PlayerSettingsTimeRoute,
+  PlayerSettingsVerifiedRoute: PlayerSettingsVerifiedRoute,
   PlayerSettingsIndexRoute: PlayerSettingsIndexRoute,
 }
 
