@@ -26,10 +26,21 @@ const PlayerProfile = () => {
   useEffect(() => {
     if (!authLoading && !user) { navigate({ to: "/auth" as any }); return; }
     if (user) {
-      supabase.from("videos").select("id, status, description, position_tags, trait_tags, video_url, created_at").eq("user_id", user.id).order("created_at", { ascending: false })
+      supabase.from("videos").select("*").eq("user_id", user.id).order("created_at", { ascending: false })
         .then(({ data }) => { setAllVideos((data || []) as VideoRecord[]); setVideosLoading(false); });
     }
   }, [user, authLoading]);
+
+  const playerStats = allVideos.reduce(
+    (acc, v: any) => ({
+      likes: acc.likes + (v.like_count ?? 0),
+      views: acc.views + (v.view_count ?? 0),
+      shares: acc.shares + (v.share_count ?? 0),
+      watchMinutes: acc.watchMinutes + Math.floor((v.total_watch_ms ?? 0) / 60000),
+      videos: acc.videos + 1,
+    }),
+    { likes: 0, views: 0, shares: 0, watchMinutes: 0, videos: 0 },
+  );
 
   const handleDeleteVideo = async (vid: VideoRecord) => {
     if (!user) return;
@@ -67,7 +78,7 @@ const PlayerProfile = () => {
             </Link>
           </div>
 
-          <ProfileTab showVideos={allVideos} onDeleteVideo={handleDeleteVideo} deletingVideoId={deletingVideoId} />
+          <ProfileTab showVideos={allVideos} onDeleteVideo={handleDeleteVideo} deletingVideoId={deletingVideoId} stats={playerStats} />
         </motion.div>
       </div>
     </div>
