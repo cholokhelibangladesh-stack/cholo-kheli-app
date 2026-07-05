@@ -62,6 +62,42 @@ export type Database = {
         }
         Relationships: []
       }
+      blocked_users: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      close_friends: {
+        Row: {
+          created_at: string
+          friend_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          friend_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          friend_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       contact_messages: {
         Row: {
           created_at: string
@@ -119,6 +155,24 @@ export type Database = {
         }
         Relationships: []
       }
+      favorites: {
+        Row: {
+          created_at: string
+          favorite_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          favorite_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          favorite_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       feed_rate_limit: {
         Row: {
           request_count: number
@@ -134,6 +188,27 @@ export type Database = {
           request_count?: number
           user_id?: string
           window_start?: string
+        }
+        Relationships: []
+      }
+      hidden_words: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          word: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          word: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          word?: string
         }
         Relationships: []
       }
@@ -203,6 +278,78 @@ export type Database = {
         }
         Relationships: []
       }
+      muted_users: {
+        Row: {
+          created_at: string
+          mute_posts: boolean
+          mute_stories: boolean
+          muted_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          mute_posts?: boolean
+          mute_stories?: boolean
+          muted_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          mute_posts?: boolean
+          mute_stories?: boolean
+          muted_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          comments: boolean
+          created_at: string
+          email_notifications: boolean
+          from_cholo_kheli: boolean
+          likes: boolean
+          messages: boolean
+          new_followers: boolean
+          pause_all_until: string | null
+          push_notifications: boolean
+          scout_requests: boolean
+          updated_at: string
+          user_id: string
+          video_activity: boolean
+        }
+        Insert: {
+          comments?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          from_cholo_kheli?: boolean
+          likes?: boolean
+          messages?: boolean
+          new_followers?: boolean
+          pause_all_until?: string | null
+          push_notifications?: boolean
+          scout_requests?: boolean
+          updated_at?: string
+          user_id: string
+          video_activity?: boolean
+        }
+        Update: {
+          comments?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          from_cholo_kheli?: boolean
+          likes?: boolean
+          messages?: boolean
+          new_followers?: boolean
+          pause_all_until?: string | null
+          push_notifications?: boolean
+          scout_requests?: boolean
+          updated_at?: string
+          user_id?: string
+          video_activity?: boolean
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -263,6 +410,78 @@ export type Database = {
         }
         Relationships: []
       }
+      privacy_settings: {
+        Row: {
+          activity_status: boolean
+          allow_mentions: string
+          allow_tags: string
+          break_reminder_minutes: number | null
+          captions_default: boolean
+          comment_control: string
+          created_at: string
+          daily_limit_minutes: number | null
+          data_saver: boolean
+          hd_uploads: boolean
+          hidden_words_enabled: boolean
+          hide_like_counts: boolean
+          hide_share_counts: boolean
+          is_private: boolean
+          language: string
+          read_receipts: boolean
+          reduce_motion: boolean
+          sharing_allowed: boolean
+          story_visibility: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_status?: boolean
+          allow_mentions?: string
+          allow_tags?: string
+          break_reminder_minutes?: number | null
+          captions_default?: boolean
+          comment_control?: string
+          created_at?: string
+          daily_limit_minutes?: number | null
+          data_saver?: boolean
+          hd_uploads?: boolean
+          hidden_words_enabled?: boolean
+          hide_like_counts?: boolean
+          hide_share_counts?: boolean
+          is_private?: boolean
+          language?: string
+          read_receipts?: boolean
+          reduce_motion?: boolean
+          sharing_allowed?: boolean
+          story_visibility?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_status?: boolean
+          allow_mentions?: string
+          allow_tags?: string
+          break_reminder_minutes?: number | null
+          captions_default?: boolean
+          comment_control?: string
+          created_at?: string
+          daily_limit_minutes?: number | null
+          data_saver?: boolean
+          hd_uploads?: boolean
+          hidden_words_enabled?: boolean
+          hide_like_counts?: boolean
+          hide_share_counts?: boolean
+          is_private?: boolean
+          language?: string
+          read_receipts?: boolean
+          reduce_motion?: boolean
+          sharing_allowed?: boolean
+          story_visibility?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -313,6 +532,50 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      restricted_users: {
+        Row: {
+          created_at: string
+          restricted_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          restricted_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          restricted_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_videos: {
+        Row: {
+          created_at: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_videos_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       scout_profiles: {
         Row: {
@@ -520,6 +783,7 @@ export type Database = {
       }
       videos: {
         Row: {
+          archived: boolean
           created_at: string
           description: string
           flag_reason: string | null
@@ -539,6 +803,7 @@ export type Database = {
           view_count: number
         }
         Insert: {
+          archived?: boolean
           created_at?: string
           description?: string
           flag_reason?: string | null
@@ -558,6 +823,7 @@ export type Database = {
           view_count?: number
         }
         Update: {
+          archived?: boolean
           created_at?: string
           description?: string
           flag_reason?: string | null
