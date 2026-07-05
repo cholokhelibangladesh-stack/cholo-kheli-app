@@ -1,4 +1,4 @@
-import markAsset from "@/assets/cholo-kheli-mark-cropped.png.asset.json";
+import markAsset from "@/assets/cholo-kheli-symbol-clean.png.asset.json";
 
 interface Props {
   className?: string;
@@ -10,11 +10,20 @@ interface Props {
 /* Official Cholo Kheli mark — cropped at the asset level to avoid transparent
    padding, distortion, or CSS crop glitches in compact headers. */
 const CholoKheliMark = ({ className = "" }: Props) => (
-  <img
-    src={markAsset.url}
-    alt="Cholo Kheli"
-    className={`block object-contain ${className || "h-[18px] w-[24px]"}`}
-    draggable={false}
+  <span
+    aria-label="Cholo Kheli"
+    role="img"
+    className={`block bg-current ${className || "h-[18px] w-[24px]"}`}
+    style={{
+      WebkitMaskImage: `url(${markAsset.url})`,
+      maskImage: `url(${markAsset.url})`,
+      WebkitMaskRepeat: "no-repeat",
+      maskRepeat: "no-repeat",
+      WebkitMaskPosition: "center",
+      maskPosition: "center",
+      WebkitMaskSize: "contain",
+      maskSize: "contain",
+    }}
   />
 );
 
