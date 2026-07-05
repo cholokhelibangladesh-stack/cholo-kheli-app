@@ -71,22 +71,15 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            {/* White mark, filled via CSS mask so the same asset renders
-                cleanly against the blue splash. */}
-            <span
-              aria-label="Cholo Kheli"
-              role="img"
-              className="absolute inset-0 h-full w-full bg-white drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]"
-              style={{
-                WebkitMaskImage: `url(${markAsset.url})`,
-                maskImage: `url(${markAsset.url})`,
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskPosition: "center",
-                maskPosition: "center",
-                WebkitMaskSize: "contain",
-                maskSize: "contain",
-              }}
+            {/* Official mark rendered white by inverting the teal PNG.
+                Keeps the same crisp asset used across the app but tinted
+                to sit cleanly on the blue splash. */}
+            <img
+              src={markAsset.url}
+              alt="Cholo Kheli"
+              draggable={false}
+              className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]"
+              style={{ filter: "brightness(0) invert(1) drop-shadow(0 8px 14px rgba(10,30,60,0.35))" }}
             />
 
             {/* Sweeping specular sheen */}
