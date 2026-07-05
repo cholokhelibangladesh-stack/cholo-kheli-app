@@ -1,10 +1,11 @@
 import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft, Settings } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
+import CholoKheliMark from "@/components/CholoKheliMark";
 import { useAuth } from "@/hooks/useAuth";
 import { haptic } from "@/lib/native";
 
-// Routes where a tab-root header (wordmark, no back) is shown
+// Routes where a tab-root header (logo, no back) is shown
 const TAB_ROOTS = new Set([
   "/player",
   "/player/explore",
@@ -19,11 +20,10 @@ const TAB_ROOTS = new Set([
 ]);
 
 /**
- * Instagram-style top app bar:
- * - brand wordmark left, small icon actions right
- * - hairline bottom border
- * - back arrow on nested/detail routes only
- * - notifications and settings live here; language moves to profile settings
+ * Glass top app bar:
+ * - frosted translucent surface with a candy-blue → teal hairline
+ * - logo mark on tab-roots, back arrow on nested routes
+ * - notifications + settings inside circular glass pills
  */
 const AppHeader = () => {
   const { user, role } = useAuth();
@@ -37,15 +37,28 @@ const AppHeader = () => {
   const settingsHref =
     role === "scout" ? "/scout/settings" : role === "player" ? "/player/settings" : "/";
 
-  // On tab-root screens the header is minimal chrome (wordmark + right icons).
-  // On nested screens we show a back button + no wordmark, freeing space for a
-  // route-provided title beneath.
   return (
     <header
-      className="sticky top-0 z-30 border-b border-border/60 bg-background/95 backdrop-blur-xl"
-      style={{ paddingTop: "env(safe-area-inset-top)" }}
+      className="sticky top-0 z-30 backdrop-blur-2xl"
+      style={{
+        paddingTop: "env(safe-area-inset-top)",
+        background:
+          "linear-gradient(180deg, hsl(var(--background) / 0.72) 0%, hsl(var(--background) / 0.55) 100%)",
+        boxShadow:
+          "inset 0 -1px 0 hsl(var(--teal-deep) / 0.18), 0 6px 22px -18px rgba(20, 50, 90, 0.35)",
+      }}
     >
-      <div className="mx-auto flex h-11 max-w-[430px] items-center justify-between gap-2 px-4">
+      {/* candy-blue → teal hairline glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-70"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent 0%, #7EC8FF 25%, hsl(var(--teal-deep)) 55%, #7EC8FF 80%, transparent 100%)",
+        }}
+      />
+
+      <div className="mx-auto flex h-12 max-w-[430px] items-center justify-between gap-2 px-4">
         <div className="flex min-w-0 items-center gap-2">
           {!isTabRoot ? (
             <button
@@ -55,30 +68,32 @@ const AppHeader = () => {
                 router.history.back();
               }}
               aria-label="Back"
-              className="-ml-2 grid h-9 w-9 shrink-0 place-items-center rounded-full text-foreground active:scale-95 transition-transform"
+              className="-ml-2 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 bg-white/5 text-foreground backdrop-blur-md active:scale-95 transition-transform"
             >
-              <ChevronLeft className="h-6 w-6" strokeWidth={2} />
+              <ChevronLeft className="h-5 w-5" strokeWidth={2} />
             </button>
           ) : (
-            <Link to="/" className="flex shrink-0 items-center">
-              <span
-                className="text-[22px] font-semibold tracking-tight"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Cholo<span className="text-[hsl(var(--teal-deep,var(--primary)))]">Kheli</span>
-              </span>
+            <Link to="/" aria-label="Cholo Kheli home" className="flex shrink-0 items-center">
+              <CholoKheliMark className="h-8 w-8 drop-shadow-[0_2px_6px_hsl(var(--teal-deep)/0.35)]" />
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-1">
-          <NotificationBell />
+
+        <div className="flex items-center gap-2">
+          <div
+            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md"
+            style={{ boxShadow: "inset 0 0 0 1px hsl(var(--teal-deep) / 0.08)" }}
+          >
+            <NotificationBell />
+          </div>
           <Link
             to={settingsHref as any}
             onClick={() => haptic("light")}
             aria-label="Settings"
-            className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground active:scale-95 transition-transform"
+            className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-foreground/85 hover:text-foreground backdrop-blur-md active:scale-95 transition-transform"
+            style={{ boxShadow: "inset 0 0 0 1px hsl(var(--teal-deep) / 0.08)" }}
           >
-            <Settings className="h-[22px] w-[22px]" strokeWidth={1.75} />
+            <Settings className="h-[18px] w-[18px]" strokeWidth={1.75} />
           </Link>
         </div>
       </div>
