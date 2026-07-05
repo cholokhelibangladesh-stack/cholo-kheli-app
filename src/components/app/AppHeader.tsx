@@ -1,16 +1,32 @@
 import { Link, useRouter, useRouterState } from "@tanstack/react-router";
-import { ChevronLeft, LogOut } from "lucide-react";
-import CholoKheliMark from "@/components/CholoKheliMark";
+import { ChevronLeft, Settings } from "lucide-react";
 import NotificationBell from "@/components/NotificationBell";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useAuth } from "@/hooks/useAuth";
 import { haptic } from "@/lib/native";
 
-// Routes where a tab-root header (logo, no back) is shown
-const TAB_ROOTS = new Set(["/player", "/scout", "/admin", "/"]);
+// Routes where a tab-root header (wordmark, no back) is shown
+const TAB_ROOTS = new Set([
+  "/player",
+  "/player/explore",
+  "/player/upload",
+  "/player/profile",
+  "/scout",
+  "/scout/explore",
+  "/scout/selections",
+  "/scout/profile",
+  "/admin",
+  "/",
+]);
 
+/**
+ * Instagram-style top app bar:
+ * - brand wordmark left, small icon actions right
+ * - hairline bottom border
+ * - back arrow on nested/detail routes only
+ * - notifications and settings live here; language moves to profile settings
+ */
 const AppHeader = () => {
-  const { user, signOut } = useAuth();
+  const { user, role } = useAuth();
   const router = useRouter();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
@@ -18,16 +34,18 @@ const AppHeader = () => {
   if (pathname.startsWith("/auth") || pathname.startsWith("/reset-password")) return null;
 
   const isTabRoot = TAB_ROOTS.has(pathname);
+  const settingsHref =
+    role === "scout" ? "/scout/settings" : role === "player" ? "/player/settings" : "/";
 
+  // On tab-root screens the header is minimal chrome (wordmark + right icons).
+  // On nested screens we show a back button + no wordmark, freeing space for a
+  // route-provided title beneath.
   return (
     <header
-      className="sticky top-0 z-30 border-b border-border/50 backdrop-blur-xl"
-      style={{
-        background: "hsl(var(--background) / 0.9)",
-        paddingTop: "env(safe-area-inset-top)",
-      }}
+      className="sticky top-0 z-30 border-b border-border/60 bg-background/95 backdrop-blur-xl"
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      <div className="mx-auto flex h-14 max-w-[430px] items-center justify-between gap-2 px-4">
+      <div className="mx-auto flex h-11 max-w-[430px] items-center justify-between gap-2 px-4">
         <div className="flex min-w-0 items-center gap-2">
           {!isTabRoot ? (
             <button
@@ -37,33 +55,31 @@ const AppHeader = () => {
                 router.history.back();
               }}
               aria-label="Back"
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border/60 text-foreground active:scale-95 transition-transform"
+              className="-ml-2 grid h-9 w-9 shrink-0 place-items-center rounded-full text-foreground active:scale-95 transition-transform"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-6 w-6" strokeWidth={2} />
             </button>
           ) : (
-            <Link to="/" className="flex shrink-0 items-center gap-2">
-              <CholoKheliMark className="h-6 w-8 text-foreground" accent="hsl(var(--teal-deep))" />
-              <span className="font-display text-sm font-semibold tracking-[0.04em]">
-                CHOLO <span className="text-[hsl(var(--teal-deep))] font-bold">KHELI</span>
+            <Link to="/" className="flex shrink-0 items-center">
+              <span
+                className="text-[22px] font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Cholo<span className="text-[hsl(var(--teal-deep,var(--primary)))]">Kheli</span>
               </span>
             </Link>
           )}
         </div>
         <div className="flex items-center gap-1">
-          <LanguageSwitcher variant="chip" className="border border-border/60 text-muted-foreground hover:text-foreground" />
           <NotificationBell />
-          <button
-            type="button"
-            onClick={async () => {
-              haptic("medium");
-              await signOut();
-            }}
-            aria-label="Sign out"
-            className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground hover:text-foreground active:scale-95 transition-transform"
+          <Link
+            to={settingsHref as any}
+            onClick={() => haptic("light")}
+            aria-label="Settings"
+            className="grid h-9 w-9 place-items-center rounded-full text-foreground/80 hover:text-foreground active:scale-95 transition-transform"
           >
-            <LogOut className="h-4 w-4" />
-          </button>
+            <Settings className="h-[22px] w-[22px]" strokeWidth={1.75} />
+          </Link>
         </div>
       </div>
     </header>
