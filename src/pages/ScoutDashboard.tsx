@@ -227,7 +227,7 @@ const ScoutDashboard = () => {
  </div>
  <div className="ml-auto flex items-center gap-2">
  <ScoutSelectPlayer playerId={selectedPlayer.user_id} playerName={selectedPlayer.full_name} />
- <button onClick={() => setSelectedPlayer(null)} className="text-muted-foreground hover:text-foreground"></button>
+ <button onClick={() => setSelectedPlayer(null)} className="text-muted-foreground hover:text-foreground"><X className="h-5 w-5" /></button>
  </div>
  </div>
  <div className="aspect-video bg-secondary">

@@ -488,7 +488,7 @@ const PlayerVideosTab = () => {
  {role ==="scout" && (
  <ScoutSelectPlayer playerId={selectedVideo.user_id} playerName={selectedVideo.full_name} />
 )}
- <button onClick={() => setSelectedVideo(null)} className="text-muted-foreground hover:text-foreground text-lg"></button>
+ <button onClick={() => setSelectedVideo(null)} className="text-muted-foreground hover:text-foreground text-lg"><X className="h-5 w-5" /></button>
  </div>
  </div>
 
