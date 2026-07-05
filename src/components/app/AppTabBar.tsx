@@ -118,12 +118,6 @@ const AppTabBar = () => {
                     className={
                       useGradient
                         ? "h-[22px] w-[22px] text-white"
-                        : "h-[22px] w-[22px] text-foreground/70"
-                    }
-                  <Icon
-                    className={
-                      useGradient
-                        ? "h-[22px] w-[22px] text-white"
                         : isEmphasized
                         ? "h-[22px] w-[22px] text-foreground"
                         : "h-[22px] w-[22px] text-foreground/60"
