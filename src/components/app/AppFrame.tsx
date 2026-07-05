@@ -46,7 +46,7 @@ const AppFrame = ({ children }: { children: React.ReactNode }) => {
       <AppHeader />
       <main
         className="flex-1"
-        style={{ paddingBottom: "calc(4rem + env(safe-area-inset-bottom))" }}
+        style={{ paddingBottom: "calc(4.5rem + env(safe-area-inset-bottom))" }}
       >
         {children}
       </main>

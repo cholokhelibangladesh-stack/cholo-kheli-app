@@ -1,29 +1,16 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import CholoKheliMark from "@/components/CholoKheliMark";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
- * Cholo Kheli mark as shiny silver (via CSS mask + metallic gradient) with
- * a sweeping sheen, then animates OUT with a scale + fade + blur exit so
- * the transition never snaps. Auto-dismisses after ~2.2s (or on tap).
+ * official Cholo Kheli mark with a sweeping sheen, then animates OUT with
+ * a scale + fade + blur exit so the transition never snaps.
+ * Auto-dismisses after ~2.2s (or on tap).
  */
 
 const CANDY_BLUE = "#7EC8FF";
 const CANDY_BLUE_DEEP = "#4DA9F7";
-
-const SilverLogoMark = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 360 240" className={className} role="img" aria-label="Cholo Kheli" data-logo-mark style={{ display: "block" }}>
-    <g fill="none" stroke="#f7f9fb" strokeWidth="20" strokeLinecap="round" style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}>
-      <path d="M35 166C125 150 224 103 259 18" />
-      <path d="M89 185C183 162 289 94 302 9" />
-    </g>
-    <path
-      d="M281 111 342 218h-82l-45-62 37-58z"
-      fill="#f7f9fb"
-      style={{ filter: "drop-shadow(0 12px 22px rgba(20,50,90,0.38))" }}
-    />
-  </svg>
-);
 
 interface Props {
   onDone: () => void;
@@ -71,7 +58,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
-            style={{ width: "min(78vw, 360px)", aspectRatio: "1.49 / 1" }}
+            style={{ width: "min(70vw, 320px)", aspectRatio: "1 / 1" }}
           >
             {/* Soft glow behind mark */}
             <div
@@ -84,7 +71,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            <SilverLogoMark className="absolute inset-0 h-full w-full" />
+            <CholoKheliMark className="absolute inset-0 h-full w-full drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]" />
 
             {/* Sweeping specular sheen */}
             <div

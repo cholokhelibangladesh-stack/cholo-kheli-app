@@ -1,4 +1,4 @@
-import markAsset from "@/assets/cholo-kheli-mark.png.asset.json";
+import markAsset from "@/assets/cholo-kheli-mark-official.png.asset.json";
 
 interface Props {
   className?: string;
@@ -7,7 +7,7 @@ interface Props {
   accent?: string;
 }
 
-/* Official Cholo Kheli mark — three swooping arcs + triangular blade.
+/* Official Cholo Kheli mark — arched swoosh + triangular blade.
    Rendered from the brand PNG (transparent) so it matches the master artwork. */
 const CholoKheliMark = ({ className = "" }: Props) => (
   <img
