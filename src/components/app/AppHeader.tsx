@@ -87,7 +87,7 @@ const AppHeader = () => {
               aria-label="Cholo Kheli home"
               className="flex shrink-0 items-center active:scale-[0.97] transition-transform"
             >
-              <CholoKheliMark className="h-20 w-20 -my-2 drop-shadow-[0_4px_16px_hsl(var(--teal-deep)/0.55)]" />
+              <CholoKheliMark className="h-11 w-11 drop-shadow-[0_3px_12px_hsl(var(--teal-deep)/0.55)]" />
             </Link>
           )}
         </div>
