@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CholoKheliMark from "@/components/CholoKheliMark";
+import markAsset from "@/assets/cholo-kheli-mark-v2.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
@@ -71,7 +71,23 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            <CholoKheliMark className="absolute inset-0 h-full w-full drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]" />
+            {/* White mark, filled via CSS mask so the same asset renders
+                cleanly against the blue splash. */}
+            <span
+              aria-label="Cholo Kheli"
+              role="img"
+              className="absolute inset-0 h-full w-full bg-white drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]"
+              style={{
+                WebkitMaskImage: `url(${markAsset.url})`,
+                maskImage: `url(${markAsset.url})`,
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskPosition: "center",
+                maskPosition: "center",
+                WebkitMaskSize: "contain",
+                maskSize: "contain",
+              }}
+            />
 
             {/* Sweeping specular sheen */}
             <div
