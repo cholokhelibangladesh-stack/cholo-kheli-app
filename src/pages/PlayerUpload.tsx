@@ -307,7 +307,7 @@ const PlayerUpload = () => {
               )}
 
               {uploadsHalted ? (
-                <div className="bg-card border border-border rounded-xl p-10 text-center space-y-4">
+                <div className="glass-hub-card rounded-3xl p-10 text-center space-y-4">
                   <Video className="h-12 w-12 mx-auto text-muted-foreground opacity-30" />
                   <p className="font-display text-xl text-foreground">MONTHLY LIMIT REACHED!</p>
                   <p className="text-sm text-muted-foreground max-w-xs mx-auto">We will start accepting videos again next month. Thank you for your patience!</p>
@@ -315,7 +315,7 @@ const PlayerUpload = () => {
               ) : (
                 <div className="space-y-6">
                   {/* Sport */}
-                  <div className="bg-card border border-border rounded-xl p-6">
+                  <div className="glass-hub-card rounded-3xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Tag className="h-5 w-5 text-primary" />
                       <h2 className="font-display text-xl text-foreground">YOUR SPORT</h2>
@@ -358,7 +358,7 @@ const PlayerUpload = () => {
                   </div>
 
                   {/* File pick */}
-                  <div className="bg-card border border-border rounded-xl p-6">
+                  <div className="glass-hub-card rounded-3xl p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <Upload className="h-5 w-5 text-primary" />
                       <h2 className="font-display text-xl text-foreground">SELECT VIDEO</h2>
@@ -385,7 +385,7 @@ const PlayerUpload = () => {
                   </div>
 
                   {/* Details — always available so players can add caption, position & play style */}
-                  <div className="bg-card border border-border rounded-xl p-6 space-y-4">
+                  <div className="glass-hub-card rounded-3xl p-6 space-y-4">
                     <div className="flex items-center gap-3 mb-2">
                       <Tag className="h-5 w-5 text-primary" />
                       <h2 className="font-display text-xl text-foreground">DETAILS</h2>
@@ -433,7 +433,7 @@ const PlayerUpload = () => {
 
                   {/* Payment */}
                   {videoId && !paymentDone && (
-                    <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="glass-hub-card rounded-3xl p-6">
                       <div className="flex items-center gap-3 mb-4">
                         <CreditCard className="h-5 w-5 text-primary" />
                         <h2 className="font-display text-xl text-foreground">PAYMENT</h2>
@@ -459,7 +459,7 @@ const PlayerUpload = () => {
 
                   {/* Documents after payment */}
                   {paymentDone && (
-                    <div className="bg-card border border-border rounded-xl p-6">
+                    <div className="glass-hub-card rounded-3xl p-6">
                       <div className="flex items-center gap-3 mb-4">
                         <Award className="h-5 w-5 text-primary" />
                         <h2 className="font-display text-xl text-foreground">DOCUMENTS</h2>
@@ -482,7 +482,7 @@ const PlayerUpload = () => {
 
           {/* Documents for existing live video */}
           {allVideos.length > 0 && !showNewUpload && liveVideos.length > 0 && paymentDone && (
-            <div className="bg-card border border-border rounded-xl p-6">
+            <div className="glass-hub-card rounded-3xl p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Award className="h-5 w-5 text-primary" />
                 <h2 className="font-display text-xl text-foreground">DOCUMENTS</h2>
