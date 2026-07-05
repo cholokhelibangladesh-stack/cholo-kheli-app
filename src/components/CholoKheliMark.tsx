@@ -8,14 +8,28 @@ interface Props {
 }
 
 /* Official Cholo Kheli mark — arched swoosh + triangular blade.
-   Rendered from the brand PNG (transparent) so it matches the master artwork. */
+   The source PNG includes heavy transparent padding, so this component crops
+   to the artwork bounds before applying the requested display size. */
 const CholoKheliMark = ({ className = "" }: Props) => (
-  <img
-    src={markAsset.url}
-    alt="Cholo Kheli"
-    className={`object-contain ${className}`}
-    draggable={false}
-  />
+  <span
+    aria-label="Cholo Kheli"
+    role="img"
+    className={`relative block overflow-hidden ${className || "h-[18px] w-[24px]"}`}
+  >
+    <img
+      src={markAsset.url}
+      alt=""
+      aria-hidden="true"
+      className="pointer-events-none absolute max-w-none select-none"
+      style={{
+        width: "359.24%",
+        height: "263.64%",
+        left: "-132.07%",
+        top: "-57.34%",
+      }}
+      draggable={false}
+    />
+  </span>
 );
 
 export default CholoKheliMark;
