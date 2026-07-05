@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ScaffoldPage from "@/pages/settings/ScaffoldPage";
+import UserRelationPage from "@/pages/settings/UserRelationPage";
 export const Route = createFileRoute("/player/settings/muted")({
   component: () => (
-    <ScaffoldPage
-      title='Muted accounts'
-      description='Mute posts or stories from an account'
-      emptyTitle='No muted accounts'
-      emptyText='Mute an account to stop seeing their posts.'
+    <UserRelationPage
+      title="Muted accounts"
+      description="You won't see their posts in your feed"
+      emptyText="Mute an account to stop seeing their posts."
+      table="muted_users"
+      ownerColumn="user_id"
+      targetColumn="muted_id"
+      addLabel="Mute"
+      removeLabel="Unmute"
     />
   ),
 });

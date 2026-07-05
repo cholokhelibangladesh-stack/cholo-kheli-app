@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ScaffoldPage from "@/pages/settings/ScaffoldPage";
+import UserRelationPage from "@/pages/settings/UserRelationPage";
 export const Route = createFileRoute("/player/settings/close-friends")({
   component: () => (
-    <ScaffoldPage
-      title='Close Friends'
-      description='Share stories with a smaller group'
-      emptyTitle='No close friends yet'
-      emptyText='Add close friends so only they see your close-friends-only content.'
+    <UserRelationPage
+      title="Close Friends"
+      description="Share close-friends-only content with a smaller group"
+      emptyText="Add close friends so only they see your close-friends-only content."
+      table="close_friends"
+      ownerColumn="user_id"
+      targetColumn="friend_id"
+      addLabel="Add"
+      removeLabel="Remove"
     />
   ),
 });
