@@ -668,7 +668,7 @@ const Team = () => {
                   transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
                 },
               }}
-              className="text-foreground text-2xl md:text-3xl leading-[1.35] font-display tracking-[-0.01em] max-w-2xl"
+              className="text-foreground text-2xl md:text-3xl leading-[1.35] font-display tracking-[-0.01em] max-w-2xl w-full min-w-0 break-words hyphens-auto"
             >
               {t("mission.team.quote")}
             </motion.p>
