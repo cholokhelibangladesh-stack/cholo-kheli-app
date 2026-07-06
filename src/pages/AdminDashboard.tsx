@@ -800,8 +800,10 @@ const AdminDashboard = () => {
  {/* Username Audit Tab */}
  <TabsContent value="audit">
  <UsernameAuditTab />
- </TabsContent>
- </Tabs>
+  </TabsContent>
+            </div>
+          </Tabs>
+
  </motion.div>
  </div>
  </div>
