@@ -33,9 +33,9 @@ STATE_DIR.mkdir(parents=True, exist_ok=True)
 VIEWPORT = {"width": 390, "height": 844}
 
 ACCOUNTS = [
-    dict(role="player", email="player@cholokheli.test",  password="Player123!", dashboard="/player"),
-    dict(role="scout",  email="scout@cholokheli.test",   password="Scout123!",  dashboard="/scout"),
-    dict(role="admin",  email="admin@cholokheli.test",   password="Admin123!",  dashboard="/admin"),
+    dict(role="player", email="player-test@cholokheli.test", password="PlayerTest#2026", dashboard="/player"),
+    dict(role="scout",  email="scout-test@cholokheli.test",  password="ScoutTest#2026",  dashboard="/scout"),
+    dict(role="admin",  email="admin-test@cholokheli.test",  password="AdminTest#2026",  dashboard="/admin"),
 ]
 
 PUBLIC_ROUTES = ["/", "/auth", "/mission", "/safe-scouting", "/faq", "/privacy-policy"]

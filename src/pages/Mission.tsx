@@ -366,7 +366,7 @@ const WhatWeDo = () => {
               return (
                 <motion.div
                   key={w.title}
-                  initial={{ opacity: 0, x: 60 }}
+                  initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{
