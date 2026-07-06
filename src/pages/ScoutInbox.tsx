@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Inbox, Check, X, User, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "@tanstack/react-router";
 
 interface Share {
   id: string;
@@ -108,16 +107,15 @@ const ScoutInbox = () => {
                 </p>
               )}
               <div className="flex gap-2">
-                <Link
-                  to={"/resume/$userId" as any}
-                  params={{ userId: r.player_id }}
+                <a
+                  href={`/resume/${r.player_id}`}
                   onClick={() => r.status === "sent" && markViewed(r.id)}
                   className="flex-1"
                 >
                   <Button size="sm" className="w-full rounded-full text-xs">
                     <ExternalLink className="h-3 w-3 mr-1" /> View profile
                   </Button>
-                </Link>
+                </a>
                 {r.status === "sent" && (
                   <Button size="sm" variant="outline" onClick={() => markViewed(r.id)} className="rounded-full text-xs">
                     <Check className="h-3 w-3 mr-1" /> Mark read
