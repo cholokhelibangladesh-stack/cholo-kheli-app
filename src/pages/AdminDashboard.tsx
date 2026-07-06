@@ -626,7 +626,7 @@ const AdminDashboard = () => {
  <Button size="sm" variant="outline" onClick={() => updateScoutStatus(s.id,"rejected")} className="flex-1 border-destructive/40 text-destructive hover:bg-destructive/10 rounded-full text-xs">Reject</Button>
  </>
 )}
- <Button size="sm" variant="outline" onClick={() => banScout(s.user_id, s.is_banned || false)}
+ <Button size="sm" variant="outline" onClick={() => banScout(s.user_id, s.is_banned || false, s.full_name ||"scout")}
  className={`flex-1 rounded-full text-xs ${s.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
  <Ban className="h-3 w-3 mr-1" />{s.is_banned ?"Unban" :"Ban"}
  </Button>
@@ -639,16 +639,24 @@ const AdminDashboard = () => {
  <TabsContent value="players" className="space-y-3">
  <p className="text-xs text-muted-foreground mb-2">{players.length} registered players</p>
  {players.length === 0 ? <p className="text-muted-foreground text-center py-12">No players found.</p> : players.map((p) => (
- <div key={p.user_id} className="apple-glass glass-card rounded-xl p-4 flex items-center justify-between gap-3">
+ <div key={p.user_id} className="apple-glass glass-card rounded-xl p-4 space-y-3">
+ <div className="flex items-start justify-between gap-3">
  <div className="flex-1 min-w-0">
  <p className={`font-semibold truncate ${p.is_banned ?"line-through text-muted-foreground" :"text-foreground"}`}>{p.full_name}</p>
  <p className="text-xs text-muted-foreground">{p.sport ||"No sport"}</p>
  {p.is_banned && <Badge className="mt-1 text-[10px] bg-destructive/20 text-destructive border-destructive/30 rounded-full">Banned</Badge>}
  </div>
- <Button size="sm" variant="outline" onClick={() => banPlayer(p.user_id, p.is_banned || false)}
- className={`rounded-full text-xs shrink-0 ${p.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
+ </div>
+ <div className="flex gap-2">
+ <Button size="sm" variant="outline" onClick={() => setShareTarget({ userId: p.user_id, name: p.full_name })}
+ className="flex-1 rounded-full text-xs border-primary/40 text-primary hover:bg-primary/10">
+ <Send className="h-3 w-3 mr-1" /> Share to scout
+ </Button>
+ <Button size="sm" variant="outline" onClick={() => banPlayer(p.user_id, p.is_banned || false, p.full_name)}
+ className={`flex-1 rounded-full text-xs ${p.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
  <Ban className="h-3 w-3 mr-1" />{p.is_banned ?"Unban" :"Ban"}
  </Button>
+ </div>
  </div>
 ))}
  </TabsContent>
