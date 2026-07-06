@@ -46,7 +46,7 @@ const SettingsShell = ({
         </div>
         {right}
       </header>
-      <div className="mx-auto max-w-[430px] px-4 pt-4">{children}</div>
+      <div className="mx-auto w-full max-w-[430px] px-4 pt-4 sm:max-w-2xl sm:px-6 lg:max-w-3xl">{children}</div>
     </div>
   );
 };
