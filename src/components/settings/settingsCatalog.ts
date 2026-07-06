@@ -59,7 +59,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
 
   // Who can see your profile
   { id: "privacy", label: "Profile visibility", to: "/player/settings/privacy", icon: Lock, group: G.visibility, keywords: "private public" },
-  { id: "close-friends", label: "Trusted circle", to: "/player/settings/close-friends", icon: Star, group: G.visibility, keywords: "close friends" },
+  
   { id: "blocked", label: "Blocked accounts", to: "/player/settings/blocked", icon: Ban, group: G.visibility, keywords: "block ignore" },
   { id: "story", label: "Live and location", to: "/player/settings/story", icon: EyeOff, group: G.visibility },
 
