@@ -53,11 +53,13 @@ def rec(name, ok, detail=""):
 
 async def sign_in(page, email, password):
     await page.goto(BASE + "/auth", wait_until="domcontentloaded")
-    await page.wait_for_timeout(700)
-    await page.get_by_label("Email", exact=False).first.fill(email)
-    await page.get_by_label("Password", exact=False).first.fill(password)
-    await page.get_by_role("button", name="Sign In", exact=False).click()
-    await page.wait_for_timeout(6000)
+    await page.wait_for_timeout(1500)
+    await page.fill("#email", email)
+    await page.fill("#password", password)
+    # Exact match — "Sign In" (login) vs "Sign Up" (toggle) collide otherwise.
+    await page.get_by_role("button", name="Sign In", exact=True).click()
+    await page.wait_for_timeout(4000)
+
 
 
 async def check_overflow(page):
