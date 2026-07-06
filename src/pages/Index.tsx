@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from"react";
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, useSpring } from"framer-motion";
-import { Link } from"@tanstack/react-router";
+import { Link, useNavigate } from"@tanstack/react-router";
 import {
  ArrowRight, ArrowLeft, Users, Shield, Trophy, Twitter, Facebook,
- Instagram, Youtube, ChevronDown, Zap
+ Instagram, Youtube, ChevronDown, Zap, Loader2
 } from"lucide-react";
 import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
@@ -306,13 +306,25 @@ const ScoutCarouselCard = React.forwardRef<HTMLDivElement, { scout: ScoutProfile
  PAGE
 ════════════════════════════════════════════ */
 const Index = () => {
- const { user, role } = useAuth();
+ const { user, role, loading: authLoading } = useAuth();
+ const navigate = useNavigate();
  const { lang } = useLanguage();
  const T = COPY[lang];
  const [verifiedScouts, setVerifiedScouts] = useState<ScoutProfile[]>(FALLBACK_SCOUTS);
  const [scoutIndex, setScoutIndex] = useState(0);
+
+ // Auto-redirect returning signed-in users straight to their in-app home,
+ // so re-opening the app after signup lands on the dashboard, not marketing.
+ const shouldRedirect = !authLoading && !!user && !!role;
+ useEffect(() => {
+   if (!shouldRedirect) return;
+   const dest = role === "admin" ? "/admin" : role === "scout" ? "/scout" : "/player";
+   navigate({ to: dest as any, replace: true });
+ }, [shouldRedirect, role, navigate]);
+
  // 3D logo intro — plays once per page load. Session-storage guarded so
  // it doesn't replay on client-side re-renders / route re-mounts.
+ // Skip the intro entirely for signed-in users being redirected.
  const [showIntro, setShowIntro] = useState<boolean>(() => {
  if (typeof window ==="undefined") return false;
  try {
