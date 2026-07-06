@@ -2,27 +2,18 @@ import React, { useState, useEffect, useRef } from"react";
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, useSpring } from"framer-motion";
 import { Link, useNavigate } from"@tanstack/react-router";
 import {
- ArrowRight, ArrowLeft, Users, Shield, Trophy, Twitter, Facebook,
- Instagram, Youtube, ChevronDown, Zap, Loader2
+ ArrowRight, ArrowLeft, Shield, Twitter, Facebook,
+ Instagram, Youtube, ChevronDown, Loader2
 } from"lucide-react";
 import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
 import { supabase } from"@/integrations/supabase/client";
-import CurvedAthleteCarousel from"@/components/CurvedAthleteCarousel";
-import VideoHighlights from"@/components/VideoHighlights";
 import CholoKheliMark from"@/components/CholoKheliMark";
 import HeroMistCursor from"@/components/HeroMistCursor";
 import HeroScrollVideo from"@/components/HeroScrollVideo";
 import Logo3DIntro from"@/components/Logo3DIntro";
 import heroImg from"@/assets/hero-cricket.jpg.asset.json";
-import statsImg from"@/assets/stats-football.jpg.asset.json";
-import stadiumImg from"@/assets/stadium-dusk.jpg.asset.json";
 import footballerImg from"@/assets/footballer-motion.jpg.asset.json";
-import phoneDashboard from"@/assets/phone-dashboard-v2.png.asset.json";
-import phonePlaystore from"@/assets/phone-playstore.png.asset.json";
-import sportFootball from"@/assets/sport-football.jpg.asset.json";
-import sportCricket from"@/assets/sport-cricket.jpg.asset.json";
-import sportBasketball from"@/assets/sport-basketball.jpg.asset.json";
 import { safeMediaUrl } from"@/lib/sanitize";
 import { useLanguage } from"@/i18n/LanguageProvider";
 
