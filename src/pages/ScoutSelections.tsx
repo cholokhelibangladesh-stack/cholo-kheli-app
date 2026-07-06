@@ -192,6 +192,24 @@ const ScoutSelections = () => {
     };
   }, [user, refetch]);
 
+  // Auto-poll when a request is approved but the details payload hasn't arrived yet
+  useEffect(() => {
+    const pendingDetails = requests.some(
+      (r) => r.status === "approved" && !r.player_details,
+    );
+    if (!pendingDetails) return;
+    const t = setInterval(() => {
+      refetch();
+    }, 4000);
+    return () => clearInterval(t);
+  }, [requests, refetch]);
+
+  const manualRefresh = async (id: string) => {
+    setRefreshingId(id);
+    await refetch();
+    setRefreshingId(null);
+  };
+
   const rescind = async (r: ScoutRequest) => {
     setActioning(r.id);
     const snapshot = requests;
