@@ -12,6 +12,8 @@ import {
   RotateCcw,
   X,
   Inbox,
+  Sparkles,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
