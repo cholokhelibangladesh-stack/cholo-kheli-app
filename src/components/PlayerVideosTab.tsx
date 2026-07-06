@@ -328,7 +328,25 @@ const PlayerVideosTab = () => {
  v.position_tags.some((t) => t.toLowerCase().includes(search.toLowerCase()))
 );
 
- if (loading) return <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
+ if (loading) {
+ if (mobile) {
+ return (
+ <div className="flex justify-center py-12">
+ <Loader2 className="h-6 w-6 animate-spin text-primary" />
+ </div>
+ );
+ }
+ return (
+ <div className="space-y-4" aria-busy="true" aria-label="Loading videos">
+ <div className="h-10 w-full sk-shimmer rounded-full" />
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+ {Array.from({ length: 6 }).map((_, i) => (
+ <div key={i} className="aspect-square sk-shimmer rounded-md" />
+ ))}
+ </div>
+ </div>
+ );
+ }
 
  // ── MOBILE: Reels feed ──────────────────────────────────────
  if (mobile) {
