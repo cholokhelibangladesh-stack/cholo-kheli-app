@@ -35,7 +35,13 @@ const AppHeader = () => {
 
   const isTabRoot = TAB_ROOTS.has(pathname);
   const settingsHref =
-    role === "scout" ? "/scout/settings" : role === "player" ? "/player/settings" : "/";
+    role === "scout"
+      ? "/scout/settings"
+      : role === "player"
+        ? "/player/settings"
+        : role === "admin"
+          ? "/admin/settings"
+          : "/";
   const homeHref =
     role === "scout" ? "/scout" : role === "player" ? "/player" : role === "admin" ? "/admin" : "/";
 
