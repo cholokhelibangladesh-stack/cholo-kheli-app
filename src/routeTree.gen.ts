@@ -15,6 +15,7 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as MissionRouteImport } from './routes/mission'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoutIndexRouteImport } from './routes/scout/index'
@@ -118,6 +119,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SplatRoute = SplatRouteImport.update({
   id: '/$',
   path: '/$',
@@ -139,9 +145,9 @@ const PlayerIndexRoute = PlayerIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ScoutSettingsRoute = ScoutSettingsRouteImport.update({
   id: '/scout/settings',
@@ -498,6 +504,7 @@ const PlayerSettingsAboutRoute = PlayerSettingsAboutRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
@@ -657,6 +664,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
@@ -739,6 +747,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$'
+    | '/admin'
     | '/auth'
     | '/faq'
     | '/mission'
@@ -897,6 +906,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/$'
+    | '/admin'
     | '/auth'
     | '/faq'
     | '/mission'
@@ -978,6 +988,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   FaqRoute: typeof FaqRoute
   MissionRoute: typeof MissionRoute
@@ -994,7 +1005,6 @@ export interface RootRouteChildren {
   ScoutProfileRoute: typeof ScoutProfileRoute
   ScoutSelectionsRoute: typeof ScoutSelectionsRoute
   ScoutSettingsRoute: typeof ScoutSettingsRouteWithChildren
-  AdminIndexRoute: typeof AdminIndexRoute
   PlayerIndexRoute: typeof PlayerIndexRoute
   ScoutIndexRoute: typeof ScoutIndexRoute
 }
@@ -1043,6 +1053,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$': {
       id: '/$'
       path: '/$'
@@ -1073,10 +1090,10 @@ declare module '@tanstack/react-router' {
     }
     '/admin/': {
       id: '/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/scout/settings': {
       id: '/scout/settings'
@@ -1550,6 +1567,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminModerationRoute: typeof AdminModerationRoute
+  AdminPanelRoute: typeof AdminPanelRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminVideosRoute: typeof AdminVideosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminModerationRoute: AdminModerationRoute,
+  AdminPanelRoute: AdminPanelRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminVideosRoute: AdminVideosRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface PlayerSettingsRouteChildren {
   PlayerSettingsAboutRoute: typeof PlayerSettingsAboutRoute
   PlayerSettingsAccessibilityRoute: typeof PlayerSettingsAccessibilityRoute
@@ -1675,6 +1714,7 @@ const ScoutSettingsRouteWithChildren = ScoutSettingsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   FaqRoute: FaqRoute,
   MissionRoute: MissionRoute,
@@ -1691,7 +1731,6 @@ const rootRouteChildren: RootRouteChildren = {
   ScoutProfileRoute: ScoutProfileRoute,
   ScoutSelectionsRoute: ScoutSelectionsRoute,
   ScoutSettingsRoute: ScoutSettingsRouteWithChildren,
-  AdminIndexRoute: AdminIndexRoute,
   PlayerIndexRoute: PlayerIndexRoute,
   ScoutIndexRoute: ScoutIndexRoute,
 }
