@@ -424,9 +424,56 @@ const ScoutSelections = () => {
                                 </Button>
                               </>
                             ) : r.status === "approved" ? (
-                              <p className="text-sm text-muted-foreground text-center py-2">
-                                Approved — full details will appear here shortly.
-                              </p>
+                              <div className="py-3 space-y-3">
+                                <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-semibold">
+                                  Player details (forwarded by admin)
+                                </p>
+                                <div className="flex items-start gap-3">
+                                  <div className="grid h-10 w-10 place-items-center rounded-2xl bg-primary/10 text-primary shrink-0">
+                                    <Sparkles className="h-5 w-5" />
+                                  </div>
+                                  <div className="min-w-0 flex-1">
+                                    <p className="text-sm font-medium text-foreground">
+                                      Approved — preparing details
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-0.5">
+                                      The admin approved your request. The player's contact
+                                      details will land here in a moment.
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="space-y-2" aria-hidden="true">
+                                  <div className="h-3 w-1/2 sk-shimmer rounded" />
+                                  <div className="h-3 w-2/3 sk-shimmer rounded" />
+                                  <div className="h-3 w-1/3 sk-shimmer rounded" />
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    disabled={refreshingId === r.id}
+                                    onClick={() => manualRefresh(r.id)}
+                                    className="rounded-full text-xs border-border"
+                                  >
+                                    {refreshingId === r.id ? (
+                                      <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                    ) : (
+                                      <RefreshCw className="h-3 w-3 mr-1" />
+                                    )}
+                                    Check again
+                                  </Button>
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() =>
+                                      navigate({ to: `/resume/${r.player_id}` as any })
+                                    }
+                                    className="rounded-full text-xs text-primary hover:text-primary"
+                                  >
+                                    View public profile →
+                                  </Button>
+                                </div>
+                              </div>
                             ) : r.status === "pending" ? (
                               <div className="space-y-3">
                                 <p className="text-sm text-muted-foreground text-center py-1">
