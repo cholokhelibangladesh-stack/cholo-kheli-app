@@ -57,7 +57,7 @@ async def sign_in(page, email, password):
     await page.get_by_label("Email", exact=False).first.fill(email)
     await page.get_by_label("Password", exact=False).first.fill(password)
     await page.get_by_role("button", name="Sign In", exact=False).click()
-    await page.wait_for_timeout(2500)
+    await page.wait_for_timeout(6000)
 
 
 async def check_overflow(page):
@@ -133,7 +133,7 @@ async def main():
             try:
                 await page.goto(BASE + "/", wait_until="domcontentloaded", timeout=15000)
                 # Wait for auth-driven redirect
-                await page.wait_for_timeout(2500)
+                await page.wait_for_timeout(6000)
                 final = page.url
                 ok = acc["dashboard"] in final
                 await page.screenshot(path=str(OUT / f"reopen_{role}.png"))
