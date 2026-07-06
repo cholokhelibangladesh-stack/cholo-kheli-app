@@ -17,6 +17,8 @@ import UsernameAuditTab from"@/components/UsernameAuditTab";
 import AdminNewsManager from"@/components/AdminNewsManager";
 import UploadPriceControl from"@/components/UploadPriceControl";
 import AdminAnalyticsHero from"@/components/AdminAnalyticsHero";
+import BanDialog from"@/components/admin/BanDialog";
+import ShareToScoutDialog from"@/components/admin/ShareToScoutDialog";
 
 
 interface ScoutRow { id: string; user_id: string; organization: string | null; verification_status: string; created_at: string; full_name?: string; username?: string | null; email?: string | null; is_banned?: boolean; }
@@ -114,7 +116,10 @@ const AdminDashboard = () => {
  const [loading, setLoading] = useState(true);
  const [feedbackInputs, setFeedbackInputs] = useState<Record<string, string>>({});
  const [uploadsHalted, setUploadsHalted] = useState(false);
- const [haltLoading, setHaltLoading] = useState(false);
+  const [haltLoading, setHaltLoading] = useState(false);
+  // Ban dialog / share dialog state
+  const [banTarget, setBanTarget] = useState<{ userId: string; name: string; scope:"profile" |"scout" } | null>(null);
+  const [shareTarget, setShareTarget] = useState<{ userId: string; name: string } | null>(null);
  // Search & filter states — persisted across reloads via localStorage
  const [scoutSearch, setScoutSearch] = usePersistedString("scoutSearch","");
  const [scoutFilter, setScoutFilter] = usePersistedString("scoutFilter","all");
@@ -283,17 +288,26 @@ const AdminDashboard = () => {
  else { toast({ title: `Scout ${status ==="active" ?"approved" :"rejected"}` }); fetchAll(); }
  };
 
- const banScout = async (scoutUserId: string, banned: boolean) => {
- const { error } = await supabase.from("scout_profiles").update({ is_banned: !banned } as any).eq("user_id", scoutUserId);
- if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
- else { toast({ title: !banned ?"Scout banned" :"Scout unbanned" }); fetchAll(); }
- };
+  const banScout = async (scoutUserId: string, banned: boolean, name: string) => {
+    if (banned) {
+      // Unban immediately, no dialog
+      const { error } = await (supabase as any).rpc("admin_set_ban", { _target_user: scoutUserId, _scope:"scout", _banned: false });
+      if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
+      else { toast({ title:"Scout unbanned" }); fetchAll(); }
+    } else {
+      setBanTarget({ userId: scoutUserId, name, scope:"scout" });
+    }
+  };
 
- const banPlayer = async (playerUserId: string, banned: boolean) => {
- const { error } = await supabase.from("profiles").update({ is_banned: !banned } as any).eq("user_id", playerUserId);
- if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
- else { toast({ title: !banned ?"Player banned" :"Player unbanned" }); fetchAll(); }
- };
+  const banPlayer = async (playerUserId: string, banned: boolean, name: string) => {
+    if (banned) {
+      const { error } = await (supabase as any).rpc("admin_set_ban", { _target_user: playerUserId, _scope:"profile", _banned: false });
+      if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
+      else { toast({ title:"Player unbanned" }); fetchAll(); }
+    } else {
+      setBanTarget({ userId: playerUserId, name, scope:"profile" });
+    }
+  };
 
  const toggleUploadsHalt = async () => {
  setHaltLoading(true);
