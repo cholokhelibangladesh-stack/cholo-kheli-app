@@ -54,7 +54,7 @@ const AdminUsersPage = () => {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search by name or username"
-          className="rounded-2xl border-white/12 bg-white/[0.05] pl-9"
+          className="rounded-2xl border-border/70 bg-muted/40 dark:border-white/12 dark:bg-white/[0.05] pl-9"
         />
       </div>
       {loading ? (
@@ -65,7 +65,7 @@ const AdminUsersPage = () => {
         <SettingsCard>
           {filtered.map((r) => (
             <div key={r.user_id} className="flex items-center gap-3 px-4 py-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-white/10 text-xs font-semibold text-foreground/80">
+              <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-muted/60 dark:bg-white/10 text-xs font-semibold text-foreground/80">
                 {r.avatar_url ? (
                   <img src={r.avatar_url} alt={r.full_name} className="h-full w-full object-cover" />
                 ) : (
@@ -81,10 +81,10 @@ const AdminUsersPage = () => {
               <span
                 className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
                   r.role === "admin"
-                    ? "border-amber-400/40 text-amber-300"
+                    ? "border-[hsl(var(--candy))]/50 bg-[hsl(var(--candy))]/10 text-[hsl(var(--teal-deep))] dark:text-[hsl(var(--candy))]"
                     : r.role === "scout"
-                      ? "border-[hsl(var(--teal-deep))]/40 text-[hsl(var(--teal-deep))]"
-                      : "border-white/15 text-foreground/70"
+                      ? "border-primary/40 bg-primary/10 text-primary"
+                      : "border-border text-foreground/70"
                 }`}
               >
                 {r.role === "admin" ? (
@@ -97,7 +97,7 @@ const AdminUsersPage = () => {
                 )}
               </span>
               {r.is_banned ? (
-                <span className="rounded-full border border-rose-400/40 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-rose-300">
+                <span className="rounded-full border border-destructive/40 bg-destructive/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-destructive">
                   Banned
                 </span>
               ) : null}

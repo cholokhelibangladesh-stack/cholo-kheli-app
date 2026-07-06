@@ -39,7 +39,7 @@ const AdminReportsPage = () => {
       ) : rows.length === 0 ? (
         <SettingsCard>
           <div className="p-8 text-center">
-            <ShieldCheck className="mx-auto h-6 w-6 text-emerald-400" />
+            <ShieldCheck className="mx-auto h-6 w-6 text-primary" />
             <div className="mt-2 text-sm font-medium">Queue is clear</div>
           </div>
         </SettingsCard>
@@ -54,10 +54,10 @@ const AdminReportsPage = () => {
                   <span
                     className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase ${
                       isApproved
-                        ? "border-emerald-400/40 text-emerald-300"
+                        ? "border-primary/40 bg-primary/10 text-primary"
                         : isRejected
-                          ? "border-rose-400/40 text-rose-300"
-                          : "border-amber-400/40 text-amber-300"
+                          ? "border-destructive/40 bg-destructive/10 text-destructive"
+                          : "border-[hsl(var(--candy))]/50 bg-[hsl(var(--candy))]/10 text-[hsl(var(--teal-deep))] dark:text-[hsl(var(--candy))]"
                     }`}
                   >
                     {isApproved ? (
@@ -75,8 +75,8 @@ const AdminReportsPage = () => {
                   <div className="mt-2 text-xs leading-snug text-foreground/85">{r.notes}</div>
                 ) : null}
                 {r.admin_response ? (
-                  <div className="mt-1 rounded-lg border border-white/10 bg-white/[0.04] p-2 text-xs text-foreground/70">
-                    <span className="font-semibold text-foreground/85">Admin: </span>
+                  <div className="mt-1 rounded-lg border border-border/70 bg-muted/40 dark:border-white/10 dark:bg-white/[0.04] p-2 text-xs text-foreground/80">
+                    <span className="font-semibold text-foreground">Admin: </span>
                     {r.admin_response}
                   </div>
                 ) : null}

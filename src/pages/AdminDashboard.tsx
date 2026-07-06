@@ -470,7 +470,7 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="min-h-screen pt-16 pb-20 md:pb-8 bg-[hsl(var(--paper))]">
+    <div className="min-h-screen pt-16 pb-20 md:pb-8 bg-background">
       <div className="container">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           {/* Header */}
