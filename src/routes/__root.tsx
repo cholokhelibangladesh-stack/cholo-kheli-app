@@ -138,17 +138,25 @@ function ShellRouter() {
   if (inApp) {
     return (
       <AppFrame>
-        <Outlet />
+        <main id="main">
+          <Outlet />
+        </main>
       </AppFrame>
     );
   }
   if (isAppIntro) {
-    return <Outlet />;
+    return (
+      <main id="main">
+        <Outlet />
+      </main>
+    );
   }
   return (
     <>
       <FloatingHeader />
-      <Outlet />
+      <main id="main">
+        <Outlet />
+      </main>
       <SiteFooter />
     </>
   );
