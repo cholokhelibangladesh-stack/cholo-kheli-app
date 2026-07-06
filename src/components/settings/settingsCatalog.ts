@@ -1,10 +1,10 @@
 import {
   Bookmark, Archive as ArchiveIcon, Activity, Bell, Clock,
-  Lock, Users, Ban, EyeOff, CircleSlash, MessageSquare,
-  AtSign, Share2, Type, UserPlus, Star, VolumeX, ListFilter, Heart,
+  Lock, Users, Ban, EyeOff, CircleSlash,
+  AtSign, Share2, Type, UserPlus, Star, VolumeX, ListFilter,
   Smartphone, Download, Accessibility, Languages, Signal,
   BadgeCheck, Receipt, LifeBuoy, ShieldCheck, UserCircle2, Info,
-  Bot, KeyRound, Fingerprint, MonitorSmartphone, AlertTriangle,
+  KeyRound, Fingerprint, MonitorSmartphone, AlertTriangle,
   Flag, Trophy, Video,
   LogOut,
   type LucideIcon,
