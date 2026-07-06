@@ -47,6 +47,7 @@ import { Route as PlayerSettingsTagsRouteImport } from './routes/player/settings
 import { Route as PlayerSettingsTabletsRouteImport } from './routes/player/settings.tablets'
 import { Route as PlayerSettingsStoryRouteImport } from './routes/player/settings.story'
 import { Route as PlayerSettingsSharingRouteImport } from './routes/player/settings.sharing'
+import { Route as PlayerSettingsSessionsRouteImport } from './routes/player/settings.sessions'
 import { Route as PlayerSettingsSavedRouteImport } from './routes/player/settings.saved'
 import { Route as PlayerSettingsRestrictedRouteImport } from './routes/player/settings.restricted'
 import { Route as PlayerSettingsPrivacyCenterRouteImport } from './routes/player/settings.privacy-center'
@@ -276,6 +277,11 @@ const PlayerSettingsStoryRoute = PlayerSettingsStoryRouteImport.update({
 const PlayerSettingsSharingRoute = PlayerSettingsSharingRouteImport.update({
   id: '/sharing',
   path: '/sharing',
+  getParentRoute: () => PlayerSettingsRoute,
+} as any)
+const PlayerSettingsSessionsRoute = PlayerSettingsSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
 const PlayerSettingsSavedRoute = PlayerSettingsSavedRouteImport.update({
@@ -548,6 +554,7 @@ export interface FileRoutesByFullPath {
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
   '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sessions': typeof PlayerSettingsSessionsRoute
   '/player/settings/sharing': typeof PlayerSettingsSharingRoute
   '/player/settings/story': typeof PlayerSettingsStoryRoute
   '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
@@ -624,6 +631,7 @@ export interface FileRoutesByTo {
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
   '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sessions': typeof PlayerSettingsSessionsRoute
   '/player/settings/sharing': typeof PlayerSettingsSharingRoute
   '/player/settings/story': typeof PlayerSettingsStoryRoute
   '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
@@ -703,6 +711,7 @@ export interface FileRoutesById {
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
   '/player/settings/saved': typeof PlayerSettingsSavedRoute
+  '/player/settings/sessions': typeof PlayerSettingsSessionsRoute
   '/player/settings/sharing': typeof PlayerSettingsSharingRoute
   '/player/settings/story': typeof PlayerSettingsStoryRoute
   '/player/settings/tablets': typeof PlayerSettingsTabletsRoute
@@ -783,6 +792,7 @@ export interface FileRouteTypes {
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
     | '/player/settings/saved'
+    | '/player/settings/sessions'
     | '/player/settings/sharing'
     | '/player/settings/story'
     | '/player/settings/tablets'
@@ -859,6 +869,7 @@ export interface FileRouteTypes {
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
     | '/player/settings/saved'
+    | '/player/settings/sessions'
     | '/player/settings/sharing'
     | '/player/settings/story'
     | '/player/settings/tablets'
@@ -937,6 +948,7 @@ export interface FileRouteTypes {
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
     | '/player/settings/saved'
+    | '/player/settings/sessions'
     | '/player/settings/sharing'
     | '/player/settings/story'
     | '/player/settings/tablets'
@@ -1241,6 +1253,13 @@ declare module '@tanstack/react-router' {
       path: '/sharing'
       fullPath: '/player/settings/sharing'
       preLoaderRoute: typeof PlayerSettingsSharingRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
+    '/player/settings/sessions': {
+      id: '/player/settings/sessions'
+      path: '/sessions'
+      fullPath: '/player/settings/sessions'
+      preLoaderRoute: typeof PlayerSettingsSessionsRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
     '/player/settings/saved': {
@@ -1569,6 +1588,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsPrivacyCenterRoute: typeof PlayerSettingsPrivacyCenterRoute
   PlayerSettingsRestrictedRoute: typeof PlayerSettingsRestrictedRoute
   PlayerSettingsSavedRoute: typeof PlayerSettingsSavedRoute
+  PlayerSettingsSessionsRoute: typeof PlayerSettingsSessionsRoute
   PlayerSettingsSharingRoute: typeof PlayerSettingsSharingRoute
   PlayerSettingsStoryRoute: typeof PlayerSettingsStoryRoute
   PlayerSettingsTabletsRoute: typeof PlayerSettingsTabletsRoute
@@ -1619,6 +1639,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsPrivacyCenterRoute: PlayerSettingsPrivacyCenterRoute,
   PlayerSettingsRestrictedRoute: PlayerSettingsRestrictedRoute,
   PlayerSettingsSavedRoute: PlayerSettingsSavedRoute,
+  PlayerSettingsSessionsRoute: PlayerSettingsSessionsRoute,
   PlayerSettingsSharingRoute: PlayerSettingsSharingRoute,
   PlayerSettingsStoryRoute: PlayerSettingsStoryRoute,
   PlayerSettingsTabletsRoute: PlayerSettingsTabletsRoute,

@@ -1,10 +1,10 @@
 import {
   Bookmark, Archive as ArchiveIcon, Activity, Bell, Clock,
-  Lock, Users, Ban, EyeOff, CircleSlash, MessageSquare,
-  AtSign, Share2, Type, UserPlus, Star, VolumeX, ListFilter, Heart,
+  Lock, Users, Ban, EyeOff, CircleSlash,
+  AtSign, Share2, Type, UserPlus, Star, VolumeX, ListFilter,
   Smartphone, Download, Accessibility, Languages, Signal,
   BadgeCheck, Receipt, LifeBuoy, ShieldCheck, UserCircle2, Info,
-  Bot, KeyRound, Fingerprint, MonitorSmartphone, AlertTriangle,
+  KeyRound, Fingerprint, MonitorSmartphone, AlertTriangle,
   Flag, Trophy, Video,
   LogOut,
   type LucideIcon,
@@ -47,7 +47,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
   // Your account (former Accounts Center rows, inlined)
   { id: "personal-details", label: "Personal details", to: "/player/settings/personal-details", icon: UserCircle2, group: G.account, keywords: "name email phone dob first last" },
   { id: "password", label: "Password and passkeys", to: "/player/settings/password", icon: KeyRound, group: G.account, keywords: "change password reset" },
-  { id: "sign-in-devices", label: "Sign-in devices", to: "/player/settings/devices", icon: MonitorSmartphone, group: G.account, keywords: "sessions logout everywhere" },
+  { id: "sign-in-devices", label: "Sign-in devices", to: "/player/settings/sessions", icon: MonitorSmartphone, group: G.account, keywords: "sessions logout everywhere where signed in" },
   { id: "two-factor", label: "Two-step verification", to: "/player/settings/two-factor", icon: Fingerprint, group: G.account, keywords: "2fa otp security" },
 
   // How you use Cholo Kheli
@@ -59,12 +59,12 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
 
   // Who can see your profile
   { id: "privacy", label: "Profile visibility", to: "/player/settings/privacy", icon: Lock, group: G.visibility, keywords: "private public" },
-  { id: "close-friends", label: "Trusted circle", to: "/player/settings/close-friends", icon: Star, group: G.visibility, keywords: "close friends" },
+  
   { id: "blocked", label: "Blocked accounts", to: "/player/settings/blocked", icon: Ban, group: G.visibility, keywords: "block ignore" },
   { id: "story", label: "Live and location", to: "/player/settings/story", icon: EyeOff, group: G.visibility },
 
   // How others can reach you
-  { id: "messages", label: "Direct messages", to: "/player/settings/messages", icon: MessageSquare, group: G.interactions },
+  
   { id: "tags", label: "Tags and mentions", to: "/player/settings/tags", icon: AtSign, group: G.interactions },
   { id: "sharing", label: "Sharing and reposts", to: "/player/settings/sharing", icon: Share2, group: G.interactions },
   { id: "restricted", label: "Restricted accounts", to: "/player/settings/restricted", icon: CircleSlash, group: G.interactions },
@@ -75,7 +75,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
   { id: "favorites", label: "Favourite creators", to: "/player/settings/favorites", icon: Star, group: G.feed },
   { id: "muted", label: "Muted accounts", to: "/player/settings/muted", icon: VolumeX, group: G.feed },
   { id: "content-prefs", label: "Feed preferences", to: "/player/settings/content-preferences", icon: ListFilter, group: G.feed, keywords: "sport position" },
-  { id: "counts", label: "Like and share counts", to: "/player/settings/counts", icon: Heart, group: G.feed },
+  
 
   // Device and playback
   { id: "device-perms", label: "App permissions", to: "/player/settings/devices", icon: Smartphone, group: G.device, keywords: "camera microphone" },
@@ -86,7 +86,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
 
   // Creator and verification (players only)
   { id: "verified", label: "Cholo Kheli Verified", to: "/player/settings/verified", icon: BadgeCheck, group: G.creator, roles: ["player"] },
-  { id: "ck-ai", label: "Cholo Kheli AI assistant", to: "/player/settings/ai", icon: Bot, group: G.creator, roles: ["player"] },
+  
 
   // Scouting tools (scouts only)
   { id: "scout-prefs", label: "Scouting preferences", to: "/scout/settings/preferences", icon: ListFilter, group: G.scout, roles: ["scout"], keywords: "sport position filter" },
