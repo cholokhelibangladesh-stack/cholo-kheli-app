@@ -75,7 +75,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
   { id: "favorites", label: "Favourite creators", to: "/player/settings/favorites", icon: Star, group: G.feed },
   { id: "muted", label: "Muted accounts", to: "/player/settings/muted", icon: VolumeX, group: G.feed },
   { id: "content-prefs", label: "Feed preferences", to: "/player/settings/content-preferences", icon: ListFilter, group: G.feed, keywords: "sport position" },
-  { id: "counts", label: "Like and share counts", to: "/player/settings/counts", icon: Heart, group: G.feed },
+  
 
   // Device and playback
   { id: "device-perms", label: "App permissions", to: "/player/settings/devices", icon: Smartphone, group: G.device, keywords: "camera microphone" },
