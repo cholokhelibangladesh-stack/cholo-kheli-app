@@ -1,16 +1,79 @@
 import { motion } from "framer-motion";
-import { Loader2, Plus, ArrowRight, Shield } from "lucide-react";
+import {
+  Loader2,
+  Plus,
+  ArrowRight,
+  Shield,
+  Newspaper,
+  Calendar,
+  Megaphone,
+  Trophy,
+} from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
 import PostNewsDialog from "@/components/PostNewsDialog";
 
-/**
- * Admin home page — mirrors the player feed so admins see what their
- * community sees, plus a floating "Post news" composer that publishes
- * directly to the shared feed.
- */
+type FeedItem = {
+  id: string;
+  kind: "news" | "event" | "campaign" | "announcement";
+  title: string;
+  body: string;
+  date: string;
+  tag?: string;
+};
+
+// Mirrors the player/scout home so admins see what the community sees.
+const FEED: FeedItem[] = [
+  {
+    id: "welcome",
+    kind: "announcement",
+    title: "Welcome to Cholo Kheli",
+    body: "Upload your highlight, get discovered by verified scouts across Bangladesh.",
+    date: "Today",
+    tag: "New",
+  },
+  {
+    id: "camp-dhaka",
+    kind: "event",
+    title: "Dhaka Open Trials — Football U-19",
+    body: "Trials open at Bangabandhu National Stadium. Registration closes Friday.",
+    date: "This week",
+    tag: "Event",
+  },
+  {
+    id: "campaign-cricket",
+    kind: "campaign",
+    title: "Cricket Rising Stars",
+    body: "Top 10 uploads this month get featured to premier league scouts.",
+    date: "Ongoing",
+    tag: "Campaign",
+  },
+  {
+    id: "news-nrk",
+    kind: "news",
+    title: "Nahroor Rahman Khan on the future of BD sports",
+    body: "Our co-founder talks digital scouting and grassroots talent pipelines.",
+    date: "Recent",
+    tag: "News",
+  },
+];
+
+const kindIcon = (k: FeedItem["kind"]) => {
+  switch (k) {
+    case "news":
+      return Newspaper;
+    case "event":
+      return Calendar;
+    case "campaign":
+      return Trophy;
+    case "announcement":
+      return Megaphone;
+  }
+};
+
 const AdminHome = () => {
   const { user, role, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -28,34 +91,149 @@ const AdminHome = () => {
     );
   }
 
+  const stories = FEED.filter((f) => f.kind === "event" || f.kind === "campaign");
+
   return (
     <div className="min-h-screen pb-28">
       <div className="px-4 pt-4">
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-5">
-          <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">Admin · Home</p>
+          <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+            Admin · Home
+          </p>
           <h1 className="font-display text-2xl text-foreground mt-1">Latest from Cholo Kheli</h1>
         </motion.div>
 
-        <NewsPostsList adminControls refreshKey={refreshKey} />
-
-        <button
-          onClick={() => navigate({ to: "/admin/panel" as any })}
-          className="mt-4 w-full text-left rounded-3xl text-white p-4 flex items-center justify-between border border-white/15 relative overflow-hidden active:scale-[0.99] transition-transform"
-          style={{
-            background: "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
-            boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 30px -14px hsl(var(--teal-deep) / 0.7)",
-          }}
-        >
-          <div className="relative flex items-center gap-3">
-            <Shield className="h-5 w-5" strokeWidth={2} />
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/80">Admin tools</p>
-              <p className="text-sm font-semibold mt-0.5">Open the admin panel</p>
+        {/* Highlights rail */}
+        {stories.length > 0 && (
+          <div className="-mx-4 mb-6 overflow-x-auto no-scrollbar">
+            <div className="flex gap-3 px-4">
+              {stories.map((s) => {
+                const Icon = kindIcon(s.kind);
+                return (
+                  <motion.div
+                    key={s.id}
+                    whileHover={{ y: -2 }}
+                    className="min-w-[230px] max-w-[230px] relative overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl p-4 flex flex-col justify-between"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(126,200,255,0.16) 0%, hsl(var(--teal-deep) / 0.14) 55%, rgba(126,200,255,0.06) 100%)",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 hsl(var(--teal-deep) / 0.25), 0 10px 30px -18px hsl(var(--teal-deep) / 0.6)",
+                    }}
+                  >
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-14 -right-10 h-32 w-32 rounded-full opacity-60 blur-2xl"
+                      style={{ background: "radial-gradient(circle, #7EC8FF 0%, transparent 70%)" }}
+                    />
+                    <div className="relative flex items-center gap-2 mb-4">
+                      <div
+                        className="w-9 h-9 rounded-2xl flex items-center justify-center border border-white/15"
+                        style={{
+                          background:
+                            "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
+                          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35)",
+                        }}
+                      >
+                        <Icon className="h-4 w-4 text-white" strokeWidth={2} />
+                      </div>
+                      <span className="text-[10px] uppercase tracking-[0.22em] text-foreground/70 font-semibold">
+                        {s.tag}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <p className="text-sm font-semibold text-foreground leading-snug">
+                        {s.title}
+                      </p>
+                      <p className="text-[11px] text-muted-foreground mt-2">{s.date}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
-          <ArrowRight className="relative h-5 w-5" strokeWidth={2} />
-        </button>
+        )}
+
+        {/* Admin-posted news (live from DB) */}
+        <NewsPostsList adminControls refreshKey={refreshKey} />
+
+        {/* Static feed */}
+        <div className="space-y-3 mt-3">
+          {FEED.map((item, i) => {
+            const Icon = kindIcon(item.kind);
+            return (
+              <motion.article
+                key={item.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04 }}
+                whileHover={{ y: -1 }}
+                className="relative overflow-hidden rounded-3xl border border-white/10 backdrop-blur-xl p-4"
+                style={{
+                  background:
+                    "linear-gradient(135deg, hsl(var(--background) / 0.55) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
+                  boxShadow:
+                    "inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 hsl(var(--teal-deep) / 0.18), 0 8px 24px -18px rgba(20,50,90,0.6)",
+                }}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -top-16 -left-10 h-32 w-32 rounded-full opacity-40 blur-2xl"
+                  style={{ background: "radial-gradient(circle, #7EC8FF 0%, transparent 70%)" }}
+                />
+                <div className="relative flex items-center gap-2 mb-2">
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center border border-white/15"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, rgba(126,200,255,0.28) 0%, hsl(var(--teal-deep) / 0.20) 100%)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.20)",
+                    }}
+                  >
+                    <Icon className="h-3.5 w-3.5 text-foreground" strokeWidth={2} />
+                  </div>
+                  {item.tag && (
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] border-white/10 bg-white/5 text-foreground/80 rounded-full backdrop-blur-sm"
+                    >
+                      {item.tag}
+                    </Badge>
+                  )}
+                  <span className="ml-auto text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    {item.date}
+                  </span>
+                </div>
+                <h2 className="relative text-[15px] font-semibold text-foreground leading-snug">
+                  {item.title}
+                </h2>
+                <p className="relative text-sm text-muted-foreground mt-1 leading-relaxed">
+                  {item.body}
+                </p>
+              </motion.article>
+            );
+          })}
+
+          {/* Admin panel CTA */}
+          <button
+            onClick={() => navigate({ to: "/admin/panel" as any })}
+            className="w-full text-left rounded-3xl text-white p-4 flex items-center justify-between border border-white/15 relative overflow-hidden active:scale-[0.99] transition-transform"
+            style={{
+              background: "linear-gradient(135deg, #7EC8FF 0%, hsl(var(--teal-deep)) 100%)",
+              boxShadow:
+                "inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 30px -14px hsl(var(--teal-deep) / 0.7)",
+            }}
+          >
+            <div className="relative flex items-center gap-3">
+              <Shield className="h-5 w-5" strokeWidth={2} />
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.24em] text-white/80">Admin tools</p>
+                <p className="text-sm font-semibold mt-0.5">Open the admin panel</p>
+              </div>
+            </div>
+            <ArrowRight className="relative h-5 w-5" strokeWidth={2} />
+          </button>
+        </div>
       </div>
 
       {/* Floating "Post news" composer */}
