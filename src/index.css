@@ -95,6 +95,7 @@
     --teal-deep: 196 38% 22%;
     --teal: 192 32% 32%;
     --teal-soft: 190 28% 52%;
+    --candy: 205 100% 74%;           /* #7EC8FF — brand candy blue */
 
     /* compat aliases (old code references --green) */
     --green: 196 38% 28%;
