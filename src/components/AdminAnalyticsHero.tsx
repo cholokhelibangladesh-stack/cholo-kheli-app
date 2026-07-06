@@ -33,8 +33,9 @@ interface Props {
   revenueTimeline?: string[];
 }
 
-const TEAL = "hsl(174 100% 22%)"; // deep teal
-const CANDY = "#7EC8FF";
+const TEAL = "hsl(var(--teal-deep))";
+const TEAL_MID = "hsl(var(--teal))";
+const CANDY = "hsl(var(--candy))";
 
 /**
  * Analytics hero row for the admin panel — mirrors the "Analytic Sports
