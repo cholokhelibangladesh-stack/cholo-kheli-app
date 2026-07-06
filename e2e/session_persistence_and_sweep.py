@@ -41,9 +41,10 @@ ACCOUNTS = [
 PUBLIC_ROUTES = ["/", "/auth", "/mission", "/safe-scouting", "/faq", "/privacy-policy"]
 ROLE_ROUTES = {
     "player": ["/player", "/player/explore", "/player/upload", "/player/profile", "/player/settings"],
-    "scout":  ["/scout", "/scout/explore", "/scout/selections", "/scout/profile", "/scout/settings"],
+    "scout":  ["/scout", "/scout/explore", "/scout/selections", "/scout/inbox", "/scout/profile", "/scout/settings"],
     "admin":  ["/admin", "/admin/panel", "/admin/moderation", "/admin/users", "/admin/videos", "/admin/reports", "/admin/settings"],
 }
+PUBLIC_EXTRA = ["/blocked"]
 
 results = []
 def rec(name, ok, detail=""):
