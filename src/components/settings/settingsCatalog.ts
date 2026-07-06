@@ -64,7 +64,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
   { id: "story", label: "Live and location", to: "/player/settings/story", icon: EyeOff, group: G.visibility },
 
   // How others can reach you
-  { id: "messages", label: "Direct messages", to: "/player/settings/messages", icon: MessageSquare, group: G.interactions },
+  
   { id: "tags", label: "Tags and mentions", to: "/player/settings/tags", icon: AtSign, group: G.interactions },
   { id: "sharing", label: "Sharing and reposts", to: "/player/settings/sharing", icon: Share2, group: G.interactions },
   { id: "restricted", label: "Restricted accounts", to: "/player/settings/restricted", icon: CircleSlash, group: G.interactions },
