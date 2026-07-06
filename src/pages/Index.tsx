@@ -373,6 +373,17 @@ const Index = () => {
  };
  }, []);
 
+ // While auth is still resolving or an authenticated user is being routed
+ // to their dashboard, show a lightweight splash instead of the marketing
+ // page — avoids the hero flashing for a returning signed-in user.
+ if (authLoading || shouldRedirect) {
+   return (
+     <div className="min-h-[100svh] w-full grid place-items-center bg-background">
+       <Loader2 className="h-8 w-8 animate-spin text-primary" aria-label="Loading" />
+     </div>
+   );
+ }
+
  return (
  <div className="h-[100svh] overflow-hidden bg-background">
  {showIntro && (
