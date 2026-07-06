@@ -110,6 +110,8 @@ async def main():
                 await sign_in(page, acc["email"], acc["password"])
                 await page.goto(BASE + acc["dashboard"], wait_until="domcontentloaded")
                 await page.wait_for_timeout(1500)
+                # Save state IMMEDIATELY after login — before sweep can perturb the session.
+                await ctx.storage_state(path=str(state_path))
                 # Sweep authed role routes
                 for route in ROLE_ROUTES[role]:
                     try:
@@ -122,9 +124,9 @@ async def main():
                             ("overflow: " + "; ".join(overflow)) if overflow else "ok")
                     except Exception as e:
                         rec(f"sweep {role} {route}", False, str(e))
-                await ctx.storage_state(path=str(state_path))
             finally:
                 await browser.close()
+
 
             # Reopen with saved state — verify landing behavior
             browser = await p.chromium.launch(headless=True)
