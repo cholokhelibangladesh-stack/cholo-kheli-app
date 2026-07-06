@@ -27,8 +27,9 @@ export const Route = createFileRoute("/")({
         rel: "preload",
         as: "image",
         href: heroAtlas0.url,
-        fetchpriority: "high",
+        fetchPriority: "high",
       } as any,
+
     ],
   }),
   component: Index,

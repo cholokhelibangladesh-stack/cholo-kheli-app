@@ -53,11 +53,13 @@ def rec(name, ok, detail=""):
 
 async def sign_in(page, email, password):
     await page.goto(BASE + "/auth", wait_until="domcontentloaded")
-    await page.wait_for_timeout(700)
-    await page.get_by_label("Email", exact=False).first.fill(email)
-    await page.get_by_label("Password", exact=False).first.fill(password)
-    await page.get_by_role("button", name="Sign In", exact=False).click()
-    await page.wait_for_timeout(6000)
+    await page.wait_for_timeout(1500)
+    await page.fill("#email", email)
+    await page.fill("#password", password)
+    # Exact match — "Sign In" (login) vs "Sign Up" (toggle) collide otherwise.
+    await page.get_by_role("button", name="Sign In", exact=True).click()
+    await page.wait_for_timeout(4000)
+
 
 
 async def check_overflow(page):
@@ -110,6 +112,8 @@ async def main():
                 await sign_in(page, acc["email"], acc["password"])
                 await page.goto(BASE + acc["dashboard"], wait_until="domcontentloaded")
                 await page.wait_for_timeout(1500)
+                # Save state IMMEDIATELY after login — before sweep can perturb the session.
+                await ctx.storage_state(path=str(state_path))
                 # Sweep authed role routes
                 for route in ROLE_ROUTES[role]:
                     try:
@@ -122,9 +126,9 @@ async def main():
                             ("overflow: " + "; ".join(overflow)) if overflow else "ok")
                     except Exception as e:
                         rec(f"sweep {role} {route}", False, str(e))
-                await ctx.storage_state(path=str(state_path))
             finally:
                 await browser.close()
+
 
             # Reopen with saved state — verify landing behavior
             browser = await p.chromium.launch(headless=True)
