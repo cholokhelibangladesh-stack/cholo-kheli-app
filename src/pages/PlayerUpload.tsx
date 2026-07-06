@@ -52,7 +52,8 @@ const PlayerUpload = () => {
  const [reporting, setReporting] = useState(false);
  const [allVideos, setAllVideos] = useState<VideoRecord[]>([]);
  const [showNewUpload, setShowNewUpload] = useState(false);
- const [uploadsHalted, setUploadsHalted] = useState(false);
+  const [uploadsHalted, setUploadsHalted] = useState(false);
+  const [uploadPrice, setUploadPrice] = useState<number>(100);
  const [savingSport, setSavingSport] = useState(false);
  const [customPosition, setCustomPosition] = useState("");
  const [customTrait, setCustomTrait] = useState("");
@@ -93,8 +94,11 @@ const PlayerUpload = () => {
  const videos = (videosRes.data || []) as VideoRecord[];
  setAllVideos(videos);
 
- const { data: settingData } = await supabase.from("app_settings" as any).select("value").eq("key","video_uploads_halted").maybeSingle();
- setUploadsHalted((settingData as any)?.value ==="true");
+  const { data: settingRows } = await supabase.from("app_settings" as any).select("key, value").in("key", ["video_uploads_halted","video_upload_price_bdt"]);
+ const settingsMap = new Map<string, string>(((settingRows as any[]) || []).map((r) => [r.key, r.value]));
+ setUploadsHalted(settingsMap.get("video_uploads_halted") === "true");
+ const parsed = Number(settingsMap.get("video_upload_price_bdt"));
+ if (Number.isFinite(parsed) && parsed >= 0) setUploadPrice(parsed);
 
  const activeVideo = videos.find((v) => v.status ==="live" || v.status ==="pending_payment");
  if (activeVideo) {
@@ -487,7 +491,7 @@ const PlayerUpload = () => {
  <p className="text-foreground font-medium">Participation Fee</p>
  <p className="text-xs text-muted-foreground">One-time payment via bKash</p>
  </div>
- <span className="font-display text-3xl text-primary">৳100</span>
+ <span className="font-display text-3xl text-primary">৳{uploadPrice}</span>
  </div>
  <Label className="text-sm text-muted-foreground">bKash Number</Label>
  <Input placeholder="01XXXXXXXXX" className="mt-1 bg-secondary border-border mb-4" value={bkashNumber} onChange={(e) => setBkashNumber(e.target.value)} />
