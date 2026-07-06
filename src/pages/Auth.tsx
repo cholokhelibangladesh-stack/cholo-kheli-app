@@ -390,12 +390,10 @@ const Auth = () => {
  return (
  <div className="min-h-screen flex items-start justify-center pt-10 pb-24 px-4 overflow-y-auto bg-gradient-to-b from-[hsl(var(--paper))] via-[hsl(var(--paper))] to-[hsl(var(--teal-deep)/0.08)]">
  <div className="w-full max-w-md">
- <motion.div
- initial={{ opacity: 0, y: -8 }}
- animate={{ opacity: 1, y: 0 }}
- transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
- className="text-center mb-8 mt-2"
- >
+ {/* Static, SSR-visible brand header — guarantees first contentful paint
+     even before framer-motion hydrates. Do NOT wrap in initial-opacity-0
+     motion; Lighthouse cannot detect FCP if the first paint is blank. */}
+ <div className="text-center mb-8 mt-2">
  <Link to="/" className="inline-flex flex-col items-center gap-3 group">
  <CholoKheliMark className="h-20 w-20 sm:h-24 sm:w-24 transition-transform duration-500 group-hover:scale-105" />
  <span className="font-display text-3xl sm:text-[34px] tracking-[0.14em] text-[hsl(var(--teal-deep))] font-semibold leading-none">
@@ -412,7 +410,9 @@ const Auth = () => {
  <p className="text-sm text-muted-foreground mt-2">
  {isLogin ? t("auth.signInSub") : t("auth.signUpSub")}
  </p>
- </motion.div>
+ </div>
+
+
 
 
  <motion.div
