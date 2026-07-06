@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Loader2, Users, User, ChevronDown } from "lucide-react";
+import { Send, Loader2, User, Paperclip, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +21,7 @@ const AdminNoticeForm = () => {
   const [selectedUsers, setSelectedUsers] = useState<{ user_id: string; full_name: string; role: string }[]>([]);
   const [searchResults, setSearchResults] = useState<{ user_id: string; full_name: string; role: string }[]>([]);
   const [searching, setSearching] = useState(false);
+  const [mediaFile, setMediaFile] = useState<File | null>(null);
 
   const handleUserSearch = async (query: string) => {
     setSearchEmail(query);
@@ -96,11 +97,29 @@ const AdminNoticeForm = () => {
         return;
       }
 
+      // Optional media attachment — upload to the "media" bucket first
+      let mediaPath: string | null = null;
+      let mediaType: "image" | "video" | null = null;
+      if (mediaFile) {
+        mediaType = mediaFile.type.startsWith("video/") ? "video" : "image";
+        const ext = mediaFile.name.split(".").pop() || "bin";
+        mediaPath = `notifications/${Date.now()}.${ext}`;
+        const { error: upErr } = await supabase.storage
+          .from("media")
+          .upload(mediaPath, mediaFile, { contentType: mediaFile.type, upsert: false });
+        if (upErr) {
+          toast({ title: "Media upload failed", description: upErr.message, variant: "destructive" });
+          setSending(false);
+          return;
+        }
+      }
+
       const notifications = userIds.map((uid) => ({
         user_id: uid,
         title,
         message,
         type: "admin_notice",
+        metadata: mediaPath ? { media_path: mediaPath, media_type: mediaType } : null,
       }));
 
       const { error } = await supabase.from("notifications").insert(notifications as any);
@@ -111,6 +130,7 @@ const AdminNoticeForm = () => {
         toast({ title: `Notice sent to ${audienceLabel}!` });
         setTitle("");
         setMessage("");
+        setMediaFile(null);
         setSelectedUsers([]);
         setAudience("all");
       }
