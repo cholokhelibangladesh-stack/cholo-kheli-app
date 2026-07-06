@@ -19,6 +19,7 @@ import logoMark from "@/assets/cholo-kheli-mark.png.asset.json";
 import AppFrame from "@/components/app/AppFrame";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
+import BanGuard from "@/components/BanGuard";
 
 const APP_PREFIXES = ["/player", "/scout", "/admin"];
 function useInAppShell() {
@@ -116,6 +117,7 @@ function AppShell() {
           <TooltipProvider>
             <Toaster />
             <Sonner />
+            <BanGuard />
             <ShellRouter />
             <CookieConsentBanner />
           </TooltipProvider>

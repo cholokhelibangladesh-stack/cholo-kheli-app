@@ -17,6 +17,8 @@ import UsernameAuditTab from"@/components/UsernameAuditTab";
 import AdminNewsManager from"@/components/AdminNewsManager";
 import UploadPriceControl from"@/components/UploadPriceControl";
 import AdminAnalyticsHero from"@/components/AdminAnalyticsHero";
+import BanDialog from"@/components/admin/BanDialog";
+import ShareToScoutDialog from"@/components/admin/ShareToScoutDialog";
 
 
 interface ScoutRow { id: string; user_id: string; organization: string | null; verification_status: string; created_at: string; full_name?: string; username?: string | null; email?: string | null; is_banned?: boolean; }
@@ -114,7 +116,10 @@ const AdminDashboard = () => {
  const [loading, setLoading] = useState(true);
  const [feedbackInputs, setFeedbackInputs] = useState<Record<string, string>>({});
  const [uploadsHalted, setUploadsHalted] = useState(false);
- const [haltLoading, setHaltLoading] = useState(false);
+  const [haltLoading, setHaltLoading] = useState(false);
+  // Ban dialog / share dialog state
+  const [banTarget, setBanTarget] = useState<{ userId: string; name: string; scope:"profile" |"scout" } | null>(null);
+  const [shareTarget, setShareTarget] = useState<{ userId: string; name: string } | null>(null);
  // Search & filter states — persisted across reloads via localStorage
  const [scoutSearch, setScoutSearch] = usePersistedString("scoutSearch","");
  const [scoutFilter, setScoutFilter] = usePersistedString("scoutFilter","all");
@@ -283,17 +288,26 @@ const AdminDashboard = () => {
  else { toast({ title: `Scout ${status ==="active" ?"approved" :"rejected"}` }); fetchAll(); }
  };
 
- const banScout = async (scoutUserId: string, banned: boolean) => {
- const { error } = await supabase.from("scout_profiles").update({ is_banned: !banned } as any).eq("user_id", scoutUserId);
- if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
- else { toast({ title: !banned ?"Scout banned" :"Scout unbanned" }); fetchAll(); }
- };
+  const banScout = async (scoutUserId: string, banned: boolean, name: string) => {
+    if (banned) {
+      // Unban immediately, no dialog
+      const { error } = await (supabase as any).rpc("admin_set_ban", { _target_user: scoutUserId, _scope:"scout", _banned: false });
+      if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
+      else { toast({ title:"Scout unbanned" }); fetchAll(); }
+    } else {
+      setBanTarget({ userId: scoutUserId, name, scope:"scout" });
+    }
+  };
 
- const banPlayer = async (playerUserId: string, banned: boolean) => {
- const { error } = await supabase.from("profiles").update({ is_banned: !banned } as any).eq("user_id", playerUserId);
- if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
- else { toast({ title: !banned ?"Player banned" :"Player unbanned" }); fetchAll(); }
- };
+  const banPlayer = async (playerUserId: string, banned: boolean, name: string) => {
+    if (banned) {
+      const { error } = await (supabase as any).rpc("admin_set_ban", { _target_user: playerUserId, _scope:"profile", _banned: false });
+      if (error) toast({ title:"Error", description: error.message, variant:"destructive" });
+      else { toast({ title:"Player unbanned" }); fetchAll(); }
+    } else {
+      setBanTarget({ userId: playerUserId, name, scope:"profile" });
+    }
+  };
 
  const toggleUploadsHalt = async () => {
  setHaltLoading(true);
@@ -612,7 +626,7 @@ const AdminDashboard = () => {
  <Button size="sm" variant="outline" onClick={() => updateScoutStatus(s.id,"rejected")} className="flex-1 border-destructive/40 text-destructive hover:bg-destructive/10 rounded-full text-xs">Reject</Button>
  </>
 )}
- <Button size="sm" variant="outline" onClick={() => banScout(s.user_id, s.is_banned || false)}
+ <Button size="sm" variant="outline" onClick={() => banScout(s.user_id, s.is_banned || false, s.full_name ||"scout")}
  className={`flex-1 rounded-full text-xs ${s.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
  <Ban className="h-3 w-3 mr-1" />{s.is_banned ?"Unban" :"Ban"}
  </Button>
@@ -625,16 +639,24 @@ const AdminDashboard = () => {
  <TabsContent value="players" className="space-y-3">
  <p className="text-xs text-muted-foreground mb-2">{players.length} registered players</p>
  {players.length === 0 ? <p className="text-muted-foreground text-center py-12">No players found.</p> : players.map((p) => (
- <div key={p.user_id} className="apple-glass glass-card rounded-xl p-4 flex items-center justify-between gap-3">
+ <div key={p.user_id} className="apple-glass glass-card rounded-xl p-4 space-y-3">
+ <div className="flex items-start justify-between gap-3">
  <div className="flex-1 min-w-0">
  <p className={`font-semibold truncate ${p.is_banned ?"line-through text-muted-foreground" :"text-foreground"}`}>{p.full_name}</p>
  <p className="text-xs text-muted-foreground">{p.sport ||"No sport"}</p>
  {p.is_banned && <Badge className="mt-1 text-[10px] bg-destructive/20 text-destructive border-destructive/30 rounded-full">Banned</Badge>}
  </div>
- <Button size="sm" variant="outline" onClick={() => banPlayer(p.user_id, p.is_banned || false)}
- className={`rounded-full text-xs shrink-0 ${p.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
+ </div>
+ <div className="flex gap-2">
+ <Button size="sm" variant="outline" onClick={() => setShareTarget({ userId: p.user_id, name: p.full_name })}
+ className="flex-1 rounded-full text-xs border-primary/40 text-primary hover:bg-primary/10">
+ <Send className="h-3 w-3 mr-1" /> Share to scout
+ </Button>
+ <Button size="sm" variant="outline" onClick={() => banPlayer(p.user_id, p.is_banned || false, p.full_name)}
+ className={`flex-1 rounded-full text-xs ${p.is_banned ?"border-primary/40 text-primary hover:bg-primary/10" :"border-destructive/40 text-destructive hover:bg-destructive/10"}`}>
  <Ban className="h-3 w-3 mr-1" />{p.is_banned ?"Unban" :"Ban"}
  </Button>
+ </div>
  </div>
 ))}
  </TabsContent>
@@ -808,6 +830,25 @@ const AdminDashboard = () => {
 
  </motion.div>
  </div>
+
+ {banTarget && (
+   <BanDialog
+     open={!!banTarget}
+     onOpenChange={(v) => { if (!v) setBanTarget(null); }}
+     targetUserId={banTarget.userId}
+     targetName={banTarget.name}
+     scope={banTarget.scope}
+     onDone={fetchAll}
+   />
+ )}
+ {shareTarget && (
+   <ShareToScoutDialog
+     open={!!shareTarget}
+     onOpenChange={(v) => { if (!v) setShareTarget(null); }}
+     playerId={shareTarget.userId}
+     playerName={shareTarget.name}
+   />
+ )}
  </div>
 );
 };

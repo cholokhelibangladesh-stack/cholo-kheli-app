@@ -14,6 +14,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as MissionRouteImport } from './routes/mission'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as BlockedRouteImport } from './routes/blocked'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as SplatRouteImport } from './routes/$'
@@ -24,6 +25,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ScoutSettingsRouteImport } from './routes/scout/settings'
 import { Route as ScoutSelectionsRouteImport } from './routes/scout/selections'
 import { Route as ScoutProfileRouteImport } from './routes/scout/profile'
+import { Route as ScoutInboxRouteImport } from './routes/scout/inbox'
 import { Route as ScoutExploreRouteImport } from './routes/scout/explore'
 import { Route as ResumeUserIdRouteImport } from './routes/resume.$userId'
 import { Route as PlayerUploadRouteImport } from './routes/player/upload'
@@ -114,6 +116,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlockedRoute = BlockedRouteImport.update({
+  id: '/blocked',
+  path: '/blocked',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -162,6 +169,11 @@ const ScoutSelectionsRoute = ScoutSelectionsRouteImport.update({
 const ScoutProfileRoute = ScoutProfileRouteImport.update({
   id: '/scout/profile',
   path: '/scout/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoutInboxRoute = ScoutInboxRouteImport.update({
+  id: '/scout/inbox',
+  path: '/scout/inbox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScoutExploreRoute = ScoutExploreRouteImport.update({
@@ -506,6 +518,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
+  '/blocked': typeof BlockedRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -524,6 +537,7 @@ export interface FileRoutesByFullPath {
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
+  '/scout/inbox': typeof ScoutInboxRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
   '/scout/settings': typeof ScoutSettingsRouteWithChildren
@@ -586,6 +600,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/auth': typeof AuthRoute
+  '/blocked': typeof BlockedRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -603,6 +618,7 @@ export interface FileRoutesByTo {
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
+  '/scout/inbox': typeof ScoutInboxRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
   '/admin': typeof AdminIndexRoute
@@ -666,6 +682,7 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
+  '/blocked': typeof BlockedRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
@@ -684,6 +701,7 @@ export interface FileRoutesById {
   '/player/upload': typeof PlayerUploadRoute
   '/resume/$userId': typeof ResumeUserIdRoute
   '/scout/explore': typeof ScoutExploreRoute
+  '/scout/inbox': typeof ScoutInboxRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
   '/scout/settings': typeof ScoutSettingsRouteWithChildren
@@ -749,6 +767,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/admin'
     | '/auth'
+    | '/blocked'
     | '/faq'
     | '/mission'
     | '/privacy-policy'
@@ -767,6 +786,7 @@ export interface FileRouteTypes {
     | '/player/upload'
     | '/resume/$userId'
     | '/scout/explore'
+    | '/scout/inbox'
     | '/scout/profile'
     | '/scout/selections'
     | '/scout/settings'
@@ -829,6 +849,7 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/auth'
+    | '/blocked'
     | '/faq'
     | '/mission'
     | '/privacy-policy'
@@ -846,6 +867,7 @@ export interface FileRouteTypes {
     | '/player/upload'
     | '/resume/$userId'
     | '/scout/explore'
+    | '/scout/inbox'
     | '/scout/profile'
     | '/scout/selections'
     | '/admin'
@@ -908,6 +930,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/admin'
     | '/auth'
+    | '/blocked'
     | '/faq'
     | '/mission'
     | '/privacy-policy'
@@ -926,6 +949,7 @@ export interface FileRouteTypes {
     | '/player/upload'
     | '/resume/$userId'
     | '/scout/explore'
+    | '/scout/inbox'
     | '/scout/profile'
     | '/scout/selections'
     | '/scout/settings'
@@ -990,6 +1014,7 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BlockedRoute: typeof BlockedRoute
   FaqRoute: typeof FaqRoute
   MissionRoute: typeof MissionRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
@@ -1002,6 +1027,7 @@ export interface RootRouteChildren {
   PlayerUploadRoute: typeof PlayerUploadRoute
   ResumeUserIdRoute: typeof ResumeUserIdRoute
   ScoutExploreRoute: typeof ScoutExploreRoute
+  ScoutInboxRoute: typeof ScoutInboxRoute
   ScoutProfileRoute: typeof ScoutProfileRoute
   ScoutSelectionsRoute: typeof ScoutSelectionsRoute
   ScoutSettingsRoute: typeof ScoutSettingsRouteWithChildren
@@ -1044,6 +1070,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blocked': {
+      id: '/blocked'
+      path: '/blocked'
+      fullPath: '/blocked'
+      preLoaderRoute: typeof BlockedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -1114,6 +1147,13 @@ declare module '@tanstack/react-router' {
       path: '/scout/profile'
       fullPath: '/scout/profile'
       preLoaderRoute: typeof ScoutProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scout/inbox': {
+      id: '/scout/inbox'
+      path: '/scout/inbox'
+      fullPath: '/scout/inbox'
+      preLoaderRoute: typeof ScoutInboxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scout/explore': {
@@ -1716,6 +1756,7 @@ const rootRouteChildren: RootRouteChildren = {
   SplatRoute: SplatRoute,
   AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
+  BlockedRoute: BlockedRoute,
   FaqRoute: FaqRoute,
   MissionRoute: MissionRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
@@ -1728,6 +1769,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlayerUploadRoute: PlayerUploadRoute,
   ResumeUserIdRoute: ResumeUserIdRoute,
   ScoutExploreRoute: ScoutExploreRoute,
+  ScoutInboxRoute: ScoutInboxRoute,
   ScoutProfileRoute: ScoutProfileRoute,
   ScoutSelectionsRoute: ScoutSelectionsRoute,
   ScoutSettingsRoute: ScoutSettingsRouteWithChildren,

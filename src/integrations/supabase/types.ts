@@ -521,9 +521,50 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_shares: {
+        Row: {
+          admin_id: string
+          created_at: string
+          id: string
+          message: string | null
+          player_id: string
+          scout_id: string
+          status: string
+          updated_at: string
+          viewed_at: string | null
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          player_id: string
+          scout_id: string
+          status?: string
+          updated_at?: string
+          viewed_at?: string | null
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          player_id?: string
+          scout_id?: string
+          status?: string
+          updated_at?: string
+          viewed_at?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
+          ban_message: string | null
+          ban_reason: string | null
+          banned_at: string | null
+          banned_by: string | null
+          banned_until: string | null
           bio: string | null
           created_at: string
           date_of_birth: string | null
@@ -540,6 +581,11 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          ban_message?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
+          banned_until?: string | null
           bio?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -556,6 +602,11 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          ban_message?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
+          banned_until?: string | null
           bio?: string | null
           created_at?: string
           date_of_birth?: string | null
@@ -618,6 +669,11 @@ export type Database = {
       }
       scout_profiles: {
         Row: {
+          ban_message: string | null
+          ban_reason: string | null
+          banned_at: string | null
+          banned_by: string | null
+          banned_until: string | null
           created_at: string
           full_name: string
           id: string
@@ -629,6 +685,11 @@ export type Database = {
           verification_status: string
         }
         Insert: {
+          ban_message?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
+          banned_until?: string | null
           created_at?: string
           full_name?: string
           id?: string
@@ -640,6 +701,11 @@ export type Database = {
           verification_status?: string
         }
         Update: {
+          ban_message?: string | null
+          ban_reason?: string | null
+          banned_at?: string | null
+          banned_by?: string | null
+          banned_until?: string | null
           created_at?: string
           full_name?: string
           id?: string
@@ -888,6 +954,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_set_ban: {
+        Args: {
+          _banned: boolean
+          _duration_hours?: number
+          _message?: string
+          _reason?: string
+          _scope: string
+          _target_user: string
+        }
+        Returns: undefined
+      }
       enforce_feed_rate_limit: {
         Args: { _max?: number; _user: string }
         Returns: undefined
@@ -897,6 +974,17 @@ export type Database = {
         Returns: {
           email: string
           user_id: string
+        }[]
+      }
+      get_my_ban_status: {
+        Args: never
+        Returns: {
+          ban_message: string
+          ban_reason: string
+          banned_at: string
+          banned_until: string
+          is_banned: boolean
+          scope: string
         }[]
       }
       get_my_sessions: {
