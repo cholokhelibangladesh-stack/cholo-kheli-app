@@ -39,14 +39,16 @@ const AdminModerationPage = () => {
 
   return (
     <SettingsShell title="Moderation queue" description="Flagged content awaiting review">
-      <div className="mb-3 inline-flex rounded-2xl border border-white/12 bg-white/[0.05] p-1">
+      <div className="mb-3 inline-flex rounded-2xl border border-border/70 bg-muted/40 dark:border-white/12 dark:bg-white/[0.05] p-1">
         {(["new", "resolved"] as const).map((t) => (
           <button
             key={t}
             type="button"
             onClick={() => setTab(t)}
             className={`rounded-xl px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${
-              tab === t ? "bg-[hsl(var(--teal-deep))] text-white" : "text-foreground/70"
+              tab === t
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-foreground/70 hover:text-foreground"
             }`}
           >
             {t}
@@ -75,7 +77,7 @@ const AdminModerationPage = () => {
             const Icon = m.Icon;
             return (
               <div key={r.id} className="flex items-center gap-3 px-4 py-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-amber-400/15 text-amber-300">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[hsl(var(--candy))]/20 text-[hsl(var(--teal-deep))] dark:text-[hsl(var(--candy))]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">

@@ -44,7 +44,7 @@ const AdminVideosPage = () => {
         <SettingsCard>
           {rows.map((v) => (
             <div key={v.id} className="flex items-center gap-3 px-4 py-3">
-              <div className="grid h-10 w-14 shrink-0 place-items-center overflow-hidden rounded-lg bg-black/40">
+              <div className="grid h-10 w-14 shrink-0 place-items-center overflow-hidden rounded-lg bg-muted dark:bg-black/40">
                 <video src={v.video_url} className="h-full w-full object-cover" muted preload="metadata" />
               </div>
               <div className="min-w-0 flex-1">
@@ -60,15 +60,15 @@ const AdminVideosPage = () => {
                 </div>
               </div>
               {v.flagged ? (
-                <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 px-2 py-0.5 text-[10px] font-semibold text-amber-300">
+                <span className="inline-flex items-center gap-1 rounded-full border border-[hsl(var(--candy))]/50 bg-[hsl(var(--candy))]/10 px-2 py-0.5 text-[10px] font-semibold text-[hsl(var(--teal-deep))] dark:text-[hsl(var(--candy))]">
                   <Flag className="h-3 w-3" /> Flag
                 </span>
               ) : (
                 <span
                   className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase ${
                     v.status === "live"
-                      ? "border-emerald-400/40 text-emerald-300"
-                      : "border-white/15 text-foreground/60"
+                      ? "border-primary/40 bg-primary/10 text-primary"
+                      : "border-border text-foreground/60"
                   }`}
                 >
                   {v.status.replace("_", " ")}

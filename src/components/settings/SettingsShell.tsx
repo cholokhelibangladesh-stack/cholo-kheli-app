@@ -33,7 +33,7 @@ const SettingsShell = ({
         <button
           type="button"
           onClick={() => router.history.back()}
-          className="grid h-9 w-9 place-items-center rounded-full text-foreground/85 hover:bg-white/[0.06]"
+          className="grid h-9 w-9 place-items-center rounded-full text-foreground/85 hover:bg-foreground/[0.05] dark:hover:bg-white/[0.08]"
           aria-label="Back"
         >
           <ChevronLeft className="h-6 w-6" strokeWidth={2} />
