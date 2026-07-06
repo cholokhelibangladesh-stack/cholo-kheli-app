@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import { useTheme } from "@/hooks/useTheme";
 import SettingsShell from "@/components/settings/SettingsShell";
 import { Switch } from "@/components/ui/switch";
-import { Loader2 } from "lucide-react";
+import { Loader2, Moon } from "lucide-react";
 
 const AccessibilityPage = () => {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
   const [row, setRow] = useState<{ reduce_motion: boolean; captions_default: boolean } | null>(null);
 
@@ -36,6 +38,18 @@ const AccessibilityPage = () => {
 
   return (
     <SettingsShell title="Accessibility" description="Make Cholo Kheli easier to use">
+      <div className="mb-4 divide-y divide-white/5 rounded-2xl border border-white/10 bg-white/[0.03]">
+        <div className="flex items-start justify-between gap-4 p-4">
+          <div className="min-w-0 flex items-start gap-3">
+            <Moon className="mt-0.5 h-5 w-5 shrink-0 text-foreground/85" strokeWidth={1.85} />
+            <div>
+              <div className="text-[15px] font-medium">Dark mode</div>
+              <p className="mt-1 text-xs text-foreground/55">Switch between light and dark appearance.</p>
+            </div>
+          </div>
+          <Switch checked={theme === "dark"} onCheckedChange={toggleTheme} />
+        </div>
+      </div>
       <div className="divide-y divide-white/5 rounded-2xl border border-white/10 bg-white/[0.03]">
         {rows.map((r) => (
           <div key={r.key} className="flex items-start justify-between gap-4 p-4">
