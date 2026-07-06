@@ -74,6 +74,7 @@ const ScoutSelections = () => {
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [actioning, setActioning] = useState<string | null>(null);
+  const [refreshingId, setRefreshingId] = useState<string | null>(null);
   const [confirmRescind, setConfirmRescind] = useState<ScoutRequest | null>(null);
 
   useEffect(() => {
