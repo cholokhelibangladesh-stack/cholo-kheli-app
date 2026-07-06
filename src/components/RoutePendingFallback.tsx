@@ -27,7 +27,7 @@ export function RoutePendingFallback() {
           initial={{ opacity: 0, scale: 0.72 }}
           animate={{ opacity: 1, scale: [0.72, 1, 0.96, 1] }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          style={{ width: "min(54vw, 190px)", aspectRatio: "1.75 / 1" }}
+          style={{ width: "min(62vw, 240px)", aspectRatio: "244 / 171" }}
           aria-hidden
         >
           <CholoKheliMark className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_10px_20px_rgba(20,50,90,0.32)]" />

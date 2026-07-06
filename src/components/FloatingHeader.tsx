@@ -87,7 +87,7 @@ const FloatingHeader = () => {
           className="pointer-events-auto flex items-center gap-2.5 group shrink-0"
         >
           <CholoKheliMark
-            className={`h-12 w-14 sm:h-14 sm:w-16 shrink-0 ${shadow} transition-transform group-hover:scale-105`}
+            className={`h-12 w-16 sm:h-14 sm:w-20 shrink-0 ${shadow} transition-transform group-hover:scale-105`}
           />
 
           <span className={`font-display text-lg sm:text-xl tracking-[0.04em] ${fg} font-semibold ${wordmarkShadow}`}>

@@ -1,4 +1,4 @@
-import markAsset from "@/assets/cholo-kheli-mark-official.png.asset.json";
+import markAsset from "@/assets/cholo-kheli-symbol-clean.png.asset.json";
 
 interface Props {
   className?: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import markAsset from "@/assets/cholo-kheli-mark-official.png.asset.json";
+import markAsset from "@/assets/cholo-kheli-symbol-clean.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
