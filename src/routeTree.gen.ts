@@ -194,34 +194,34 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminVideosRoute = AdminVideosRouteImport.update({
-  id: '/admin/videos',
-  path: '/admin/videos',
-  getParentRoute: () => rootRouteImport,
+  id: '/videos',
+  path: '/videos',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
-  id: '/admin/users',
-  path: '/admin/users',
-  getParentRoute: () => rootRouteImport,
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/admin/settings',
-  path: '/admin/settings',
-  getParentRoute: () => rootRouteImport,
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminReportsRoute = AdminReportsRouteImport.update({
-  id: '/admin/reports',
-  path: '/admin/reports',
-  getParentRoute: () => rootRouteImport,
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminPanelRoute = AdminPanelRouteImport.update({
-  id: '/admin/panel',
-  path: '/admin/panel',
-  getParentRoute: () => rootRouteImport,
+  id: '/panel',
+  path: '/panel',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminModerationRoute = AdminModerationRouteImport.update({
-  id: '/admin/moderation',
-  path: '/admin/moderation',
-  getParentRoute: () => rootRouteImport,
+  id: '/moderation',
+  path: '/moderation',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ScoutSettingsIndexRoute = ScoutSettingsIndexRouteImport.update({
   id: '/',
@@ -984,12 +984,6 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SafeScoutingRoute: typeof SafeScoutingRoute
-  AdminModerationRoute: typeof AdminModerationRoute
-  AdminPanelRoute: typeof AdminPanelRoute
-  AdminReportsRoute: typeof AdminReportsRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
-  AdminUsersRoute: typeof AdminUsersRoute
-  AdminVideosRoute: typeof AdminVideosRoute
   ApiHealthRoute: typeof ApiHealthRoute
   PlayerExploreRoute: typeof PlayerExploreRoute
   PlayerProfileRoute: typeof PlayerProfileRoute
@@ -1156,45 +1150,45 @@ declare module '@tanstack/react-router' {
     }
     '/admin/videos': {
       id: '/admin/videos'
-      path: '/admin/videos'
+      path: '/videos'
       fullPath: '/admin/videos'
       preLoaderRoute: typeof AdminVideosRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/users': {
       id: '/admin/users'
-      path: '/admin/users'
+      path: '/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof AdminUsersRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/settings': {
       id: '/admin/settings'
-      path: '/admin/settings'
+      path: '/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/reports': {
       id: '/admin/reports'
-      path: '/admin/reports'
+      path: '/reports'
       fullPath: '/admin/reports'
       preLoaderRoute: typeof AdminReportsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/panel': {
       id: '/admin/panel'
-      path: '/admin/panel'
+      path: '/panel'
       fullPath: '/admin/panel'
       preLoaderRoute: typeof AdminPanelRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/moderation': {
       id: '/admin/moderation'
-      path: '/admin/moderation'
+      path: '/moderation'
       fullPath: '/admin/moderation'
       preLoaderRoute: typeof AdminModerationRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/scout/settings/': {
       id: '/scout/settings/'
@@ -1687,12 +1681,6 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SafeScoutingRoute: SafeScoutingRoute,
-  AdminModerationRoute: AdminModerationRoute,
-  AdminPanelRoute: AdminPanelRoute,
-  AdminReportsRoute: AdminReportsRoute,
-  AdminSettingsRoute: AdminSettingsRoute,
-  AdminUsersRoute: AdminUsersRoute,
-  AdminVideosRoute: AdminVideosRoute,
   ApiHealthRoute: ApiHealthRoute,
   PlayerExploreRoute: PlayerExploreRoute,
   PlayerProfileRoute: PlayerProfileRoute,
@@ -1710,3 +1698,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
