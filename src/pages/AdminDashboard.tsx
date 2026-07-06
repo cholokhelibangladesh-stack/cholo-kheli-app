@@ -14,6 +14,8 @@ import ProfileTab from"@/components/ProfileTab";
 import AdminNoticeForm from"@/components/AdminNoticeForm";
 import AdminStatsPanel from"@/components/AdminStatsPanel";
 import UsernameAuditTab from"@/components/UsernameAuditTab";
+import AdminNewsManager from"@/components/AdminNewsManager";
+import UploadPriceControl from"@/components/UploadPriceControl";
 
 interface ScoutRow { id: string; user_id: string; organization: string | null; verification_status: string; created_at: string; full_name?: string; username?: string | null; email?: string | null; is_banned?: boolean; }
 interface PlayerRow { user_id: string; full_name: string; username?: string | null; email?: string | null; is_banned?: boolean; sport?: string | null; }
@@ -510,7 +512,8 @@ const AdminDashboard = () => {
  <TabsTrigger value="requests" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Requests {stats?.pendingRequests ? `(${stats.pendingRequests})` :""}</TabsTrigger>
  <TabsTrigger value="safety" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Safety {stats?.flaggedMessages ? `(${stats.flaggedMessages})` :""}</TabsTrigger>
  <TabsTrigger value="controls" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Controls</TabsTrigger>
- <TabsTrigger value="notices" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Notices</TabsTrigger>
+  <TabsTrigger value="news" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">News</TabsTrigger>
+ <TabsTrigger value="notices" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Notifications</TabsTrigger>
  <TabsTrigger value="contact" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Contact {stats?.unreadContacts ? `(${stats.unreadContacts})` :""}</TabsTrigger>
  <TabsTrigger value="profile" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3">Profile</TabsTrigger>
  <TabsTrigger value="audit" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground text-xs whitespace-nowrap px-3" data-testid="tab-audit">Usernames</TabsTrigger>
@@ -697,7 +700,8 @@ const AdminDashboard = () => {
  </TabsContent>
 
  {/* Controls Tab */}
- <TabsContent value="controls" className="space-y-4">
+  <TabsContent value="controls" className="space-y-4">
+ <UploadPriceControl />
  <div className="apple-glass glass-card rounded-2xl p-6 space-y-4">
  <div className="flex items-center gap-3 mb-2">
  <Power className="h-5 w-5 text-primary" />
@@ -721,6 +725,11 @@ const AdminDashboard = () => {
  </Button>
  </div>
  </div>
+ </TabsContent>
+
+ {/* News Tab */}
+ <TabsContent value="news">
+ <AdminNewsManager />
  </TabsContent>
 
  {/* Notices Tab */}
