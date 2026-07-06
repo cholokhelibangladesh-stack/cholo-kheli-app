@@ -830,6 +830,25 @@ const AdminDashboard = () => {
 
  </motion.div>
  </div>
+
+ {banTarget && (
+   <BanDialog
+     open={!!banTarget}
+     onOpenChange={(v) => { if (!v) setBanTarget(null); }}
+     targetUserId={banTarget.userId}
+     targetName={banTarget.name}
+     scope={banTarget.scope}
+     onDone={fetchAll}
+   />
+ )}
+ {shareTarget && (
+   <ShareToScoutDialog
+     open={!!shareTarget}
+     onOpenChange={(v) => { if (!v) setShareTarget(null); }}
+     playerId={shareTarget.userId}
+     playerName={shareTarget.name}
+   />
+ )}
  </div>
 );
 };
