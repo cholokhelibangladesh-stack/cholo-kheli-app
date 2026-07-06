@@ -47,7 +47,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
   // Your account (former Accounts Center rows, inlined)
   { id: "personal-details", label: "Personal details", to: "/player/settings/personal-details", icon: UserCircle2, group: G.account, keywords: "name email phone dob first last" },
   { id: "password", label: "Password and passkeys", to: "/player/settings/password", icon: KeyRound, group: G.account, keywords: "change password reset" },
-  { id: "sign-in-devices", label: "Sign-in devices", to: "/player/settings/devices", icon: MonitorSmartphone, group: G.account, keywords: "sessions logout everywhere" },
+  { id: "sign-in-devices", label: "Sign-in devices", to: "/player/settings/sessions", icon: MonitorSmartphone, group: G.account, keywords: "sessions logout everywhere where signed in" },
   { id: "two-factor", label: "Two-step verification", to: "/player/settings/two-factor", icon: Fingerprint, group: G.account, keywords: "2fa otp security" },
 
   // How you use Cholo Kheli
