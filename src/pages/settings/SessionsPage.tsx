@@ -4,6 +4,16 @@ import { useToast } from "@/hooks/use-toast";
 import SettingsShell from "@/components/settings/SettingsShell";
 import { SettingsCard } from "@/components/settings/SettingsControls";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Loader2, Smartphone, Monitor, Tablet, Globe, LogOut } from "lucide-react";
 
 type SessionRow = {
@@ -52,6 +62,7 @@ const SessionsPage = () => {
   const [rows, setRows] = useState<SessionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [revoking, setRevoking] = useState<string | null>(null);
+  const [confirmTarget, setConfirmTarget] = useState<SessionRow | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -66,17 +77,39 @@ const SessionsPage = () => {
 
   useEffect(() => { load(); }, [load]);
 
-  const revoke = async (sid: string) => {
+  const confirmRevoke = async () => {
+    if (!confirmTarget) return;
+    const sid = confirmTarget.id;
+    const snapshot = rows;
+    // Optimistic UI: remove immediately
+    setRows((prev) => prev.filter((r) => r.id !== sid));
     setRevoking(sid);
-    const { error } = await (supabase.rpc as any)("revoke_my_session", { _session_id: sid });
+    setConfirmTarget(null);
+    const { data, error } = await (supabase.rpc as any)("revoke_my_session", { _session_id: sid });
     setRevoking(null);
     if (error) {
-      toast({ title: "Could not sign out session", description: error.message, variant: "destructive" });
+      // Roll back
+      setRows(snapshot);
+      toast({
+        title: "Could not sign out device",
+        description: error.message ?? "Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (data === false) {
+      // Server reported no matching session — refresh to reconcile
+      toast({
+        title: "Session already ended",
+        description: "That device was no longer signed in.",
+      });
+      load();
       return;
     }
     toast({ title: "Signed out of that device" });
-    load();
   };
+
+  const target = confirmTarget ? parseDevice(confirmTarget.user_agent) : null;
 
   return (
     <SettingsShell title="Sign-in devices" description="Where your account is currently signed in">
@@ -119,10 +152,14 @@ const SessionsPage = () => {
                     size="sm"
                     variant="ghost"
                     className="shrink-0 text-rose-300 hover:text-rose-200 hover:bg-rose-500/10"
-                    onClick={() => revoke(s.id)}
+                    onClick={() => setConfirmTarget(s)}
                     disabled={revoking === s.id}
                   >
-                    {revoking === s.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <><LogOut className="mr-1 h-4 w-4" />Sign out</>}
+                    {revoking === s.id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <><LogOut className="mr-1 h-4 w-4" />Sign out</>
+                    )}
                   </Button>
                 ) : null}
               </div>
@@ -133,6 +170,28 @@ const SessionsPage = () => {
       <p className="mt-3 px-1 text-xs text-foreground/55">
         If you don't recognise a device, sign it out and change your password immediately.
       </p>
+
+      <AlertDialog open={!!confirmTarget} onOpenChange={(o) => !o && setConfirmTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign out this device?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {target
+                ? `${target.device}${target.browser ? ` · ${target.browser}` : ""} on ${target.os} will be signed out immediately. It will need to sign in again to access your account.`
+                : "This device will be signed out immediately."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmRevoke}
+              className="bg-rose-500 text-white hover:bg-rose-500/90"
+            >
+              Sign out device
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </SettingsShell>
   );
 };
