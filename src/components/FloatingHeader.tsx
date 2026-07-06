@@ -6,7 +6,7 @@ import { useTheme } from "@/hooks/useTheme";
 import NotificationBell from "@/components/NotificationBell";
 import { useLanguage } from "@/i18n/LanguageProvider";
 
-import logoAsset from "@/assets/cholo-kheli-mark-v2.png.asset.json";
+import CholoKheliMark from "@/components/CholoKheliMark";
 
 // Routes whose hero image is dark — icons stay white while at the top of these
 // pages regardless of theme.
@@ -86,24 +86,8 @@ const FloatingHeader = () => {
           aria-label={t("nav.home")}
           className="pointer-events-auto flex items-center gap-2.5 group shrink-0"
         >
-          <span
-            aria-hidden
-            className={`h-11 w-11 sm:h-12 sm:w-12 shrink-0 ${shadow} transition-transform group-hover:scale-105`}
-            style={{
-              // Deep teal in light theme; Candy Blue on dark backgrounds
-              // (hero + dark theme) so it stays punchy against the video.
-              backgroundColor:
-                theme === "light" ? "hsl(var(--teal-deep))" : "#B2D5E5",
-
-              WebkitMaskImage: `url(${logoAsset.url})`,
-              maskImage: `url(${logoAsset.url})`,
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center",
-              maskPosition: "center",
-              WebkitMaskSize: "82% auto",
-              maskSize: "82% auto",
-            }}
+          <CholoKheliMark
+            className={`h-12 w-14 sm:h-14 sm:w-16 shrink-0 ${shadow} transition-transform group-hover:scale-105`}
           />
 
           <span className={`font-display text-lg sm:text-xl tracking-[0.04em] ${fg} font-semibold ${wordmarkShadow}`}>

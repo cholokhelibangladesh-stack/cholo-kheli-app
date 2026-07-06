@@ -1,16 +1,7 @@
 import { motion } from "framer-motion";
+import CholoKheliMark from "@/components/CholoKheliMark";
 
-const SilverLogoMark = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 360 240" className={className} aria-hidden style={{ display: "block" }}>
-    <g fill="none" stroke="#f7f9fb" strokeWidth="20" strokeLinecap="round" style={{ filter: "drop-shadow(0 8px 18px rgba(20,50,90,0.32))" }}>
-      <path d="M35 166C125 150 224 103 259 18" />
-      <path d="M89 185C183 162 289 94 302 9" />
-    </g>
-    <path d="M281 111 342 218h-82l-45-62 37-58z" fill="#f7f9fb" style={{ filter: "drop-shadow(0 8px 18px rgba(20,50,90,0.32))" }} />
-  </svg>
-);
-
-/** Route pending fallback — same silver-mark loading language as the intro. */
+/** Route pending fallback — always uses the official Cholo Kheli mark. */
 export function RoutePendingFallback() {
   return (
     <div
@@ -36,10 +27,10 @@ export function RoutePendingFallback() {
           initial={{ opacity: 0, scale: 0.72 }}
           animate={{ opacity: 1, scale: [0.72, 1, 0.96, 1] }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          style={{ width: "min(58vw, 220px)", aspectRatio: "1.49 / 1" }}
+          style={{ width: "min(54vw, 190px)", aspectRatio: "1.75 / 1" }}
           aria-hidden
         >
-          <SilverLogoMark className="absolute inset-0 h-full w-full" />
+          <CholoKheliMark className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_10px_20px_rgba(20,50,90,0.32)]" />
         </motion.div>
         <span className="text-[10px] tracking-[0.42em] uppercase text-white/90 font-medium drop-shadow-[0_2px_10px_rgba(0,40,80,0.35)]">
           Cholo Kheli

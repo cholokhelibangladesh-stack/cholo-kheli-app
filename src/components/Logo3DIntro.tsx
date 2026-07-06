@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import markAsset from "@/assets/cholo-kheli-mark-v2.png.asset.json";
+import markAsset from "@/assets/cholo-kheli-mark-official.png.asset.json";
 
 /**
  * Full-screen loading intro on a soft candy-blue backdrop. Renders the
@@ -52,7 +52,7 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
             }}
           />
 
-          {/* Silver logo mark */}
+          {/* Official logo mark */}
           <motion.div
             initial={{ scale: 0.6, opacity: 0, y: 8 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -71,15 +71,11 @@ export default function Logo3DIntro({ onDone, duration = 2200 }: Props) {
               }}
             />
 
-            {/* Official mark rendered white by inverting the teal PNG.
-                Keeps the same crisp asset used across the app but tinted
-                to sit cleanly on the blue splash. */}
             <img
               src={markAsset.url}
               alt="Cholo Kheli"
               draggable={false}
               className="pointer-events-none absolute inset-0 h-full w-full select-none object-contain drop-shadow-[0_12px_22px_rgba(20,50,90,0.38)]"
-              style={{ filter: "brightness(0) invert(1) drop-shadow(0 8px 14px rgba(10,30,60,0.35))" }}
             />
 
             {/* Sweeping specular sheen */}
