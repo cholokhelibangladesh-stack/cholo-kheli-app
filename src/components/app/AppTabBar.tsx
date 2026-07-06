@@ -74,10 +74,10 @@ const AppTabBar = () => {
 
       <ul className="mx-auto flex h-16 max-w-[430px] items-stretch justify-around px-3">
         {tabs.map(({ label, to, Icon, emphasize }) => {
-          const active =
-            to === "/player" || to === "/scout" || to === "/"
-              ? pathname === to
-              : pathname === to || pathname.startsWith(to + "/");
+          const exactOnly = to === "/player" || to === "/scout" || to === "/admin" || to === "/";
+          const active = exactOnly
+            ? pathname === to
+            : pathname === to || pathname.startsWith(to + "/");
           const useGradient = active;
           return (
             <li key={to} className="flex-1">
