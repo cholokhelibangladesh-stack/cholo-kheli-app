@@ -231,6 +231,25 @@ const AdminNoticeForm = () => {
           <Label className="text-sm text-muted-foreground">Message</Label>
           <Textarea className="mt-1 bg-secondary border-border resize-none rounded-xl" rows={3} placeholder="Write your notice..." value={message} onChange={(e) => setMessage(e.target.value)} />
         </div>
+        <div>
+          <Label className="text-sm text-muted-foreground">Attach image or video (optional)</Label>
+          {mediaFile ? (
+            <div className="mt-1 flex items-center gap-2 text-xs rounded-xl border border-border bg-secondary p-2">
+              <Paperclip className="h-3.5 w-3.5" />
+              <span className="truncate flex-1">{mediaFile.name}</span>
+              <button type="button" onClick={() => setMediaFile(null)} aria-label="Remove attachment">
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          ) : (
+            <Input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e) => setMediaFile(e.target.files?.[0] ?? null)}
+              className="mt-1 bg-secondary border-border rounded-xl"
+            />
+          )}
+        </div>
         <Button
           onClick={handleSend}
           disabled={sending || !title.trim() || !message.trim()}
