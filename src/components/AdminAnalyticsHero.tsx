@@ -118,12 +118,12 @@ const AdminAnalyticsHero = ({ stats, revenueTimeline = [] }: Props) => {
 
         {/* Frost KPI */}
         <div
-          className="relative overflow-hidden p-5 rounded-3xl border backdrop-blur-md"
+          className="relative overflow-hidden p-5 rounded-3xl border backdrop-blur-md bg-card/60 dark:bg-card/40"
           style={{
-            background:
-              "linear-gradient(135deg, hsl(var(--teal-deep) / 0.08) 0%, rgba(126,200,255,0.10) 100%)",
-            borderColor: "hsl(var(--teal-deep) / 0.18)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)",
+            backgroundImage:
+              "linear-gradient(135deg, hsl(var(--teal-deep) / 0.10) 0%, hsl(var(--candy) / 0.14) 100%)",
+            borderColor: "hsl(var(--teal) / 0.28)",
+            boxShadow: "inset 0 1px 0 hsl(var(--candy) / 0.18)",
           }}
         >
           <div className="flex items-center gap-2 mb-1">
