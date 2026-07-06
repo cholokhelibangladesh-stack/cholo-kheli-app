@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { Loader2, Newspaper, Calendar, Megaphone, Trophy, ArrowRight } from "lucide-react";
+import { Loader2, Newspaper, Calendar, Megaphone, Trophy, ArrowRight, Inbox } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
+import { supabase } from "@/integrations/supabase/client";
 
 type FeedItem = {
   id: string;
@@ -62,10 +63,23 @@ const kindIcon = (k: FeedItem["kind"]) => {
 const ScoutHome = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const [inboxCount, setInboxCount] = useState(0);
 
   useEffect(() => {
     if (!authLoading && !user) navigate({ to: "/auth?role=scout" as any });
   }, [user, authLoading]);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { count } = await (supabase as any)
+        .from("profile_shares")
+        .select("id", { count: "exact", head: true })
+        .eq("scout_id", user.id)
+        .eq("status", "sent");
+      setInboxCount(count ?? 0);
+    })();
+  }, [user?.id]);
 
   if (authLoading) {
     return (
@@ -84,6 +98,31 @@ const ScoutHome = () => {
           <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground">Home</p>
           <h1 className="font-display text-2xl text-foreground mt-1">Latest from Cholo Kheli</h1>
         </motion.div>
+
+        <a
+          href="/scout/inbox"
+          className="mb-5 flex items-center gap-3 rounded-2xl p-4 border border-primary/25 hover:border-primary/50 transition-colors"
+          style={{
+            background: "linear-gradient(135deg, rgba(126,200,255,0.10) 0%, hsl(var(--teal-deep) / 0.10) 100%)",
+          }}
+        >
+          <div className="relative h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center border border-primary/30">
+            <Inbox className="h-5 w-5 text-primary" />
+            {inboxCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-5 min-w-5 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
+                {inboxCount}
+              </span>
+            )}
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-semibold text-foreground">Talent inbox</p>
+            <p className="text-xs text-muted-foreground">
+              {inboxCount > 0 ? `${inboxCount} new player${inboxCount > 1 ? "s" : ""} shared by admins` : "Profiles shared with you by admins"}
+            </p>
+          </div>
+          <ArrowRight className="h-4 w-4 text-muted-foreground" />
+        </a>
+
 
         {stories.length > 0 && (
           <div className="-mx-4 mb-6 overflow-x-auto no-scrollbar">
