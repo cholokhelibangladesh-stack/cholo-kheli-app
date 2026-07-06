@@ -51,6 +51,7 @@ import { Route as PlayerSettingsSavedRouteImport } from './routes/player/setting
 import { Route as PlayerSettingsRestrictedRouteImport } from './routes/player/settings.restricted'
 import { Route as PlayerSettingsPrivacyCenterRouteImport } from './routes/player/settings.privacy-center'
 import { Route as PlayerSettingsPrivacyRouteImport } from './routes/player/settings.privacy'
+import { Route as PlayerSettingsPersonalDetailsRouteImport } from './routes/player/settings.personal-details'
 import { Route as PlayerSettingsPasswordRouteImport } from './routes/player/settings.password'
 import { Route as PlayerSettingsOrdersRouteImport } from './routes/player/settings.orders'
 import { Route as PlayerSettingsNotificationsRouteImport } from './routes/player/settings.notifications'
@@ -299,6 +300,12 @@ const PlayerSettingsPrivacyRoute = PlayerSettingsPrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => PlayerSettingsRoute,
 } as any)
+const PlayerSettingsPersonalDetailsRoute =
+  PlayerSettingsPersonalDetailsRouteImport.update({
+    id: '/personal-details',
+    path: '/personal-details',
+    getParentRoute: () => PlayerSettingsRoute,
+  } as any)
 const PlayerSettingsPasswordRoute = PlayerSettingsPasswordRouteImport.update({
   id: '/password',
   path: '/password',
@@ -536,6 +543,7 @@ export interface FileRoutesByFullPath {
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/password': typeof PlayerSettingsPasswordRoute
+  '/player/settings/personal-details': typeof PlayerSettingsPersonalDetailsRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -611,6 +619,7 @@ export interface FileRoutesByTo {
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/password': typeof PlayerSettingsPasswordRoute
+  '/player/settings/personal-details': typeof PlayerSettingsPersonalDetailsRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -689,6 +698,7 @@ export interface FileRoutesById {
   '/player/settings/notifications': typeof PlayerSettingsNotificationsRoute
   '/player/settings/orders': typeof PlayerSettingsOrdersRoute
   '/player/settings/password': typeof PlayerSettingsPasswordRoute
+  '/player/settings/personal-details': typeof PlayerSettingsPersonalDetailsRoute
   '/player/settings/privacy': typeof PlayerSettingsPrivacyRoute
   '/player/settings/privacy-center': typeof PlayerSettingsPrivacyCenterRoute
   '/player/settings/restricted': typeof PlayerSettingsRestrictedRoute
@@ -768,6 +778,7 @@ export interface FileRouteTypes {
     | '/player/settings/notifications'
     | '/player/settings/orders'
     | '/player/settings/password'
+    | '/player/settings/personal-details'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -843,6 +854,7 @@ export interface FileRouteTypes {
     | '/player/settings/notifications'
     | '/player/settings/orders'
     | '/player/settings/password'
+    | '/player/settings/personal-details'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -920,6 +932,7 @@ export interface FileRouteTypes {
     | '/player/settings/notifications'
     | '/player/settings/orders'
     | '/player/settings/password'
+    | '/player/settings/personal-details'
     | '/player/settings/privacy'
     | '/player/settings/privacy-center'
     | '/player/settings/restricted'
@@ -1258,6 +1271,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerSettingsPrivacyRouteImport
       parentRoute: typeof PlayerSettingsRoute
     }
+    '/player/settings/personal-details': {
+      id: '/player/settings/personal-details'
+      path: '/personal-details'
+      fullPath: '/player/settings/personal-details'
+      preLoaderRoute: typeof PlayerSettingsPersonalDetailsRouteImport
+      parentRoute: typeof PlayerSettingsRoute
+    }
     '/player/settings/password': {
       id: '/player/settings/password'
       path: '/password'
@@ -1544,6 +1564,7 @@ interface PlayerSettingsRouteChildren {
   PlayerSettingsNotificationsRoute: typeof PlayerSettingsNotificationsRoute
   PlayerSettingsOrdersRoute: typeof PlayerSettingsOrdersRoute
   PlayerSettingsPasswordRoute: typeof PlayerSettingsPasswordRoute
+  PlayerSettingsPersonalDetailsRoute: typeof PlayerSettingsPersonalDetailsRoute
   PlayerSettingsPrivacyRoute: typeof PlayerSettingsPrivacyRoute
   PlayerSettingsPrivacyCenterRoute: typeof PlayerSettingsPrivacyCenterRoute
   PlayerSettingsRestrictedRoute: typeof PlayerSettingsRestrictedRoute
@@ -1593,6 +1614,7 @@ const PlayerSettingsRouteChildren: PlayerSettingsRouteChildren = {
   PlayerSettingsNotificationsRoute: PlayerSettingsNotificationsRoute,
   PlayerSettingsOrdersRoute: PlayerSettingsOrdersRoute,
   PlayerSettingsPasswordRoute: PlayerSettingsPasswordRoute,
+  PlayerSettingsPersonalDetailsRoute: PlayerSettingsPersonalDetailsRoute,
   PlayerSettingsPrivacyRoute: PlayerSettingsPrivacyRoute,
   PlayerSettingsPrivacyCenterRoute: PlayerSettingsPrivacyCenterRoute,
   PlayerSettingsRestrictedRoute: PlayerSettingsRestrictedRoute,
@@ -1654,13 +1676,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
