@@ -37,14 +37,14 @@ const AppTabBar = () => {
   } else if (role === "scout") {
     tabs = [
       { label: "Home", to: "/scout", Icon: Home },
-      { label: "Explore", to: "/scout/explore", Icon: Compass },
+      { label: "Explore", to: "/scout/explore", Icon: Search },
       { label: "Picks", to: "/scout/selections", Icon: ClipboardList },
       { label: "Profile", to: "/scout/profile", Icon: User },
     ];
   } else if (role === "admin") {
     tabs = [
-      { label: "Home", to: "/", Icon: Home },
-      { label: "Admin", to: "/admin", Icon: Shield },
+      { label: "Home", to: "/admin", Icon: Home },
+      { label: "Panel", to: "/admin/panel", Icon: Shield },
     ];
   } else {
     return null;
