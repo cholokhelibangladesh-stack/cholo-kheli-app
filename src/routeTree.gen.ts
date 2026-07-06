@@ -20,6 +20,7 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoutIndexRouteImport } from './routes/scout/index'
 import { Route as PlayerIndexRouteImport } from './routes/player/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ScoutSettingsRouteImport } from './routes/scout/settings'
 import { Route as ScoutSelectionsRouteImport } from './routes/scout/selections'
 import { Route as ScoutProfileRouteImport } from './routes/scout/profile'
@@ -142,6 +143,11 @@ const PlayerIndexRoute = PlayerIndexRouteImport.update({
   id: '/player/',
   path: '/player/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ScoutSettingsRoute = ScoutSettingsRouteImport.update({
   id: '/scout/settings',
@@ -521,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
   '/scout/settings': typeof ScoutSettingsRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -578,7 +585,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/faq': typeof FaqRoute
   '/mission': typeof MissionRoute
@@ -599,6 +605,7 @@ export interface FileRoutesByTo {
   '/scout/explore': typeof ScoutExploreRoute
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
+  '/admin': typeof AdminIndexRoute
   '/player': typeof PlayerIndexRoute
   '/scout': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -680,6 +687,7 @@ export interface FileRoutesById {
   '/scout/profile': typeof ScoutProfileRoute
   '/scout/selections': typeof ScoutSelectionsRoute
   '/scout/settings': typeof ScoutSettingsRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
   '/player/': typeof PlayerIndexRoute
   '/scout/': typeof ScoutIndexRoute
   '/player/settings/about': typeof PlayerSettingsAboutRoute
@@ -762,6 +770,7 @@ export interface FileRouteTypes {
     | '/scout/profile'
     | '/scout/selections'
     | '/scout/settings'
+    | '/admin/'
     | '/player/'
     | '/scout/'
     | '/player/settings/about'
@@ -819,7 +828,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
-    | '/admin'
     | '/auth'
     | '/faq'
     | '/mission'
@@ -840,6 +848,7 @@ export interface FileRouteTypes {
     | '/scout/explore'
     | '/scout/profile'
     | '/scout/selections'
+    | '/admin'
     | '/player'
     | '/scout'
     | '/player/settings/about'
@@ -920,6 +929,7 @@ export interface FileRouteTypes {
     | '/scout/profile'
     | '/scout/selections'
     | '/scout/settings'
+    | '/admin/'
     | '/player/'
     | '/scout/'
     | '/player/settings/about'
@@ -1077,6 +1087,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/player/'
       preLoaderRoute: typeof PlayerIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/scout/settings': {
       id: '/scout/settings'
@@ -1557,6 +1574,7 @@ interface AdminRouteChildren {
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminVideosRoute: typeof AdminVideosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -1566,6 +1584,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminSettingsRoute: AdminSettingsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminVideosRoute: AdminVideosRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -1718,3 +1737,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
