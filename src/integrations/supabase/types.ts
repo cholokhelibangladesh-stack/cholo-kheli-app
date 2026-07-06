@@ -302,6 +302,45 @@ export type Database = {
         }
         Relationships: []
       }
+      news_posts: {
+        Row: {
+          body: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_published: boolean
+          media_type: string | null
+          media_url: string | null
+          tag: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean
+          media_type?: string | null
+          media_url?: string | null
+          tag?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean
+          media_type?: string | null
+          media_url?: string | null
+          tag?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
           comments: boolean

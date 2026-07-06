@@ -75,6 +75,18 @@ serve(async (req) => {
 
 
 
+    // Load current upload price from app_settings (admin-editable). Default to 100.
+    let uploadPrice = 100;
+    {
+      const { data: priceRow } = await supabase
+        .from("app_settings")
+        .select("value")
+        .eq("key", "video_upload_price_bdt")
+        .maybeSingle();
+      const parsed = Number((priceRow as any)?.value);
+      if (Number.isFinite(parsed) && parsed >= 0) uploadPrice = parsed;
+    }
+
     // ── bKash Payment Gateway Integration ──
     // Check for bKash API credentials
     const BKASH_APP_KEY = Deno.env.get("BKASH_APP_KEY");
@@ -124,7 +136,7 @@ serve(async (req) => {
           mode: "0011",
           payerReference: bkash_number,
           callbackURL: `${supabaseUrl}/functions/v1/process-payment-callback`,
-          amount: "100",
+          amount: String(uploadPrice),
           currency: "BDT",
           intent: "sale",
           merchantInvoiceNumber: `INV-${Date.now()}`,
@@ -170,7 +182,7 @@ serve(async (req) => {
       .insert({
         user_id: user.id,
         video_id,
-        amount: 100.00,
+        amount: uploadPrice,
         method: paymentMethod,
         status: "success",
         transaction_id: transactionId,

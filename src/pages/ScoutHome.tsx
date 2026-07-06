@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
+import NewsPostsList from "@/components/NewsPostsList";
 
 type FeedItem = {
   id: string;
@@ -131,7 +132,9 @@ const ScoutHome = () => {
           </div>
         )}
 
-        <div className="space-y-3">
+        <NewsPostsList />
+
+        <div className="space-y-3 mt-3">
           {FEED.map((item, i) => {
             const Icon = kindIcon(item.kind);
             return (

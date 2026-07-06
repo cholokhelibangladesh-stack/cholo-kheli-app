@@ -34,6 +34,7 @@ import { Route as AdminVideosRouteImport } from './routes/admin.videos'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminPanelRouteImport } from './routes/admin.panel'
 import { Route as AdminModerationRouteImport } from './routes/admin.moderation'
 import { Route as ScoutSettingsIndexRouteImport } from './routes/scout/settings.index'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
@@ -210,6 +211,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
 const AdminReportsRoute = AdminReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPanelRoute = AdminPanelRouteImport.update({
+  id: '/panel',
+  path: '/panel',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminModerationRoute = AdminModerationRouteImport.update({
@@ -500,6 +506,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -579,6 +586,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -657,6 +665,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
   '/admin/moderation': typeof AdminModerationRoute
+  '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/admin/users': typeof AdminUsersRoute
@@ -738,6 +747,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/safe-scouting'
     | '/admin/moderation'
+    | '/admin/panel'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/users'
@@ -817,6 +827,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/safe-scouting'
     | '/admin/moderation'
+    | '/admin/panel'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/users'
@@ -894,6 +905,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/safe-scouting'
     | '/admin/moderation'
+    | '/admin/panel'
     | '/admin/reports'
     | '/admin/settings'
     | '/admin/users'
@@ -1162,6 +1174,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/admin/reports'
       preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/panel': {
+      id: '/admin/panel'
+      path: '/panel'
+      fullPath: '/admin/panel'
+      preLoaderRoute: typeof AdminPanelRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/moderation': {
@@ -1533,6 +1552,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminModerationRoute: typeof AdminModerationRoute
+  AdminPanelRoute: typeof AdminPanelRoute
   AdminReportsRoute: typeof AdminReportsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminUsersRoute: typeof AdminUsersRoute
@@ -1541,6 +1561,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminModerationRoute: AdminModerationRoute,
+  AdminPanelRoute: AdminPanelRoute,
   AdminReportsRoute: AdminReportsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminUsersRoute: AdminUsersRoute,
