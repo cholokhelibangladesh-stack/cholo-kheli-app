@@ -17,7 +17,7 @@ const VerifiedPage = () => {
         supabase
           .from("scout_requests")
           .select("status")
-          .eq("user_id", user.id)
+          .eq("player_id", user.id)
           .order("created_at", { ascending: false })
           .limit(1)
           .maybeSingle(),
