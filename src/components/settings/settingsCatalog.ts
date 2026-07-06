@@ -86,7 +86,7 @@ export const SETTINGS_CATALOG: CatalogItem[] = [
 
   // Creator and verification (players only)
   { id: "verified", label: "Cholo Kheli Verified", to: "/player/settings/verified", icon: BadgeCheck, group: G.creator, roles: ["player"] },
-  { id: "ck-ai", label: "Cholo Kheli AI assistant", to: "/player/settings/ai", icon: Bot, group: G.creator, roles: ["player"] },
+  
 
   // Scouting tools (scouts only)
   { id: "scout-prefs", label: "Scouting preferences", to: "/scout/settings/preferences", icon: ListFilter, group: G.scout, roles: ["scout"], keywords: "sport position filter" },
