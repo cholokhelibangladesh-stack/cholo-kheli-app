@@ -16,6 +16,8 @@ import AdminStatsPanel from"@/components/AdminStatsPanel";
 import UsernameAuditTab from"@/components/UsernameAuditTab";
 import AdminNewsManager from"@/components/AdminNewsManager";
 import UploadPriceControl from"@/components/UploadPriceControl";
+import AdminAnalyticsHero from"@/components/AdminAnalyticsHero";
+
 
 interface ScoutRow { id: string; user_id: string; organization: string | null; verification_status: string; created_at: string; full_name?: string; username?: string | null; email?: string | null; is_banned?: boolean; }
 interface PlayerRow { user_id: string; full_name: string; username?: string | null; email?: string | null; is_banned?: boolean; sport?: string | null; }
