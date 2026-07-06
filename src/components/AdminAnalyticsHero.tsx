@@ -87,17 +87,17 @@ const AdminAnalyticsHero = ({ stats, revenueTimeline = [] }: Props) => {
       >
         {/* Gradient hero KPI */}
         <div
-          className="relative overflow-hidden p-5 rounded-3xl text-white border border-white/15"
+          className="relative overflow-hidden p-5 rounded-3xl text-white border border-white/15 dark:border-white/10"
           style={{
             background:
-              "linear-gradient(135deg, hsl(var(--teal-deep)) 0%, hsl(174 100% 24%) 100%)",
+              "linear-gradient(135deg, hsl(var(--teal-deep)) 0%, hsl(var(--teal)) 100%)",
             boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.25), 0 12px 30px -18px hsl(var(--teal-deep) / 0.7)",
+              "inset 0 1px 0 rgba(255,255,255,0.22), 0 18px 40px -22px hsl(var(--teal-deep) / 0.75)",
           }}
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-6 -bottom-8 h-32 w-32 rounded-full opacity-40 blur-3xl"
+            className="pointer-events-none absolute -right-6 -bottom-8 h-32 w-32 rounded-full opacity-50 blur-3xl"
             style={{ background: CANDY }}
           />
           <div className="relative flex items-center gap-2 mb-1">
