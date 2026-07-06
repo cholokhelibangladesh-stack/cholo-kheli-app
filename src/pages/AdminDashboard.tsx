@@ -350,12 +350,19 @@ const AdminDashboard = () => {
  type:"selection",
  } as any);
  } else {
- // Rejected: only notify player — scouts see status change in their dashboard
+ // Rejected: notify both player and scout so scout sees a decision landed
  await supabase.from("notifications").insert({
  user_id: playerId,
  title:" Scouting Update",
  message: `A scout reviewed your profile but decided not to proceed at this time. Keep improving and uploading new highlights!`,
  type:"feedback",
+ } as any);
+ await supabase.from("notifications").insert({
+ user_id: scoutId,
+ title:"Request declined",
+ message: `Your request for ${playerName} was declined by the admin.`,
+ type:"selection",
+ metadata: { player_id: playerId, player_name: playerName, status: "rejected" },
  } as any);
  }
 
