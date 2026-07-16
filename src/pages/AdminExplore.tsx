@@ -26,6 +26,11 @@ type AdminVideo = {
   is_banned?: boolean;
 };
 
+const normalizePlayerVideoUrl = (url: string | null): string | null => {
+  if (!url) return null;
+  return url.includes("/storage/v1/object/public/player-videos/") ? url.replace(/%2F/gi, "/") : url;
+};
+
 const AdminExplore = () => {
   const [videos, setVideos] = useState<AdminVideo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,16 +68,7 @@ const AdminExplore = () => {
     const rows: AdminVideo[] = await Promise.all(
       (vids ?? []).map(async (v: any) => {
         const p = profileMap.get(v.user_id) ?? {};
-        let url: string | null = v.video_url ?? null;
-        // If the URL points at the private player-videos bucket, sign it so admins can preview.
-        if (url && url.includes("/player-videos/")) {
-          const marker = "/player-videos/";
-          const path = url.substring(url.indexOf(marker) + marker.length).split("?")[0];
-          const { data: signed } = await supabase.storage
-            .from("player-videos")
-            .createSignedUrl(path, 60 * 60);
-          if (signed?.signedUrl) url = signed.signedUrl;
-        }
+        const url = normalizePlayerVideoUrl(v.video_url ?? null);
         return {
           id: v.id,
           user_id: v.user_id,
