@@ -800,28 +800,28 @@ export default function HeroScrollVideo({
                 </p>
 
                 {isSlides ? (
-                  <div className="mt-6 flex items-center gap-3">
+                  <div className="relative z-50 mt-6 flex items-center gap-3">
                     {isAuthed ? (
-                      <Link to={dashboardHref as any} className="flex-1">
+                      <Link to={dashboardHref as any} className="min-w-0 flex-1">
                         <button
                           type="button"
                           className="w-full h-14 rounded-full bg-white text-black font-semibold text-sm tracking-wide flex items-center justify-between pl-6 pr-2 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-transform"
                         >
-                          <span className="uppercase tracking-[0.14em]">Dashboard</span>
-                          <span className="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center">
+                          <span className="uppercase tracking-[0.14em] truncate">Dashboard</span>
+                          <span className="h-10 w-10 shrink-0 rounded-full bg-black text-white flex items-center justify-center">
                             <ArrowRight className="h-4 w-4" />
                           </span>
                         </button>
                       </Link>
                     ) : (
                       <>
-                        <Link to="/auth" search={{ mode: "signup" } as any} className="flex-1">
+                        <Link to="/auth" search={{ mode: "signup" } as any} className="min-w-0 flex-1">
                           <button
                             type="button"
                             className="w-full h-14 rounded-full bg-white text-black font-semibold text-sm flex items-center justify-between pl-6 pr-2 shadow-[0_10px_30px_-6px_rgba(0,0,0,0.4)] active:scale-[0.98] transition-transform"
                           >
-                            <span className="uppercase tracking-[0.14em]">Sign up</span>
-                            <span className="h-10 w-10 rounded-full bg-black text-white flex items-center justify-center">
+                            <span className="uppercase tracking-[0.14em] truncate">Sign up</span>
+                            <span className="h-10 w-10 shrink-0 rounded-full bg-black text-white flex items-center justify-center">
                               <ArrowRight className="h-4 w-4" />
                             </span>
                           </button>
@@ -829,7 +829,7 @@ export default function HeroScrollVideo({
                         <Link to="/auth" className="shrink-0">
                           <button
                             type="button"
-                            className="h-14 px-5 rounded-full border border-white/30 text-white/90 text-sm font-medium bg-white/10 backdrop-blur-sm active:scale-[0.98] transition-transform"
+                            className="h-14 px-5 rounded-full border border-white/30 text-white/90 text-sm font-medium bg-white/10 backdrop-blur-sm active:scale-[0.98] transition-transform whitespace-nowrap"
                           >
                             or Log in
                           </button>
@@ -837,6 +837,7 @@ export default function HeroScrollVideo({
                       </>
                     )}
                   </div>
+
                 ) : (
                   <div className="mt-8 flex flex-col sm:flex-row gap-3">
                     {isAuthed ? (
@@ -889,10 +890,11 @@ export default function HeroScrollVideo({
             <div
               className="flex items-center justify-between gap-3 px-5 transition-all duration-500"
                 style={{
-                  opacity: revealCTA > 0.85 ? 0 : 1,
-                  transform: `translateY(${revealCTA > 0.85 ? 16 : 0}px)`,
-                  pointerEvents: revealCTA > 0.85 ? "none" : "auto",
+                  opacity: revealCTA > 0.35 ? 0 : 1,
+                  transform: `translateY(${revealCTA > 0.35 ? 16 : 0}px)`,
+                  pointerEvents: revealCTA > 0.35 ? "none" : "auto",
                 }}
+
             >
               <button
                 type="button"
