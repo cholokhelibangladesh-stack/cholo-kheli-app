@@ -33,6 +33,7 @@ const PAGE_SIZE = 10;
 // ──────────────────────────────────────────────────────────────
 async function signIfPrivate(url: string | null): Promise<string | null> {
  if (!url) return url;
+ if (url.includes("/storage/v1/object/public/player-videos/")) return url.replace(/%2F/gi, "/");
  const marker = "/player-videos/";
  if (!url.includes(marker)) return url;
  const path = url.substring(url.indexOf(marker) + marker.length).split("?")[0];
