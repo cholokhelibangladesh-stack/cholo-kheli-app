@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionV
 import { Link, useNavigate } from"@tanstack/react-router";
 import {
  ArrowRight, ArrowLeft, Shield, Twitter, Facebook,
- Instagram, Youtube, ChevronDown, Loader2
+ Instagram, Youtube, ChevronDown
 } from"lucide-react";
 import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
@@ -364,13 +364,12 @@ const Index = () => {
  };
  }, []);
 
- // While auth is still resolving or an authenticated user is being routed
- // to their dashboard, show a lightweight splash instead of the marketing
- // page — avoids the hero flashing for a returning signed-in user.
- if (authLoading || shouldRedirect) {
+ // Keep the public intro visible while auth resolves on cold project loads.
+ // A signed-in user is only covered once we know their role and are routing.
+ if (shouldRedirect) {
    return (
      <div className="min-h-[100svh] w-full grid place-items-center bg-background">
-       <Loader2 className="h-8 w-8 animate-spin text-primary" aria-label="Loading" />
+       <CholoKheliMark className="h-16 w-16 text-primary" aria-label="Loading" />
      </div>
    );
  }
