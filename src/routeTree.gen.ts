@@ -39,6 +39,7 @@ import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AdminPanelRouteImport } from './routes/admin.panel'
 import { Route as AdminModerationRouteImport } from './routes/admin.moderation'
+import { Route as AdminExploreRouteImport } from './routes/admin.explore'
 import { Route as ScoutSettingsIndexRouteImport } from './routes/scout/settings.index'
 import { Route as PlayerSettingsIndexRouteImport } from './routes/player/settings.index'
 import { Route as ScoutSettingsVerificationRouteImport } from './routes/scout/settings.verification'
@@ -239,6 +240,11 @@ const AdminPanelRoute = AdminPanelRouteImport.update({
 const AdminModerationRoute = AdminModerationRouteImport.update({
   id: '/moderation',
   path: '/moderation',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExploreRoute = AdminExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
   getParentRoute: () => AdminRoute,
 } as any)
 const ScoutSettingsIndexRoute = ScoutSettingsIndexRouteImport.update({
@@ -524,6 +530,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/explore': typeof AdminExploreRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
@@ -606,6 +613,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/explore': typeof AdminExploreRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
@@ -688,6 +696,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/safe-scouting': typeof SafeScoutingRoute
+  '/admin/explore': typeof AdminExploreRoute
   '/admin/moderation': typeof AdminModerationRoute
   '/admin/panel': typeof AdminPanelRoute
   '/admin/reports': typeof AdminReportsRoute
@@ -773,6 +782,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/explore'
     | '/admin/moderation'
     | '/admin/panel'
     | '/admin/reports'
@@ -855,6 +865,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/explore'
     | '/admin/moderation'
     | '/admin/panel'
     | '/admin/reports'
@@ -936,6 +947,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/reset-password'
     | '/safe-scouting'
+    | '/admin/explore'
     | '/admin/moderation'
     | '/admin/panel'
     | '/admin/reports'
@@ -1245,6 +1257,13 @@ declare module '@tanstack/react-router' {
       path: '/moderation'
       fullPath: '/admin/moderation'
       preLoaderRoute: typeof AdminModerationRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/explore': {
+      id: '/admin/explore'
+      path: '/explore'
+      fullPath: '/admin/explore'
+      preLoaderRoute: typeof AdminExploreRouteImport
       parentRoute: typeof AdminRoute
     }
     '/scout/settings/': {
@@ -1608,6 +1627,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminExploreRoute: typeof AdminExploreRoute
   AdminModerationRoute: typeof AdminModerationRoute
   AdminPanelRoute: typeof AdminPanelRoute
   AdminReportsRoute: typeof AdminReportsRoute
@@ -1618,6 +1638,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminExploreRoute: AdminExploreRoute,
   AdminModerationRoute: AdminModerationRoute,
   AdminPanelRoute: AdminPanelRoute,
   AdminReportsRoute: AdminReportsRoute,
