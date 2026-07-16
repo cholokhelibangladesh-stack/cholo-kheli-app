@@ -1,5 +1,5 @@
 import { Outlet, createRootRouteWithContext, HeadContent, Scripts, useRouter } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 import type { QueryClient } from "@tanstack/react-query";
@@ -167,26 +167,44 @@ function ShellRouter() {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}})();",
-          }}
-        />
         <style
           dangerouslySetInnerHTML={{
             __html:
-              "html{background:#d6dee2;color-scheme:light}html.dark{background:#030303;color-scheme:dark}body{margin:0;background:inherit;color:hsl(var(--foreground));overflow-x:hidden}",
+              "html{background:#030303;color-scheme:dark}html:not(.dark){background:#d6dee2;color-scheme:light}body{margin:0;background:inherit;color:hsl(var(--foreground));overflow-x:hidden}#ck-boot-screen{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#030303;color:#eaf7fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}#ck-boot-screen>div{display:grid;place-items:center;gap:18px;text-align:center}#ck-boot-screen img{width:76px;height:76px;object-fit:contain;filter:drop-shadow(0 10px 26px rgba(0,0,0,.42))}#ck-boot-screen strong{display:block;font-size:13px;letter-spacing:.34em;text-transform:uppercase}#ck-boot-screen span{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(234,247,251,.68)}@media (prefers-reduced-motion:no-preference){#ck-boot-screen img{animation:ckBootPulse 1.15s ease-in-out infinite alternate}@keyframes ckBootPulse{from{transform:scale(.96);opacity:.72}to{transform:scale(1);opacity:1}}}",
           }}
         />
         <HeadContent />
       </head>
       <body>
+        <BootScreen />
         {children}
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function BootScreen() {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setVisible(false));
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <div id="ck-boot-screen" aria-label="Opening Cholo Kheli" role="status">
+      <div>
+        <img src={logoMark.url} alt="" aria-hidden="true" />
+        <p>
+          <strong>Cholo Kheli</strong>
+          <span>Let&apos;s play</span>
+        </p>
+      </div>
+    </div>
   );
 }
