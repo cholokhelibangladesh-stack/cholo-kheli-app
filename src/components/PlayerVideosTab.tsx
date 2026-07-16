@@ -481,89 +481,162 @@ const PlayerVideosTab = () => {
  </>
 )}
 
- <AnimatePresence>
- {selectedVideo && (
- <motion.div
- initial={{ opacity: 0 }}
- animate={{ opacity: 1 }}
- exit={{ opacity: 0 }}
- className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4"
- onClick={() => setSelectedVideo(null)}
- >
- <motion.div
- initial={{ scale: 0.9, opacity: 0 }}
- animate={{ scale: 1, opacity: 1 }}
- exit={{ scale: 0.9, opacity: 0 }}
- className="bg-card border border-border rounded-2xl overflow-hidden max-w-lg w-full max-h-[90vh] flex flex-col"
- onClick={(e) => e.stopPropagation()}
- >
- <div className="flex items-center gap-3 p-4 border-b border-border">
- <div className="w-9 h-9 rounded-full bg-secondary overflow-hidden border border-border">
- {selectedVideo.avatar_url ? (
- <img src={safeMediaUrl(selectedVideo.avatar_url)} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />
-) : (
- <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs font-bold">
- {selectedVideo.full_name.charAt(0)}
- </div>
-)}
- </div>
- <div>
- <p className="text-sm font-semibold text-foreground">{selectedVideo.full_name}</p>
- <p className="text-[11px] text-muted-foreground">{selectedVideo.sport}</p>
- </div>
- <div className="ml-auto flex items-center gap-2">
- <button onClick={() => toggleLike(selectedVideo)} className="flex items-center gap-1 text-xs">
- <Heart className={`w-4 h-4 ${selectedVideo.liked_by_me ?"text-red-500 fill-red-500" :"text-muted-foreground"}`} />
- {selectedVideo.like_count}
- </button>
- <button onClick={() => shareVideo(selectedVideo)} className="text-muted-foreground hover:text-foreground">
- <Share2 className="w-4 h-4" />
- </button>
- {role ==="scout" && (
- <ScoutSelectPlayer playerId={selectedVideo.user_id} playerName={selectedVideo.full_name} />
-)}
- <button onClick={() => setSelectedVideo(null)} className="text-muted-foreground hover:text-foreground text-lg"><X className="h-5 w-5" /></button>
- </div>
- </div>
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
+            onClick={() => setSelectedVideo(null)}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setSelectedVideo(null)}
+              className="absolute top-4 right-4 z-[60] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
 
- <div className="aspect-video bg-secondary">
- {selectedVideo.video_url ? (
- <video src={safeMediaUrl(selectedVideo.video_url)} className="w-full h-full object-cover" controls autoPlay muted preload="metadata" />
-) : (
- <div className="w-full h-full flex items-center justify-center">
- <Play className="h-12 w-12 text-muted-foreground" />
- </div>
-)}
- </div>
+            {/* Reel container — vertical 9:16, IG-like */}
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 22, stiffness: 260 }}
+              className="relative h-[92vh] max-h-[900px] aspect-[9/16] max-w-[95vw] bg-black rounded-2xl overflow-hidden shadow-2xl flex"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Video */}
+              <div className="relative flex-1 h-full bg-black">
+                {selectedVideo.video_url ? (
+                  <video
+                    src={safeMediaUrl(selectedVideo.video_url)}
+                    className="w-full h-full object-cover"
+                    controls
+                    autoPlay
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Play className="h-16 w-16 text-white/40" />
+                  </div>
+                )}
 
- <div className="p-4 space-y-3 overflow-y-auto">
- <button
- onClick={() => navigate({ to: `/resume/${selectedVideo.user_id}` as any })}
- className="text-sm text-primary font-medium hover:underline"
- >
- View Full Profile →
- </button>
- {selectedVideo.description && (
- <p className="text-sm text-muted-foreground">
- <span className="font-semibold text-foreground mr-1">{selectedVideo.full_name}</span>
- {selectedVideo.description}
- </p>
-)}
- <div className="flex flex-wrap gap-1.5">
- {selectedVideo.position_tags.map((t) => (
- <Badge key={t} variant="outline" className="text-xs border-primary/30 text-primary rounded-full">{t}</Badge>
-))}
- {selectedVideo.trait_tags.map((t) => (
- <Badge key={t} variant="outline" className="text-xs border-border text-muted-foreground rounded-full">{t}</Badge>
-))}
- </div>
- </div>
- </motion.div>
- </motion.div>
-)}
- </AnimatePresence>
- </div>
-);
+                {/* Gradient overlay for caption legibility */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+
+                {/* Top bar — profile + more */}
+                <div className="absolute top-0 left-0 right-0 p-4 flex items-center gap-3 z-10">
+                  <button
+                    onClick={() => navigate({ to: `/resume/${selectedVideo.user_id}` as any })}
+                    className="flex items-center gap-2 group"
+                  >
+                    <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white/60 bg-white/10">
+                      {selectedVideo.avatar_url ? (
+                        <img src={safeMediaUrl(selectedVideo.avatar_url)} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white text-sm font-bold">
+                          {selectedVideo.full_name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-left">
+                      <p className="text-white font-semibold text-sm leading-tight drop-shadow group-hover:underline">
+                        {selectedVideo.full_name}
+                      </p>
+                      <p className="text-white/70 text-[11px]">{selectedVideo.sport}</p>
+                    </div>
+                  </button>
+
+                  <div className="ml-auto">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition" aria-label="More">
+                          <MoreHorizontal className="h-5 w-5" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem onClick={() => navigate({ to: `/resume/${selectedVideo.user_id}` as any })}>
+                          View profile
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => shareVideo(selectedVideo)}>
+                          Copy link
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setSelectedVideo(null)}>
+                          Close
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+
+                {/* Bottom caption */}
+                <div className="absolute bottom-0 left-0 right-16 p-4 z-10">
+                  {selectedVideo.description && (
+                    <p className="text-white/95 text-sm leading-relaxed mb-2 drop-shadow line-clamp-3">
+                      {selectedVideo.description}
+                    </p>
+                  )}
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedVideo.position_tags.slice(0, 4).map((t) => (
+                      <span key={t} className="text-[10px] bg-white/20 text-white rounded-full px-2 py-0.5 backdrop-blur-sm border border-white/20">
+                        #{t}
+                      </span>
+                    ))}
+                    {selectedVideo.trait_tags.slice(0, 3).map((t) => (
+                      <span key={t} className="text-[10px] bg-white/10 text-white/90 rounded-full px-2 py-0.5 backdrop-blur-sm border border-white/10">
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right action rail */}
+                <div className="absolute bottom-4 right-2 flex flex-col items-center gap-4 z-10">
+                  <button onClick={() => toggleLike(selectedVideo)} className="flex flex-col items-center gap-1" aria-label="Like">
+                    <div className={`w-11 h-11 rounded-full backdrop-blur-md border flex items-center justify-center transition ${
+                      selectedVideo.liked_by_me ? "bg-red-500/90 border-red-400" : "bg-white/15 border-white/25 hover:bg-white/25"
+                    }`}>
+                      <Heart className={`w-6 h-6 ${selectedVideo.liked_by_me ? "text-white fill-white" : "text-white"}`} />
+                    </div>
+                    <span className="text-white text-[11px] font-medium drop-shadow">{selectedVideo.like_count}</span>
+                  </button>
+
+                  <button onClick={() => shareVideo(selectedVideo)} className="flex flex-col items-center gap-1" aria-label="Share">
+                    <div className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 flex items-center justify-center transition">
+                      <Share2 className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-white text-[11px] font-medium drop-shadow">{selectedVideo.share_count}</span>
+                  </button>
+
+                  <button
+                    onClick={() => navigate({ to: `/resume/${selectedVideo.user_id}` as any })}
+                    className="flex flex-col items-center gap-1"
+                    aria-label="View profile"
+                  >
+                    <div className="w-11 h-11 rounded-full bg-white/15 hover:bg-white/25 backdrop-blur-md border border-white/25 flex items-center justify-center transition">
+                      <UserIcon className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-white text-[11px] font-medium drop-shadow">Profile</span>
+                  </button>
+
+                  {role === "scout" && (
+                    <div className="flex flex-col items-center">
+                      <ScoutSelectPlayer playerId={selectedVideo.user_id} playerName={selectedVideo.full_name} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default PlayerVideosTab;
