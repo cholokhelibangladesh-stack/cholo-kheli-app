@@ -303,84 +303,122 @@ const AdminExplore = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
             onClick={() => !busy && setSelected(null)}
           >
+            {/* Close */}
+            <button
+              onClick={() => !busy && setSelected(null)}
+              aria-label="Close"
+              className="absolute z-[60] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition"
+              style={{ top: "calc(env(safe-area-inset-top, 0px) + 12px)", right: 12 }}
+            >
+              <X className="h-5 w-5" />
+            </button>
+
             <motion.div
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 40, opacity: 0 }}
-              className="bg-card border border-border rounded-t-3xl sm:rounded-3xl overflow-hidden w-full sm:max-w-md max-h-[92vh] flex flex-col"
+              initial={{ scale: 0.96, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.96, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 22, stiffness: 260 }}
+              className="relative bg-black overflow-hidden shadow-2xl w-full h-[100dvh] sm:h-[92vh] sm:max-h-[900px] sm:aspect-[9/16] sm:w-auto sm:rounded-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex items-center justify-between p-3 border-b border-border">
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold truncate">{selected.full_name}</p>
-                  <p className="text-[11px] text-muted-foreground truncate">{selected.title || "Untitled"}</p>
+              {/* Video */}
+              {selected.video_url ? (
+                <video
+                  src={safeMediaUrl(selected.video_url)}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  controls
+                  autoPlay
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Play className="h-16 w-16 text-white/40" />
                 </div>
-                <button
-                  onClick={() => setSelected(null)}
-                  aria-label="Close"
-                  className="grid h-8 w-8 place-items-center rounded-full hover:bg-accent"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+              )}
+
+              {/* Gradient scrims */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent h-40" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent h-72" />
+
+              {/* Top: creator + status pills */}
+              <div
+                className="absolute left-0 right-0 px-4 flex items-center gap-2 z-10"
+                style={{ top: "calc(env(safe-area-inset-top, 0px) + 12px)" }}
+              >
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/60 bg-white/10 shrink-0">
+                  {selected.avatar_url ? (
+                    <img src={safeMediaUrl(selected.avatar_url)} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white text-sm font-bold">
+                      {selected.full_name?.charAt(0) ?? "?"}
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-white font-semibold text-sm leading-tight truncate drop-shadow">
+                    {selected.full_name}
+                  </p>
+                  <p className="text-white/70 text-[11px] truncate">{selected.title || "Untitled"}</p>
+                </div>
               </div>
 
-              <div className="bg-black">
-                {selected.video_url ? (
-                  <video
-                    src={safeMediaUrl(selected.video_url)}
-                    className="w-full max-h-[55vh] object-contain"
-                    controls
-                    playsInline
-                  />
-                ) : (
-                  <div className="aspect-[9/16] flex items-center justify-center">
-                    <Play className="h-10 w-10 text-white/40" />
-                  </div>
+              {/* Status badges under header */}
+              <div
+                className="absolute left-4 right-16 flex flex-wrap gap-1.5 z-10"
+                style={{ top: "calc(env(safe-area-inset-top, 0px) + 64px)" }}
+              >
+                <Badge className="bg-white/15 text-white border-white/20 text-[10px] backdrop-blur-md">
+                  {selected.status}
+                </Badge>
+                {selected.flagged && (
+                  <Badge className="bg-red-500/90 text-white border-0 text-[10px]">
+                    <Flag className="h-3 w-3 mr-1" /> Flagged
+                  </Badge>
                 )}
+                {selected.is_banned && (
+                  <Badge className="bg-black/80 text-white border-white/20 text-[10px]">
+                    <Ban className="h-3 w-3 mr-1" /> Creator banned
+                  </Badge>
+                )}
+                <Badge className="bg-white/10 text-white/90 border-white/15 text-[10px] backdrop-blur-md ml-auto">
+                  {selected.view_count} views · {selected.like_count} likes
+                </Badge>
               </div>
 
-              <div className="p-4 space-y-3 overflow-y-auto">
-                <div className="flex items-center gap-2 flex-wrap text-[11px]">
-                  <span className="text-muted-foreground">Status:</span>
-                  <Badge variant="outline">{selected.status}</Badge>
-                  {selected.flagged && (
-                    <Badge className="bg-red-500/90 text-white border-0">
-                      <Flag className="h-3 w-3 mr-1" /> Flagged
-                    </Badge>
-                  )}
-                  {selected.is_banned && (
-                    <Badge className="bg-black text-white border-0">
-                      <Ban className="h-3 w-3 mr-1" /> Creator banned
-                    </Badge>
-                  )}
-                  <span className="ml-auto text-muted-foreground">
-                    {selected.view_count} views · {selected.like_count} likes
-                  </span>
-                </div>
-
+              {/* Bottom: caption + moderation actions */}
+              <div
+                className="absolute left-0 right-0 px-4 z-10 space-y-3"
+                style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 16px)" }}
+              >
                 {selected.description && (
-                  <p className="text-xs text-foreground/80 leading-relaxed">{selected.description}</p>
+                  <p className="text-white/95 text-sm leading-relaxed drop-shadow line-clamp-3">
+                    {selected.description}
+                  </p>
                 )}
 
-                <div className="grid grid-cols-2 gap-2 pt-1">
+                <div className="grid grid-cols-2 gap-2">
                   {selected.flagged || selected.status !== "live" ? (
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       disabled={busy}
                       onClick={() => reinstate(selected)}
+                      className="bg-white/15 text-white border border-white/25 hover:bg-white/25 backdrop-blur-md"
                     >
                       <CheckCircle2 className="h-4 w-4 mr-1" /> Reinstate
                     </Button>
                   ) : (
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       disabled={busy}
                       onClick={() => suspend(selected)}
+                      className="bg-white/15 text-white border border-white/25 hover:bg-white/25 backdrop-blur-md"
                     >
                       <Flag className="h-4 w-4 mr-1" /> Suspend
                     </Button>
@@ -397,11 +435,11 @@ const AdminExplore = () => {
 
                   {selected.is_banned ? (
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       disabled={busy}
                       onClick={() => unbanCreator(selected)}
-                      className="col-span-2"
+                      className="col-span-2 bg-white/15 text-white border border-white/25 hover:bg-white/25 backdrop-blur-md"
                     >
                       <ShieldOff className="h-4 w-4 mr-1" /> Unban creator
                     </Button>
@@ -411,7 +449,7 @@ const AdminExplore = () => {
                       size="sm"
                       disabled={busy}
                       onClick={() => banCreator(selected)}
-                      className="col-span-2 bg-black hover:bg-black/80"
+                      className="col-span-2 bg-black hover:bg-black/80 border border-white/20"
                     >
                       <Ban className="h-4 w-4 mr-1" /> Ban creator
                     </Button>
