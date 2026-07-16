@@ -255,11 +255,17 @@ const AdminExplore = () => {
                 >
                   {v.video_url ? (
                     <video
-                      src={safeMediaUrl(v.video_url)}
+                      src={`${safeMediaUrl(v.video_url)}#t=0.1`}
                       className="w-full h-full object-cover"
                       muted
                       playsInline
                       preload="metadata"
+                      onMouseEnter={(e) => (e.currentTarget as HTMLVideoElement).play().catch(() => {})}
+                      onMouseLeave={(e) => {
+                        const el = e.currentTarget as HTMLVideoElement;
+                        el.pause();
+                        el.currentTime = 0.1;
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
