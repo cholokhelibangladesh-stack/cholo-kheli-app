@@ -1,5 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from"react";
-import { Play, Loader2, Search, Heart, Share2, X } from "lucide-react";
+import { Play, Loader2, Search, Heart, Share2, X, MoreHorizontal, User as UserIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Badge } from"@/components/ui/badge";
 import { Input } from"@/components/ui/input";
 import { useAuth } from"@/hooks/useAuth";
