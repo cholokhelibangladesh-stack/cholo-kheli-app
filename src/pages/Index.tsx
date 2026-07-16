@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from"react";
+import React, { lazy, Suspense, useState, useEffect, useRef } from"react";
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionValue, useMotionTemplate, useSpring } from"framer-motion";
 import { Link, useNavigate } from"@tanstack/react-router";
 import {
@@ -9,12 +9,35 @@ import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
 import { supabase } from"@/integrations/supabase/client";
 import CholoKheliMark from"@/components/CholoKheliMark";
-import HeroMistCursor from"@/components/HeroMistCursor";
-import HeroScrollVideo from"@/components/HeroScrollVideo";
 import heroImg from"@/assets/hero-cricket.jpg.asset.json";
 import footballerImg from"@/assets/footballer-motion.jpg.asset.json";
 import { safeMediaUrl } from"@/lib/sanitize";
 import { useLanguage } from"@/i18n/LanguageProvider";
+
+const HeroScrollVideo = lazy(() => import("@/components/HeroScrollVideo"));
+
+function HeroLoadingPanel({ tagline }: { tagline: string }) {
+ return (
+  <section className="relative h-[100svh] w-full overflow-hidden bg-[hsl(0_0%_3%)] text-white">
+   <img
+    src={heroImg.url}
+    alt=""
+    aria-hidden="true"
+    className="absolute inset-0 h-full w-full object-cover opacity-60"
+    fetchPriority="high"
+   />
+   <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.62),rgba(0,0,0,.2)_46%,rgba(0,0,0,.9))]" />
+   <div className="relative z-10 flex h-full flex-col justify-between px-6 py-8">
+    <CholoKheliMark className="h-14 w-20 drop-shadow-[0_2px_8px_rgba(0,0,0,.45)]" />
+    <div className="pb-20">
+     <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.42em] text-[hsl(188_80%_78%)]">Welcome to</p>
+     <h1 className="font-sf text-5xl font-black leading-[0.95] tracking-[0] sm:text-7xl">Cholo Kheli.</h1>
+     <p className="mt-6 max-w-md text-base leading-relaxed text-white/88">{tagline}</p>
+    </div>
+   </div>
+  </section>
+ );
+}
 
 const COPY = {
  en: {
@@ -365,16 +388,18 @@ const Index = () => {
  {/* ══════════════════════════════════════════
  HERO — Slide-driven cinematic (Next button, mobile app)
  ══════════════════════════════════════════ */}
- <HeroScrollVideo
- mode="slides"
- tagline={T.heroTagline}
- scrollLabel={T.scroll}
- joinLabel={T.joinAsPlayer}
- scoutLabel={T.imAScout}
- openDashboardLabel={T.openDashboard}
- isAuthed={!!(user && role)}
- dashboardHref={role ==="admin" ?"/admin" : role ==="scout" ?"/scout" :"/player"}
- />
+  <Suspense fallback={<HeroLoadingPanel tagline={T.heroTagline} />}>
+   <HeroScrollVideo
+   mode="slides"
+   tagline={T.heroTagline}
+   scrollLabel={T.scroll}
+   joinLabel={T.joinAsPlayer}
+   scoutLabel={T.imAScout}
+   openDashboardLabel={T.openDashboard}
+   isAuthed={!!(user && role)}
+   dashboardHref={role ==="admin" ?"/admin" : role ==="scout" ?"/scout" :"/player"}
+   />
+  </Suspense>
 
 
 

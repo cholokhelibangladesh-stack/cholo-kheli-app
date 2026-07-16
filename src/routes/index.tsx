@@ -1,6 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Index from "@/pages/Index";
-import heroAtlas0 from "@/assets/hero-atlas-0.jpg.asset.json";
+import { lazy, Suspense } from "react";
+import CholoKheliMark from "@/components/CholoKheliMark";
+import heroBeat0 from "@/assets/hero-beat-008.jpg.asset.json";
+
+const Index = lazy(() => import("@/pages/Index"));
+
+function HomeBootFallback() {
+  return (
+    <div className="relative min-h-[100svh] overflow-hidden bg-[hsl(0_0%_3%)] text-white">
+      <img
+        src={heroBeat0.url}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover opacity-70"
+        fetchPriority="high"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,.58),rgba(0,0,0,.18)_46%,rgba(0,0,0,.88))]" />
+      <div className="relative z-10 flex min-h-[100svh] flex-col justify-between px-6 py-8">
+        <CholoKheliMark className="h-14 w-20 drop-shadow-[0_2px_8px_rgba(0,0,0,.45)]" />
+        <div className="pb-20">
+          <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.42em] text-[hsl(188_80%_78%)]">
+            Welcome to
+          </p>
+          <h1 className="font-sf text-5xl font-black leading-[0.95] tracking-[0] sm:text-7xl">
+            Cholo Kheli.
+          </h1>
+          <p className="mt-6 max-w-md text-base leading-relaxed text-white/88">
+            Bangladesh's grassroots talent, verified scouts, and safe discovery in one place.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IndexRoute() {
+  return (
+    <Suspense fallback={<HomeBootFallback />}>
+      <Index />
+    </Suspense>
+  );
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,11 +65,11 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: heroAtlas0.url,
+        href: heroBeat0.url,
         fetchPriority: "high",
       } as any,
 
     ],
   }),
-  component: Index,
+  component: IndexRoute,
 });
