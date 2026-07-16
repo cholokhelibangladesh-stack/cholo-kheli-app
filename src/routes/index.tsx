@@ -3,7 +3,6 @@ import Index from "@/pages/Index";
 import heroAtlas0 from "@/assets/hero-atlas-0.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
-  ssr: false,
   head: () => ({
     meta: [
       { title: "Cholo Kheli — Bangladesh's home for grassroots sports talent" },
