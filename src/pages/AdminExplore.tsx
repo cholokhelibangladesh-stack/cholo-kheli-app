@@ -255,7 +255,7 @@ const AdminExplore = () => {
                 >
                   {v.video_url ? (
                     <video
-                      src={`${safeMediaUrl(v.video_url)}#t=0.1`}
+                      src={`${safeMediaUrl(v.video_url)}#t=1.5`}
                       className="w-full h-full object-cover"
                       muted
                       playsInline
@@ -264,7 +264,7 @@ const AdminExplore = () => {
                       onMouseLeave={(e) => {
                         const el = e.currentTarget as HTMLVideoElement;
                         el.pause();
-                        el.currentTime = 0.1;
+                        el.currentTime = 1.5;
                       }}
                     />
                   ) : (
