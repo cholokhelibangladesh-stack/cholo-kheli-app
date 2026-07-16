@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import CholoKheliMark from "@/components/CholoKheliMark";
 
 /** Route pending fallback — always uses the official Cholo Kheli mark. */
@@ -22,20 +21,18 @@ export function RoutePendingFallback() {
         }}
       />
       <div className="relative flex flex-col items-center gap-5" data-logo-intro>
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, scale: 0.72 }}
-          animate={{ opacity: 1, scale: [0.72, 1, 0.96, 1] }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+        <div
+          className="relative animate-[ck-mark-pop_1.1s_cubic-bezier(0.22,1,0.36,1)_both]"
           style={{ width: "min(62vw, 240px)", aspectRatio: "208 / 167" }}
           aria-hidden
         >
           <CholoKheliMark className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_10px_20px_rgba(20,50,90,0.32)]" />
-        </motion.div>
+        </div>
         <span className="text-[10px] tracking-[0.42em] uppercase text-white/90 font-medium drop-shadow-[0_2px_10px_rgba(0,40,80,0.35)]">
           Cholo Kheli
         </span>
       </div>
+      <style>{`@keyframes ck-mark-pop{0%{opacity:0;transform:scale(.72)}55%{opacity:1;transform:scale(1)}78%{transform:scale(.96)}100%{opacity:1;transform:scale(1)}}`}</style>
     </div>
   );
 }
