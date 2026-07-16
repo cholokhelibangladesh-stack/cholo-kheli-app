@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform, useInView, useMotionV
 import { Link, useNavigate } from"@tanstack/react-router";
 import {
  ArrowRight, ArrowLeft, Shield, Twitter, Facebook,
- Instagram, Youtube, ChevronDown, Loader2
+ Instagram, Youtube, ChevronDown
 } from"lucide-react";
 import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
@@ -11,7 +11,6 @@ import { supabase } from"@/integrations/supabase/client";
 import CholoKheliMark from"@/components/CholoKheliMark";
 import HeroMistCursor from"@/components/HeroMistCursor";
 import HeroScrollVideo from"@/components/HeroScrollVideo";
-import Logo3DIntro from"@/components/Logo3DIntro";
 import heroImg from"@/assets/hero-cricket.jpg.asset.json";
 import footballerImg from"@/assets/footballer-motion.jpg.asset.json";
 import { safeMediaUrl } from"@/lib/sanitize";
@@ -313,19 +312,6 @@ const Index = () => {
    navigate({ to: dest as any, replace: true });
  }, [shouldRedirect, role, navigate]);
 
- // 3D logo intro — plays once per page load. Session-storage guarded so
- // it doesn't replay on client-side re-renders / route re-mounts.
- // Skip the intro entirely for signed-in users being redirected.
- const [showIntro, setShowIntro] = useState<boolean>(() => {
- if (typeof window ==="undefined") return false;
- try {
- return sessionStorage.getItem("ck_intro_seen") !=="1";
- } catch {
- return true;
- }
- });
-
-
  useEffect(() => {
  const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL;
  if (isPlaceholder) return;
@@ -364,30 +350,18 @@ const Index = () => {
  };
  }, []);
 
- // While auth is still resolving or an authenticated user is being routed
- // to their dashboard, show a lightweight splash instead of the marketing
- // page — avoids the hero flashing for a returning signed-in user.
- if (authLoading || shouldRedirect) {
+ // Keep the public intro visible while auth resolves on cold project loads.
+ // A signed-in user is only covered once we know their role and are routing.
+ if (shouldRedirect) {
    return (
      <div className="min-h-[100svh] w-full grid place-items-center bg-background">
-       <Loader2 className="h-8 w-8 animate-spin text-primary" aria-label="Loading" />
+       <CholoKheliMark className="h-16 w-16 text-primary" aria-label="Loading" />
      </div>
    );
  }
 
  return (
  <div className="h-[100svh] overflow-hidden bg-background">
- {showIntro && (
- <Logo3DIntro
- onDone={() => {
- try {
- sessionStorage.setItem("ck_intro_seen","1");
- } catch { /* ignore */ }
- setShowIntro(false);
- }}
- />
-)}
-
  {/* ══════════════════════════════════════════
  HERO — Slide-driven cinematic (Next button, mobile app)
  ══════════════════════════════════════════ */}

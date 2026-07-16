@@ -25,23 +25,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [scoutStatus, setScoutStatus] = useState<"pending" | "active" | "rejected" | null>(null);
 
   const fetchRole = async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .maybeSingle();
-    const nextRole = (data?.role as AppRole) ?? null;
-    setRole(nextRole);
-
-    if (nextRole === "scout") {
-      const { data: sp } = await supabase
-        .from("scout_profiles")
-        .select("verification_status")
+    try {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
         .eq("user_id", userId)
         .maybeSingle();
-      setScoutStatus((sp?.verification_status as any) ?? null);
+      const nextRole = (data?.role as AppRole) ?? null;
+      setRole(nextRole);
+
+      if (nextRole === "scout") {
+        const { data: sp } = await supabase
+          .from("scout_profiles")
+          .select("verification_status")
+          .eq("user_id", userId)
+          .maybeSingle();
+        setScoutStatus((sp?.verification_status as any) ?? null);
+      } else {
+        setScoutStatus(null);
+      }
+    } catch (error) {
+      console.warn("role fetch failed", error);
+      setRole(null);
+      setScoutStatus(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -50,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
+          setLoading(true);
           // Keep loading=true until role is resolved to avoid a
           // brief `user && !role` window that would trip ProtectedRoute.
           setTimeout(() => fetchRole(session.user.id), 0);
