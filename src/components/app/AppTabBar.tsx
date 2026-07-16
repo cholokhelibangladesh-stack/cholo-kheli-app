@@ -44,6 +44,7 @@ const AppTabBar = () => {
   } else if (role === "admin") {
     tabs = [
       { label: "Home", to: "/admin", Icon: Home },
+      { label: "Explore", to: "/admin/explore", Icon: Search },
       { label: "Panel", to: "/admin/panel", Icon: Shield },
     ];
   } else {
