@@ -890,10 +890,11 @@ export default function HeroScrollVideo({
             <div
               className="flex items-center justify-between gap-3 px-5 transition-all duration-500"
                 style={{
-                  opacity: revealCTA > 0.85 ? 0 : 1,
-                  transform: `translateY(${revealCTA > 0.85 ? 16 : 0}px)`,
-                  pointerEvents: revealCTA > 0.85 ? "none" : "auto",
+                  opacity: revealCTA > 0.35 ? 0 : 1,
+                  transform: `translateY(${revealCTA > 0.35 ? 16 : 0}px)`,
+                  pointerEvents: revealCTA > 0.35 ? "none" : "auto",
                 }}
+
             >
               <button
                 type="button"
