@@ -169,6 +169,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "globalThis.__name=globalThis.__name||((fn)=>fn)",
+          }}
+        />
         <style
           dangerouslySetInnerHTML={{
             __html:
