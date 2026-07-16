@@ -31,6 +31,15 @@ const PAGE_SIZE = 10;
 // ──────────────────────────────────────────────────────────────
 // Ranked feed loader
 // ──────────────────────────────────────────────────────────────
+async function signIfPrivate(url: string | null): Promise<string | null> {
+ if (!url) return url;
+ const marker = "/player-videos/";
+ if (!url.includes(marker)) return url;
+ const path = url.substring(url.indexOf(marker) + marker.length).split("?")[0];
+ const { data } = await supabase.storage.from("player-videos").createSignedUrl(path, 60 * 60);
+ return data?.signedUrl ?? url;
+}
+
 async function fetchFeedPage(offset: number): Promise<PlayerVideo[]> {
  const { data, error } = await (supabase as any).rpc("get_ranked_feed", {
  _limit: PAGE_SIZE,
@@ -43,10 +52,10 @@ async function fetchFeedPage(offset: number): Promise<PlayerVideo[]> {
  }
  throw error;
  }
- return (data || []).map((r: any) => ({
+ return Promise.all((data || []).map(async (r: any) => ({
  id: r.id,
  user_id: r.user_id,
- video_url: r.video_url,
+ video_url: await signIfPrivate(r.video_url),
  description: r.description,
  position_tags: r.position_tags || [],
  trait_tags: r.trait_tags || [],
@@ -57,7 +66,7 @@ async function fetchFeedPage(offset: number): Promise<PlayerVideo[]> {
  share_count: r.share_count ?? 0,
  view_count: r.view_count ?? 0,
  liked_by_me: !!r.liked_by_me,
- }));
+ })));
 }
 
 // ──────────────────────────────────────────────────────────────
