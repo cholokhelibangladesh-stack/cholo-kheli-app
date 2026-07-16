@@ -36,10 +36,10 @@ const AdminExplore = () => {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data, error } = await supabase
+    const { data: vids, error } = await supabase
       .from("videos")
       .select(
-        "id, user_id, video_url, title, description, status, flagged, archived, view_count, like_count, created_at, profiles:user_id (full_name, sport, avatar_url, is_banned)",
+        "id, user_id, video_url, title, description, status, flagged, archived, view_count, like_count, created_at",
       )
       .order("created_at", { ascending: false })
       .limit(200);
@@ -49,23 +49,37 @@ const AdminExplore = () => {
       setLoading(false);
       return;
     }
-    const rows: AdminVideo[] = (data ?? []).map((v: any) => ({
-      id: v.id,
-      user_id: v.user_id,
-      video_url: v.video_url,
-      title: v.title,
-      description: v.description,
-      status: v.status,
-      flagged: v.flagged,
-      archived: v.archived,
-      view_count: v.view_count ?? 0,
-      like_count: v.like_count ?? 0,
-      created_at: v.created_at,
-      full_name: v.profiles?.full_name ?? "Unknown",
-      sport: v.profiles?.sport ?? "",
-      avatar_url: v.profiles?.avatar_url ?? "",
-      is_banned: !!v.profiles?.is_banned,
-    }));
+
+    const userIds = Array.from(new Set((vids ?? []).map((v: any) => v.user_id)));
+    const profileMap = new Map<string, any>();
+    if (userIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("user_id, full_name, sport, avatar_url, is_banned")
+        .in("user_id", userIds);
+      (profs ?? []).forEach((p: any) => profileMap.set(p.user_id, p));
+    }
+
+    const rows: AdminVideo[] = (vids ?? []).map((v: any) => {
+      const p = profileMap.get(v.user_id) ?? {};
+      return {
+        id: v.id,
+        user_id: v.user_id,
+        video_url: v.video_url,
+        title: v.title,
+        description: v.description,
+        status: v.status,
+        flagged: v.flagged,
+        archived: v.archived,
+        view_count: v.view_count ?? 0,
+        like_count: v.like_count ?? 0,
+        created_at: v.created_at,
+        full_name: p.full_name ?? "Unknown",
+        sport: p.sport ?? "",
+        avatar_url: p.avatar_url ?? "",
+        is_banned: !!p.is_banned,
+      };
+    });
     setVideos(rows);
     setLoading(false);
   }, []);
