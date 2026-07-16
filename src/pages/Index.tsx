@@ -11,7 +11,6 @@ import { supabase } from"@/integrations/supabase/client";
 import CholoKheliMark from"@/components/CholoKheliMark";
 import HeroMistCursor from"@/components/HeroMistCursor";
 import HeroScrollVideo from"@/components/HeroScrollVideo";
-import Logo3DIntro from"@/components/Logo3DIntro";
 import heroImg from"@/assets/hero-cricket.jpg.asset.json";
 import footballerImg from"@/assets/footballer-motion.jpg.asset.json";
 import { safeMediaUrl } from"@/lib/sanitize";
@@ -313,19 +312,6 @@ const Index = () => {
    navigate({ to: dest as any, replace: true });
  }, [shouldRedirect, role, navigate]);
 
- // 3D logo intro — plays once per page load. Session-storage guarded so
- // it doesn't replay on client-side re-renders / route re-mounts.
- // Skip the intro entirely for signed-in users being redirected.
- const [showIntro, setShowIntro] = useState<boolean>(() => {
- if (typeof window ==="undefined") return false;
- try {
- return sessionStorage.getItem("ck_intro_seen") !=="1";
- } catch {
- return true;
- }
- });
-
-
  useEffect(() => {
  const isPlaceholder = !import.meta.env.VITE_SUPABASE_URL;
  if (isPlaceholder) return;
@@ -376,17 +362,6 @@ const Index = () => {
 
  return (
  <div className="h-[100svh] overflow-hidden bg-background">
- {showIntro && (
- <Logo3DIntro
- onDone={() => {
- try {
- sessionStorage.setItem("ck_intro_seen","1");
- } catch { /* ignore */ }
- setShowIntro(false);
- }}
- />
-)}
-
  {/* ══════════════════════════════════════════
  HERO — Slide-driven cinematic (Next button, mobile app)
  ══════════════════════════════════════════ */}
