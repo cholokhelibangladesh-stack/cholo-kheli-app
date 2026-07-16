@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import CholoKheliMark from "@/components/CholoKheliMark";
 import heroBeat0 from "@/assets/hero-beat-008.jpg.asset.json";
 
@@ -35,6 +35,14 @@ function HomeBootFallback() {
 }
 
 function IndexRoute() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <HomeBootFallback />;
+
   return (
     <Suspense fallback={<HomeBootFallback />}>
       <Index />
