@@ -60,26 +60,38 @@ const AdminExplore = () => {
       (profs ?? []).forEach((p: any) => profileMap.set(p.user_id, p));
     }
 
-    const rows: AdminVideo[] = (vids ?? []).map((v: any) => {
-      const p = profileMap.get(v.user_id) ?? {};
-      return {
-        id: v.id,
-        user_id: v.user_id,
-        video_url: v.video_url,
-        title: v.title,
-        description: v.description,
-        status: v.status,
-        flagged: v.flagged,
-        archived: v.archived,
-        view_count: v.view_count ?? 0,
-        like_count: v.like_count ?? 0,
-        created_at: v.created_at,
-        full_name: p.full_name ?? "Unknown",
-        sport: p.sport ?? "",
-        avatar_url: p.avatar_url ?? "",
-        is_banned: !!p.is_banned,
-      };
-    });
+    const rows: AdminVideo[] = await Promise.all(
+      (vids ?? []).map(async (v: any) => {
+        const p = profileMap.get(v.user_id) ?? {};
+        let url: string | null = v.video_url ?? null;
+        // If the URL points at the private player-videos bucket, sign it so admins can preview.
+        if (url && url.includes("/player-videos/")) {
+          const marker = "/player-videos/";
+          const path = url.substring(url.indexOf(marker) + marker.length).split("?")[0];
+          const { data: signed } = await supabase.storage
+            .from("player-videos")
+            .createSignedUrl(path, 60 * 60);
+          if (signed?.signedUrl) url = signed.signedUrl;
+        }
+        return {
+          id: v.id,
+          user_id: v.user_id,
+          video_url: url,
+          title: v.title,
+          description: v.description,
+          status: v.status,
+          flagged: v.flagged,
+          archived: v.archived,
+          view_count: v.view_count ?? 0,
+          like_count: v.like_count ?? 0,
+          created_at: v.created_at,
+          full_name: p.full_name ?? "Unknown",
+          sport: p.sport ?? "",
+          avatar_url: p.avatar_url ?? "",
+          is_banned: !!p.is_banned,
+        };
+      }),
+    );
     setVideos(rows);
     setLoading(false);
   }, []);
