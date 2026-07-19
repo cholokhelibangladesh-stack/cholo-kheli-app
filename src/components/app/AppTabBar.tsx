@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Home, PlusSquare, User, ClipboardList, Shield, Search } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { haptic } from "@/lib/native";
+import TabSwipeNavigator from "./TabSwipeNavigator";
 
 type Tab = {
   label: string;
