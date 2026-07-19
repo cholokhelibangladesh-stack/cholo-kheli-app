@@ -152,7 +152,7 @@ const AdminHome = () => {
                 );
               })}
             </div>
-          </div>
+          </DragScroller>
         )}
 
         {/* Admin-posted news (live from DB) */}
