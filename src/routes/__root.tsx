@@ -20,6 +20,7 @@ import AppFrame from "@/components/app/AppFrame";
 import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 import BanGuard from "@/components/BanGuard";
+import GlobalDragScroll from "@/components/GlobalDragScroll";
 
 const APP_PREFIXES = ["/player", "/scout", "/admin"];
 function useInAppShell() {
@@ -119,6 +120,7 @@ function AppShell() {
             <Sonner />
             <BanGuard />
             <ShellRouter />
+            <GlobalDragScroll />
             <CookieConsentBanner />
           </TooltipProvider>
         </AuthProvider>

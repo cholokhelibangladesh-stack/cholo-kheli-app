@@ -534,6 +534,12 @@ iframe[src*="lovable.dev"][src*="badge"] {
 }
 
 
-/* Hide scrollbars for horizontal rails while preserving scroll */
+/* Hide scrollbars globally (horizontal + vertical) while preserving scroll */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; height: 0; }
+*::-webkit-scrollbar { width: 0; height: 0; display: none; }
+* { scrollbar-width: none; }
+
