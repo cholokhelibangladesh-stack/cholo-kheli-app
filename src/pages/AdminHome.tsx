@@ -106,7 +106,7 @@ const AdminHome = () => {
 
         {/* Highlights rail */}
         {stories.length > 0 && (
-          <DragScroller className="-mx-4 mb-6">
+          <DragScroller persistId="admin-home" className="-mx-4 mb-6">
             <div className="flex gap-3 px-4">
               {stories.map((s) => {
                 const Icon = kindIcon(s.kind);
