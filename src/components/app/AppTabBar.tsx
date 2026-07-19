@@ -124,6 +124,7 @@ const AppTabBar = () => {
         })}
       </ul>
     </nav>
+    </>
   );
 };
 
