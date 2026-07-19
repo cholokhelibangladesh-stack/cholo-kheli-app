@@ -145,7 +145,7 @@ const PlayerHome = () => {
                 );
               })}
             </div>
-          </div>
+          </DragScroller>
         )}
 
         {/* Feed */}
