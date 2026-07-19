@@ -533,3 +533,7 @@ iframe[src*="lovable.dev"][src*="badge"] {
   .sk-shimmer { animation: none; }
 }
 
+
+/* Hide scrollbars for horizontal rails while preserving scroll */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; width: 0; height: 0; }

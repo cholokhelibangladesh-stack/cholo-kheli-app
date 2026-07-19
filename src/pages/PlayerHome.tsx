@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
+import DragScroller from "@/components/DragScroller";
 
 type FeedItem = {
   id: string;
@@ -98,7 +99,7 @@ const PlayerHome = () => {
 
         {/* Highlights rail */}
         {stories.length > 0 && (
-          <div className="-mx-4 mb-6 overflow-x-auto no-scrollbar">
+          <DragScroller className="-mx-4 mb-6">
             <div className="flex gap-3 px-4">
               {stories.map((s) => {
                 const Icon = kindIcon(s.kind);
@@ -144,7 +145,7 @@ const PlayerHome = () => {
                 );
               })}
             </div>
-          </div>
+          </DragScroller>
         )}
 
         {/* Feed */}
