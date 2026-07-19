@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
+import DragScroller from "@/components/DragScroller";
 
 type FeedItem = {
   id: string;
