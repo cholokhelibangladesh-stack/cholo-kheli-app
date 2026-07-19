@@ -120,6 +120,7 @@ function AppShell() {
             <Sonner />
             <BanGuard />
             <ShellRouter />
+            <GlobalDragScroll />
             <CookieConsentBanner />
           </TooltipProvider>
         </AuthProvider>
