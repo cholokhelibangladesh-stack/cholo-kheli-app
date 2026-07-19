@@ -168,7 +168,7 @@ const ScoutHome = () => {
                   </motion.div>
                 );
               })}
-            </div>
+          </DragScroller>
           </div>
         )}
 
