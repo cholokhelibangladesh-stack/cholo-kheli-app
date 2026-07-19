@@ -126,7 +126,7 @@ const ScoutHome = () => {
 
 
         {stories.length > 0 && (
-          <div className="-mx-4 mb-6 overflow-x-auto no-scrollbar">
+          <DragScroller className="-mx-4 mb-6">
             <div className="flex gap-3 px-4">
               {stories.map((s) => {
                 const Icon = kindIcon(s.kind);
