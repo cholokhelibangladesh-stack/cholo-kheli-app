@@ -53,6 +53,8 @@ const AppTabBar = () => {
   }
 
   return (
+    <>
+    <TabSwipeNavigator tabs={tabs.map((t) => t.to)} />
     <nav
       aria-label="Primary"
       className="fixed inset-x-0 bottom-0 z-40 backdrop-blur-2xl"
