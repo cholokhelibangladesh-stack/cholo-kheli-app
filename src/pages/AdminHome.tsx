@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
 import PostNewsDialog from "@/components/PostNewsDialog";
+import DragScroller from "@/components/DragScroller";
 
 type FeedItem = {
   id: string;
