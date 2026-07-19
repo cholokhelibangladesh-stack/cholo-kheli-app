@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import NewsPostsList from "@/components/NewsPostsList";
+import DragScroller from "@/components/DragScroller";
 import { supabase } from "@/integrations/supabase/client";
 
 type FeedItem = {
