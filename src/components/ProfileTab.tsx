@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy, MoreHorizontal } from "lucide-react";
+import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy, MoreHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -69,6 +69,19 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
+
+  useEffect(() => {
+    if (!activeVideo) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveVideo(null); };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [activeVideo]);
   const [profile, setProfile] = useState<ProfileData>({
     full_name: "", username: "", bio: "", phone: "", avatar_url: "",
     sport: "", gender: "", date_of_birth: "", guardian_contact: "",
@@ -347,7 +360,17 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               <motion.div
                 key={vid.id}
                 whileHover={{ y: -2 }}
-                className="group relative aspect-[9/16] rounded-xl overflow-hidden border border-border bg-secondary"
+                onClick={() => vid.video_url && setActiveVideo(vid)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && vid.video_url) {
+                    e.preventDefault();
+                    setActiveVideo(vid);
+                  }
+                }}
+                aria-label="Play reel"
+                className="group relative aspect-[9/16] rounded-xl overflow-hidden border border-border bg-secondary cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {vid.video_url ? (
                   <video
@@ -388,13 +411,14 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <button
-                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-border text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-border text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity z-10"
                         aria-label="Delete video"
                       >
                         {deletingVideoId === vid.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
                       </button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                       <AlertDialogHeader>
                         <AlertDialogTitle className="flex items-center gap-2">
                           <AlertTriangle className="h-5 w-5 text-destructive" /> Delete Video?
@@ -414,6 +438,46 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
             ))}
           </div>
         </motion.div>
+      )}
+
+      {/* Fullscreen reel viewer */}
+      {activeVideo && activeVideo.video_url && (
+        <div
+          className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
+          onClick={() => setActiveVideo(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Reel player"
+          style={{ height: "100dvh" }}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setActiveVideo(null); }}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white flex items-center justify-center z-10"
+            aria-label="Close"
+            style={{ top: "calc(env(safe-area-inset-top, 0px) + 12px)" }}
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <video
+            key={activeVideo.id}
+            src={safeMediaUrl(activeVideo.video_url)}
+            className="max-w-full max-h-full w-auto h-full object-contain"
+            autoPlay
+            controls
+            playsInline
+            onClick={(e) => e.stopPropagation()}
+          />
+          {activeVideo.description && (
+            <div
+              className="absolute inset-x-0 bottom-0 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"
+              style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
+            >
+              <p className="text-sm text-white line-clamp-3 max-w-2xl mx-auto">
+                {activeVideo.description}
+              </p>
+            </div>
+          )}
+        </div>
       )}
     </motion.div>
   );
