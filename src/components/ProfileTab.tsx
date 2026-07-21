@@ -350,11 +350,6 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           transition={{ delay: 0.1 }}
           className="rounded-2xl border border-border bg-card p-4 sm:p-6"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Video className="h-5 w-5 text-primary" />
-            <h2 className="font-display text-xl text-foreground">My Videos</h2>
-            <Badge variant="outline" className="text-xs">{showVideos.length}</Badge>
-          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {showVideos.map((vid) => (
               <motion.div
