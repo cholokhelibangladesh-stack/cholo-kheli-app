@@ -360,7 +360,17 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               <motion.div
                 key={vid.id}
                 whileHover={{ y: -2 }}
-                className="group relative aspect-[9/16] rounded-xl overflow-hidden border border-border bg-secondary"
+                onClick={() => vid.video_url && setActiveVideo(vid)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if ((e.key === "Enter" || e.key === " ") && vid.video_url) {
+                    e.preventDefault();
+                    setActiveVideo(vid);
+                  }
+                }}
+                aria-label="Play reel"
+                className="group relative aspect-[9/16] rounded-xl overflow-hidden border border-border bg-secondary cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {vid.video_url ? (
                   <video
