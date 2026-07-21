@@ -228,7 +228,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
         {/* Image area with overlaid glass bar */}
-        <div className="relative aspect-[4/6.3] sm:aspect-[16/13] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
+        <div className="relative aspect-[4/7] sm:aspect-[16/14] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
           {profile.avatar_url ? (
             <img
               src={safeMediaUrl(profile.avatar_url)}
@@ -302,7 +302,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                   ref={bioRef}
                   className="text-[12.5px] leading-[1.45] text-foreground/85 drop-shadow-sm whitespace-pre-line break-words overflow-hidden"
                   style={{
-                    maxHeight: bioExpanded ? "40rem" : "2.9em",
+                    maxHeight: bioExpanded ? "40rem" : "4.4em",
                     transition:
                       "max-height 500ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
                     opacity: bioExpanded ? 1 : 0.95,
