@@ -71,6 +71,8 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
+  const [pendingAvatarFile, setPendingAvatarFile] = useState<File | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
 
   useEffect(() => {
     if (!activeVideo) return;
