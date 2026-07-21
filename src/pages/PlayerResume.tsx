@@ -138,6 +138,7 @@ const PlayerResume = () => {
             {profile.bio && (
               <div className="px-5 pb-3">
                 <p
+                  ref={bioRef}
                   className="text-[12.5px] leading-[1.45] text-foreground/85 drop-shadow-sm whitespace-pre-line break-words overflow-hidden"
                   style={{
                     maxHeight: bioExpanded ? "40rem" : "4.4em",
@@ -147,7 +148,7 @@ const PlayerResume = () => {
                 >
                   {profile.bio}
                 </p>
-                {profile.bio.length > 140 && (
+                {(bioOverflows || bioExpanded) && (
                   <button
                     type="button"
                     onClick={() => setBioExpanded((v) => !v)}
