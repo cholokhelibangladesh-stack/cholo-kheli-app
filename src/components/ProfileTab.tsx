@@ -228,7 +228,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
         {/* Image area with overlaid glass bar */}
-        <div className="relative aspect-[4/5.6] sm:aspect-[16/12] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
+        <div className="relative aspect-[4/6.3] sm:aspect-[16/13] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
           {profile.avatar_url ? (
             <img
               src={safeMediaUrl(profile.avatar_url)}
