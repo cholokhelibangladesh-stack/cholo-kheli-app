@@ -232,7 +232,7 @@ const AvatarCropDialog = ({
         <DialogFooter className="gap-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>Cancel</Button>
           <Button onClick={handleConfirm} disabled={saving || !imgSize}>
-            {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Saving…</> : "Set photo"}
+            {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Saving…</> : "Confirm & save"}
           </Button>
         </DialogFooter>
       </DialogContent>
