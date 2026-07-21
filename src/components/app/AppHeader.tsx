@@ -47,7 +47,7 @@ const AppHeader = () => {
 
   return (
     <header
-      className="sticky top-0 z-30 backdrop-blur-2xl"
+      className="relative z-30 backdrop-blur-2xl"
       style={{
         paddingTop: "env(safe-area-inset-top)",
         background:

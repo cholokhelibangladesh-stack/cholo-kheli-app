@@ -256,18 +256,18 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
           {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
           <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
-            <div className="px-5 pt-2.5 pb-2 flex items-end justify-between gap-4">
+            <div className="px-5 pt-1.5 pb-1 flex items-end justify-between gap-4">
               <div className="min-w-0">
-                <div className="font-display text-2xl sm:text-3xl leading-tight truncate text-foreground drop-shadow-sm">
+                <div className="font-display text-xl sm:text-2xl leading-tight truncate text-foreground drop-shadow-sm">
                   {profile.full_name || "Your Name"}
                 </div>
-                <div className="text-xs text-foreground/70 truncate">@{profile.username || "username"}</div>
+                <div className="text-[11px] text-foreground/70 truncate">@{profile.username || "username"}</div>
               </div>
               <Button
                 size="sm"
                 onClick={() => editing ? handleSave() : setEditing(true)}
                 disabled={saving}
-                className="rounded-full shrink-0 shadow-sm"
+                className="rounded-full shrink-0 shadow-sm h-7 px-3 text-xs"
               >
                 {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
                 {editing ? "Save" : "Edit"}
@@ -276,11 +276,11 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
             {/* Stats strip — 4 compact columns */}
             {stats && (
-              <div className="px-5 pb-3 grid grid-cols-4 gap-2 border-t border-white/15 pt-2">
+              <div className="px-5 pb-1.5 grid grid-cols-4 gap-2 border-t border-white/15 pt-1">
                 {ticketStats.map((s) => (
                   <div key={s.label} className="text-center min-w-0">
-                    <div className="text-[10px] uppercase tracking-widest text-foreground/70">{s.label}</div>
-                    <div className="font-display text-lg sm:text-xl mt-0.5 truncate text-foreground drop-shadow-sm">{s.value}</div>
+                    <div className="text-[9px] uppercase tracking-widest text-foreground/70">{s.label}</div>
+                    <div className="font-display text-sm sm:text-base mt-0 truncate text-foreground drop-shadow-sm">{s.value}</div>
                   </div>
                 ))}
               </div>
