@@ -69,6 +69,19 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
+
+  useEffect(() => {
+    if (!activeVideo) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setActiveVideo(null); };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [activeVideo]);
   const [profile, setProfile] = useState<ProfileData>({
     full_name: "", username: "", bio: "", phone: "", avatar_url: "",
     sport: "", gender: "", date_of_birth: "", guardian_contact: "",
