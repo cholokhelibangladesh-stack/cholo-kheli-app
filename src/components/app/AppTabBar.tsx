@@ -79,9 +79,11 @@ const AppTabBar = () => {
       <ul className="mx-auto flex h-16 max-w-[430px] items-stretch justify-around px-3">
         {tabs.map(({ label, to, Icon, emphasize }) => {
           const exactOnly = to === "/player" || to === "/scout" || to === "/admin" || to === "/";
+          const isExploreTab = to.endsWith("/explore");
+          const onResume = pathname.startsWith("/resume/") || pathname.startsWith("/resume");
           const active = exactOnly
             ? pathname === to
-            : pathname === to || pathname.startsWith(to + "/");
+            : pathname === to || pathname.startsWith(to + "/") || (isExploreTab && onResume);
           const useGradient = active;
           return (
             <li key={to} className="flex-1">
