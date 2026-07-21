@@ -129,21 +129,26 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     }
   };
 
-  const handleAvatarUpload = async (file: File) => {
+  const handleAvatarUpload = async (blob: Blob) => {
     if (!user) return;
     setUploading(true);
     try {
-      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+      const path = `${user.id}/avatar-${Date.now()}.jpg`;
+      const { error } = await supabase.storage.from("avatars").upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (error) throw error;
       const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
-      await supabase.from("profiles").update({ avatar_url: publicUrl } as any).eq("user_id", user.id);
-      setProfile((p) => ({ ...p, avatar_url: publicUrl }));
-      toast({ title: "Avatar uploaded!" });
+      const bustedUrl = `${publicUrl}?v=${Date.now()}`;
+      await supabase.from("profiles").update({ avatar_url: bustedUrl } as any).eq("user_id", user.id);
+      setProfile((p) => ({ ...p, avatar_url: bustedUrl }));
+      toast({ title: "Avatar updated!" });
     } catch (err: any) {
       toast({ title: "Upload failed", description: err.message, variant: "destructive" });
     } finally { setUploading(false); }
+  };
+
+  const handleAvatarFileSelected = (file: File) => {
+    setPendingAvatarFile(file);
+    setCropOpen(true);
   };
 
   const handleSave = async () => {
