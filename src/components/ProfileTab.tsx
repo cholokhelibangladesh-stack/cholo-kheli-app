@@ -506,6 +506,13 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           if (!o) setPendingAvatarFile(null);
         }}
         onConfirm={handleAvatarUpload}
+        preview={{
+          fullName: profile.full_name,
+          username: profile.username,
+          role: role || "player",
+          sportLabel: profile.sport ? (SPORT_LABEL[profile.sport] || profile.sport) : undefined,
+          stats: ticketStats,
+        }}
       />
     </motion.div>
   );
