@@ -439,6 +439,46 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           </div>
         </motion.div>
       )}
+
+      {/* Fullscreen reel viewer */}
+      {activeVideo && activeVideo.video_url && (
+        <div
+          className="fixed inset-0 z-[100] bg-black flex items-center justify-center"
+          onClick={() => setActiveVideo(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Reel player"
+          style={{ height: "100dvh" }}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setActiveVideo(null); }}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white flex items-center justify-center z-10"
+            aria-label="Close"
+            style={{ top: "calc(env(safe-area-inset-top, 0px) + 12px)" }}
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <video
+            key={activeVideo.id}
+            src={safeMediaUrl(activeVideo.video_url)}
+            className="max-w-full max-h-full w-auto h-full object-contain"
+            autoPlay
+            controls
+            playsInline
+            onClick={(e) => e.stopPropagation()}
+          />
+          {activeVideo.description && (
+            <div
+              className="absolute inset-x-0 bottom-0 p-4 pb-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"
+              style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
+            >
+              <p className="text-sm text-white line-clamp-3 max-w-2xl mx-auto">
+                {activeVideo.description}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </motion.div>
   );
 };
