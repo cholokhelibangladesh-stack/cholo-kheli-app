@@ -258,7 +258,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
             {/* Stats strip — 4 compact columns */}
             {stats && (
-              <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-white/15 pt-3">
+              <div className="px-5 pb-3 grid grid-cols-4 gap-2 border-t border-white/15 pt-2">
                 {ticketStats.map((s) => (
                   <div key={s.label} className="text-center min-w-0">
                     <div className="text-[10px] uppercase tracking-widest text-foreground/70">{s.label}</div>
