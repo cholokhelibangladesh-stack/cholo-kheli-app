@@ -88,6 +88,23 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
       document.body.style.overflow = prevOverflow;
     };
   }, [activeVideo]);
+
+  // Measure whether the collapsed bio overflows and needs "see more"
+  useEffect(() => {
+    const el = bioRef.current;
+    if (!el) { setBioOverflows(false); return; }
+    const check = () => {
+      // Only meaningful in collapsed state; when expanded, keep the flag
+      // so the "see less" affordance stays visible.
+      if (bioExpanded) return;
+      setBioOverflows(el.scrollHeight - el.clientHeight > 1);
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [profile.bio, bioExpanded]);
+
   const [profile, setProfile] = useState<ProfileData>({
     full_name: "", username: "", bio: "", phone: "", avatar_url: "",
     sport: "", gender: "", date_of_birth: "", guardian_contact: "",
