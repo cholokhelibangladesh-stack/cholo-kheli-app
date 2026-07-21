@@ -117,11 +117,12 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     if (!user) return;
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop();
-      const path = `${user.id}/avatar.${ext}`;
-      const { error } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
       if (error) throw error;
-      const { data: { publicUrl } } = supabase.storage.from("documents").getPublicUrl(path);
+      const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
+      await supabase.from("profiles").update({ avatar_url: publicUrl } as any).eq("user_id", user.id);
       setProfile((p) => ({ ...p, avatar_url: publicUrl }));
       toast({ title: "Avatar uploaded!" });
     } catch (err: any) {
