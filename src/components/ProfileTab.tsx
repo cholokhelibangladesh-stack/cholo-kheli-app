@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy, MoreHorizontal } from "lucide-react";
+import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy, MoreHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
