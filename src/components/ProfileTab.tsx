@@ -117,11 +117,12 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     if (!user) return;
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop();
-      const path = `${user.id}/avatar.${ext}`;
-      const { error } = await supabase.storage.from("documents").upload(path, file, { upsert: true });
+      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
       if (error) throw error;
-      const { data: { publicUrl } } = supabase.storage.from("documents").getPublicUrl(path);
+      const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
+      await supabase.from("profiles").update({ avatar_url: publicUrl } as any).eq("user_id", user.id);
       setProfile((p) => ({ ...p, avatar_url: publicUrl }));
       toast({ title: "Avatar uploaded!" });
     } catch (err: any) {
@@ -205,20 +206,11 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           {/* soft top scrim so header text stays legible */}
           <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background/40 to-transparent pointer-events-none" />
 
-          {/* Top-left: role/sport badge */}
+          {/* Top-left: role/sport label */}
           <div className="absolute top-4 left-4 flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-background/80 backdrop-blur-md border border-border flex items-center justify-center">
-              <Shield className="h-3.5 w-3.5 text-primary" />
-            </div>
             <div className="text-[11px] font-bold tracking-widest text-foreground/90 uppercase drop-shadow-sm">
               {(role || "player")} {profile.sport ? <span className="text-foreground/60">· {SPORT_LABEL[profile.sport] || profile.sport}</span> : null}
             </div>
-          </div>
-
-          {/* Top-right: joined date */}
-          <div className="absolute top-4 right-4 text-right">
-            <div className="text-[11px] font-bold tracking-widest text-foreground/80 uppercase drop-shadow-sm">{joinLabel}</div>
-            <div className="text-[11px] font-semibold text-foreground/70">{joinYear}</div>
           </div>
 
           {/* Avatar upload button */}
