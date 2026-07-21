@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { safeMediaUrl } from "@/lib/sanitize";
+import AvatarCropDialog from "@/components/AvatarCropDialog";
 
 interface VideoRecord {
   id: string;
