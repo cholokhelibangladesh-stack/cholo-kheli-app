@@ -238,7 +238,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
           {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
           <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
-            <div className="px-5 pt-5 pb-4 flex items-end justify-between gap-4">
+            <div className="px-5 pt-2.5 pb-2 flex items-end justify-between gap-4">
               <div className="min-w-0">
                 <div className="font-display text-2xl sm:text-3xl leading-tight truncate text-foreground drop-shadow-sm">
                   {profile.full_name || "Your Name"}
@@ -258,7 +258,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
             {/* Stats strip — 4 compact columns */}
             {stats && (
-              <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-white/15 pt-3">
+              <div className="px-5 pb-3 grid grid-cols-4 gap-2 border-t border-white/15 pt-2">
                 {ticketStats.map((s) => (
                   <div key={s.label} className="text-center min-w-0">
                     <div className="text-[10px] uppercase tracking-widest text-foreground/70">{s.label}</div>
