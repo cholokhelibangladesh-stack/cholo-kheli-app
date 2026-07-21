@@ -180,15 +180,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto space-y-4">
-      {/* Top toolbar row — Done / More (mirrors reference) */}
-      <div className="flex items-center justify-between px-1">
-        <span className="text-sm font-medium text-foreground/80">Profile</span>
-        <button className="w-9 h-9 rounded-full bg-secondary/60 border border-border flex items-center justify-center text-foreground/70 hover:text-foreground transition-colors">
-          <MoreHorizontal className="h-4 w-4" />
-        </button>
-      </div>
-
-      {/* Ticket Hero Card */}
+      {/* Hero Card — photo on top, glass bar with name/username/stats */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -232,7 +224,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           {/* Avatar upload button */}
           <button
             onClick={() => fileRef.current?.click()}
-            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 shadow-lg"
+            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 shadow-lg z-10"
             aria-label="Change photo"
           >
             {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
@@ -240,26 +232,20 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
         </div>
 
-        {/* Ticket stub — name + compact stats */}
-        <div className="relative bg-primary text-primary-foreground">
-          {/* Perforation notches (decorative) */}
-          <div className="absolute -top-3 left-4 right-4 flex justify-between pointer-events-none">
-            <div className="w-6 h-6 rounded-full bg-background" />
-            <div className="w-6 h-6 rounded-full bg-background" />
-          </div>
-
+        {/* Glass bar — name + compact stats */}
+        <div className="relative bg-white/10 dark:bg-white/5 backdrop-blur-2xl border-t border-white/20 text-foreground">
           <div className="px-5 pt-5 pb-4 flex items-end justify-between gap-4">
             <div className="min-w-0">
-              <div className="font-display text-2xl sm:text-3xl leading-tight truncate">
+              <div className="font-display text-2xl sm:text-3xl leading-tight truncate text-foreground">
                 {profile.full_name || "Your Name"}
               </div>
-              <div className="text-xs opacity-80 truncate">@{profile.username || "username"}</div>
+              <div className="text-xs text-muted-foreground truncate">@{profile.username || "username"}</div>
             </div>
             <Button
               size="sm"
               onClick={() => editing ? handleSave() : setEditing(true)}
               disabled={saving}
-              className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 shrink-0 shadow-sm"
+              className="rounded-full shrink-0 shadow-sm"
             >
               {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
               {editing ? "Save" : "Edit"}
@@ -268,11 +254,11 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
           {/* Stats strip — 4 compact columns */}
           {stats && (
-            <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-primary-foreground/15 pt-3">
+            <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-white/15 pt-3">
               {ticketStats.map((s) => (
                 <div key={s.label} className="text-center min-w-0">
-                  <div className="text-[10px] uppercase tracking-widest opacity-70">{s.label}</div>
-                  <div className="font-display text-lg sm:text-xl mt-0.5 truncate">{s.value}</div>
+                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</div>
+                  <div className="font-display text-lg sm:text-xl mt-0.5 truncate text-foreground">{s.value}</div>
                 </div>
               ))}
             </div>
@@ -280,27 +266,6 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         </div>
       </motion.div>
 
-      {/* Info chips + secondary stats — compact row */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-2xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground text-[11px] uppercase tracking-widest">
-            <Trophy className="h-3.5 w-3.5" /> Reach
-          </div>
-          <div className="font-display text-2xl mt-1 text-foreground">
-            {stats ? formatCompact(stats.views + stats.likes * 3 + stats.shares * 8) : "—"}
-          </div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">Weighted engagement</div>
-        </div>
-        <div className="rounded-2xl border border-border bg-card p-4">
-          <div className="flex items-center gap-2 text-muted-foreground text-[11px] uppercase tracking-widest">
-            <Video className="h-3.5 w-3.5" /> Videos
-          </div>
-          <div className="font-display text-2xl mt-1 text-foreground">
-            {stats ? stats.videos : (showVideos?.length ?? 0)}
-          </div>
-          <div className="text-[11px] text-muted-foreground mt-0.5">Uploaded reels</div>
-        </div>
-      </div>
 
       {/* Meta chips */}
       {!editing && (profile.bio || profile.date_of_birth || profile.phone || profile.gender) && (
@@ -385,11 +350,6 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           transition={{ delay: 0.1 }}
           className="rounded-2xl border border-border bg-card p-4 sm:p-6"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Video className="h-5 w-5 text-primary" />
-            <h2 className="font-display text-xl text-foreground">My Videos</h2>
-            <Badge variant="outline" className="text-xs">{showVideos.length}</Badge>
-          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {showVideos.map((vid) => (
               <motion.div
