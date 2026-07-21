@@ -61,7 +61,7 @@ const PlayerProfile = () => {
   return (
     <div className="min-h-screen pb-24">
       <div className="container max-w-2xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-6 space-y-6">
           <ProfileTab showVideos={allVideos} onDeleteVideo={handleDeleteVideo} deletingVideoId={deletingVideoId} stats={playerStats} />
         </motion.div>
       </div>

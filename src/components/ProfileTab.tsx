@@ -210,7 +210,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
         {/* Image area with overlaid glass bar */}
-        <div className="relative aspect-[4/5] sm:aspect-[16/11] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
+        <div className="relative aspect-[4/5.6] sm:aspect-[16/12] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
           {profile.avatar_url ? (
             <img
               src={safeMediaUrl(profile.avatar_url)}
@@ -256,7 +256,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
           {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
           <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
-            <div className="px-5 pt-1.5 pb-1 flex items-end justify-between gap-4">
+            <div className="px-5 pt-2 pb-1.5 flex items-end justify-between gap-4">
               <div className="min-w-0">
                 <div className="font-display text-xl sm:text-2xl leading-tight truncate text-foreground drop-shadow-sm">
                   {profile.full_name || "Your Name"}
@@ -274,9 +274,18 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               </Button>
             </div>
 
+            {/* Bio inside the glass card */}
+            {profile.bio && (
+              <div className="px-5 pb-2">
+                <p className="text-[12px] leading-snug text-foreground/85 line-clamp-3 drop-shadow-sm">
+                  {profile.bio}
+                </p>
+              </div>
+            )}
+
             {/* Stats strip — 4 compact columns */}
             {stats && (
-              <div className="px-5 pb-1.5 grid grid-cols-4 gap-2 border-t border-white/15 pt-1">
+              <div className="px-5 pb-2 grid grid-cols-4 gap-2 border-t border-white/15 pt-1.5">
                 {ticketStats.map((s) => (
                   <div key={s.label} className="text-center min-w-0">
                     <div className="text-[9px] uppercase tracking-widest text-foreground/70">{s.label}</div>
@@ -291,9 +300,8 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
 
       {/* Meta chips */}
-      {!editing && (profile.bio || profile.date_of_birth || profile.phone || profile.gender) && (
-        <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
-          {profile.bio && <p className="text-sm text-foreground/90">{profile.bio}</p>}
+      {!editing && (profile.date_of_birth || profile.phone || profile.gender) && (
+        <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex flex-wrap gap-2">
             {profile.gender && <Badge variant="outline" className="text-xs rounded-full capitalize">{profile.gender}</Badge>}
             {profile.date_of_birth && (
