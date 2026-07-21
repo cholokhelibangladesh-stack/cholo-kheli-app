@@ -273,7 +273,10 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           />
 
           {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
-          <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
+          <div
+            className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground"
+            style={{ transition: "backdrop-filter 400ms ease" }}
+          >
             <div className="px-5 pt-2 pb-1.5 flex items-end justify-between gap-4">
               <div className="min-w-0">
                 <div className="font-display text-xl sm:text-2xl leading-tight truncate text-foreground drop-shadow-sm">
