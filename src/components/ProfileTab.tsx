@@ -73,6 +73,9 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
   const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
   const [pendingAvatarFile, setPendingAvatarFile] = useState<File | null>(null);
   const [cropOpen, setCropOpen] = useState(false);
+  const [bioExpanded, setBioExpanded] = useState(false);
+  const [bioOverflows, setBioOverflows] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     if (!activeVideo) return;
