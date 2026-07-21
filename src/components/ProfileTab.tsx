@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy } from "lucide-react";
+import { User, Camera, Loader2, Save, Calendar, Phone, Shield, Video, Trash2, AlertTriangle, Heart, Eye, Share2, Clock, Trophy, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -166,154 +166,185 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
 
   if (loading) return <div className="flex justify-center py-12"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
 
-  const statCards = stats ? [
-    { icon: Eye, label: "Views", value: stats.views, color: "from-sky-500/30 to-blue-500/10", ring: "ring-sky-400/30", text: "text-sky-300" },
-    { icon: Heart, label: "Likes", value: stats.likes, color: "from-rose-500/30 to-pink-500/10", ring: "ring-rose-400/30", text: "text-rose-300" },
-    { icon: Share2, label: "Shares", value: stats.shares, color: "from-violet-500/30 to-fuchsia-500/10", ring: "ring-violet-400/30", text: "text-violet-300" },
-    { icon: Clock, label: "Watch min", value: stats.watchMinutes, color: "from-emerald-500/30 to-teal-500/10", ring: "ring-emerald-400/30", text: "text-emerald-300" },
-    { icon: Video, label: "Videos", value: stats.videos, color: "from-amber-500/30 to-orange-500/10", ring: "ring-amber-400/30", text: "text-amber-300" },
-    { icon: Trophy, label: "Reach", value: stats.views + stats.likes * 3 + stats.shares * 8, color: "from-primary/30 to-primary/5", ring: "ring-primary/30", text: "text-primary" },
+  const joinDate = user?.created_at ? new Date(user.created_at) : new Date();
+  const joinLabel = joinDate.toLocaleDateString(undefined, { month: "short", day: "numeric" }).toUpperCase();
+  const joinYear = joinDate.getFullYear();
+
+  // Compact stat columns for the ticket strip (top 4)
+  const ticketStats = stats ? [
+    { label: "Views", value: formatCompact(stats.views) },
+    { label: "Likes", value: formatCompact(stats.likes) },
+    { label: "Shares", value: formatCompact(stats.shares) },
+    { label: "Watch", value: formatCompact(stats.watchMinutes) + "m" },
   ] : [];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-2xl mx-auto space-y-4">
-      {/* Profile header — glass card */}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="max-w-3xl mx-auto space-y-4">
+      {/* Top toolbar row — Done / More (mirrors reference) */}
+      <div className="flex items-center justify-between px-1">
+        <span className="text-sm font-medium text-foreground/80">Profile</span>
+        <button className="w-9 h-9 rounded-full bg-secondary/60 border border-border flex items-center justify-center text-foreground/70 hover:text-foreground transition-colors">
+          <MoreHorizontal className="h-4 w-4" />
+        </button>
+      </div>
+
+      {/* Ticket Hero Card */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="relative overflow-hidden rounded-3xl border border-white/10 bg-card/40 backdrop-blur-xl glass-card shadow-[0_10px_40px_-15px_rgba(0,0,0,0.4)]"
+        className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-fuchsia-500/5 to-sky-500/10 pointer-events-none" />
-        <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-sky-500/20 blur-3xl pointer-events-none" />
-
-        <div className="relative h-24 sm:h-28" />
-
-        <div className="relative px-4 sm:px-6 pb-6">
-          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 sm:gap-4 -mt-10 sm:-mt-12">
-            <div className="relative">
-              <motion.div
-                whileHover={{ scale: 1.04 }}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-card border-4 border-card overflow-hidden shadow-xl ring-2 ring-primary/40"
-              >
-                {profile.avatar_url ? (
-                  <img src={safeMediaUrl(profile.avatar_url)} alt="Avatar" loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-secondary">
-                    <User className="h-8 w-8 sm:h-10 sm:w-10 text-muted-foreground" />
-                  </div>
-                )}
-              </motion.div>
-              <button
-                onClick={() => fileRef.current?.click()}
-                className="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-110 shadow-lg"
-              >
-                {uploading ? <Loader2 className="h-3 w-3 animate-spin" /> : <Camera className="h-3 w-3" />}
-              </button>
-              <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+        {/* Image area */}
+        <div className="relative aspect-[4/5] sm:aspect-[16/11] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
+          {profile.avatar_url ? (
+            <img
+              src={safeMediaUrl(profile.avatar_url)}
+              alt={profile.full_name || "Profile"}
+              loading="eager"
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <User className="h-24 w-24 text-primary/50" />
             </div>
+          )}
+          {/* soft top scrim so header text stays legible */}
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background/40 to-transparent pointer-events-none" />
 
-            <div className="flex-1 min-w-0 text-center sm:text-left">
-              <h2 className="font-display text-xl sm:text-2xl text-foreground truncate">{profile.full_name || "Your Name"}</h2>
-              <p className="text-sm text-muted-foreground truncate">@{profile.username || "username"}</p>
+          {/* Top-left: role/sport badge */}
+          <div className="absolute top-4 left-4 flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-background/80 backdrop-blur-md border border-border flex items-center justify-center">
+              <Shield className="h-3.5 w-3.5 text-primary" />
             </div>
-
-            <div className="flex items-center gap-2 flex-wrap justify-center">
-              <Badge variant="outline" className="border-primary/40 bg-primary/10 text-primary rounded-full capitalize backdrop-blur-sm">
-                <Shield className="h-3 w-3 mr-1" /> {role}
-              </Badge>
-              <Button
-                size="sm"
-                variant={editing ? "default" : "outline"}
-                onClick={() => editing ? handleSave() : setEditing(true)}
-                disabled={saving}
-                className={editing ? "bg-primary text-primary-foreground hover:bg-primary/90 rounded-full shadow-lg shadow-primary/30" : "border-primary/30 text-foreground rounded-full backdrop-blur-sm hover:bg-primary/10"}
-              >
-                {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
-                {editing ? "Save" : "Edit Profile"}
-              </Button>
+            <div className="text-[11px] font-bold tracking-widest text-foreground/90 uppercase drop-shadow-sm">
+              {(role || "player")} {profile.sport ? <span className="text-foreground/60">· {SPORT_LABEL[profile.sport] || profile.sport}</span> : null}
             </div>
           </div>
 
-          {!editing && profile.bio && (
-            <p className="text-sm text-muted-foreground mt-4 max-w-md">{profile.bio}</p>
-          )}
+          {/* Top-right: joined date */}
+          <div className="absolute top-4 right-4 text-right">
+            <div className="text-[11px] font-bold tracking-widest text-foreground/80 uppercase drop-shadow-sm">{joinLabel}</div>
+            <div className="text-[11px] font-semibold text-foreground/70">{joinYear}</div>
+          </div>
 
-          {!editing && (
-            <div className="flex flex-wrap gap-2 mt-3">
-              {profile.sport && <Badge variant="outline" className="text-xs border-white/10 bg-white/5 text-foreground rounded-full capitalize backdrop-blur-sm">{SPORT_LABEL[profile.sport] || profile.sport}</Badge>}
-              {profile.gender && <Badge variant="outline" className="text-xs border-white/10 bg-white/5 text-muted-foreground rounded-full capitalize backdrop-blur-sm">{profile.gender}</Badge>}
-              {profile.date_of_birth && (
-                <Badge variant="outline" className="text-xs border-white/10 bg-white/5 text-muted-foreground rounded-full backdrop-blur-sm">
-                  <Calendar className="h-3 w-3 mr-1" /> {new Date(profile.date_of_birth).toLocaleDateString()}{age !== null ? ` · Age ${age}` : ""}
-                </Badge>
-              )}
-              {profile.phone && (
-                <Badge variant="outline" className="text-xs border-white/10 bg-white/5 text-muted-foreground rounded-full backdrop-blur-sm">
-                  <Phone className="h-3 w-3 mr-1" /> {profile.phone}
-                </Badge>
-              )}
+          {/* Avatar upload button */}
+          <button
+            onClick={() => fileRef.current?.click()}
+            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 shadow-lg"
+            aria-label="Change photo"
+          >
+            {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
+          </button>
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+        </div>
+
+        {/* Ticket stub — name + compact stats */}
+        <div className="relative bg-primary text-primary-foreground">
+          {/* Perforation notches (decorative) */}
+          <div className="absolute -top-3 left-4 right-4 flex justify-between pointer-events-none">
+            <div className="w-6 h-6 rounded-full bg-background" />
+            <div className="w-6 h-6 rounded-full bg-background" />
+          </div>
+
+          <div className="px-5 pt-5 pb-4 flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <div className="font-display text-2xl sm:text-3xl leading-tight truncate">
+                {profile.full_name || "Your Name"}
+              </div>
+              <div className="text-xs opacity-80 truncate">@{profile.username || "username"}</div>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => editing ? handleSave() : setEditing(true)}
+              disabled={saving}
+              className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 shrink-0 shadow-sm"
+            >
+              {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
+              {editing ? "Save" : "Edit"}
+            </Button>
+          </div>
+
+          {/* Stats strip — 4 compact columns */}
+          {stats && (
+            <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-primary-foreground/15 pt-3">
+              {ticketStats.map((s) => (
+                <div key={s.label} className="text-center min-w-0">
+                  <div className="text-[10px] uppercase tracking-widest opacity-70">{s.label}</div>
+                  <div className="font-display text-lg sm:text-xl mt-0.5 truncate">{s.value}</div>
+                </div>
+              ))}
             </div>
           )}
         </div>
       </motion.div>
 
-      {/* Stats grid — glass cards */}
-      {stats && (
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
-        >
-          {statCards.map((s, idx) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.08 + idx * 0.04 }}
-              whileHover={{ y: -3 }}
-              className={`glass-card relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br ${s.color} backdrop-blur-xl p-4 ring-1 ${s.ring} shadow-lg`}
-            >
-              <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full bg-white/5 blur-2xl pointer-events-none" />
-              <div className="relative flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground/80">{s.label}</p>
-                  <p className={`font-display text-2xl mt-1 ${s.text}`}>{formatCompact(s.value)}</p>
-                </div>
-                <div className={`w-9 h-9 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center ${s.text}`}>
-                  <s.icon className="h-4 w-4" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+      {/* Info chips + secondary stats — compact row */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-[11px] uppercase tracking-widest">
+            <Trophy className="h-3.5 w-3.5" /> Reach
+          </div>
+          <div className="font-display text-2xl mt-1 text-foreground">
+            {stats ? formatCompact(stats.views + stats.likes * 3 + stats.shares * 8) : "—"}
+          </div>
+          <div className="text-[11px] text-muted-foreground mt-0.5">Weighted engagement</div>
+        </div>
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-[11px] uppercase tracking-widest">
+            <Video className="h-3.5 w-3.5" /> Videos
+          </div>
+          <div className="font-display text-2xl mt-1 text-foreground">
+            {stats ? stats.videos : (showVideos?.length ?? 0)}
+          </div>
+          <div className="text-[11px] text-muted-foreground mt-0.5">Uploaded reels</div>
+        </div>
+      </div>
+
+      {/* Meta chips */}
+      {!editing && (profile.bio || profile.date_of_birth || profile.phone || profile.gender) && (
+        <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+          {profile.bio && <p className="text-sm text-foreground/90">{profile.bio}</p>}
+          <div className="flex flex-wrap gap-2">
+            {profile.gender && <Badge variant="outline" className="text-xs rounded-full capitalize">{profile.gender}</Badge>}
+            {profile.date_of_birth && (
+              <Badge variant="outline" className="text-xs rounded-full">
+                <Calendar className="h-3 w-3 mr-1" /> {new Date(profile.date_of_birth).toLocaleDateString()}{age !== null ? ` · ${age}y` : ""}
+              </Badge>
+            )}
+            {profile.phone && (
+              <Badge variant="outline" className="text-xs rounded-full">
+                <Phone className="h-3 w-3 mr-1" /> {profile.phone}
+              </Badge>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Edit form */}
       {editing && (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-white/10 bg-card/40 backdrop-blur-xl glass-card p-4 sm:p-6 space-y-4 shadow-lg">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl border border-border bg-card p-4 sm:p-6 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Full Name</Label>
-              <Input className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" value={profile.full_name} onChange={(e) => setProfile((p) => ({ ...p, full_name: e.target.value }))} />
+              <Input className="mt-1" value={profile.full_name} onChange={(e) => setProfile((p) => ({ ...p, full_name: e.target.value }))} />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Username</Label>
-              <Input className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" placeholder="unique_username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
+              <Input className="mt-1" placeholder="unique_username" value={profile.username} onChange={(e) => setProfile((p) => ({ ...p, username: e.target.value }))} />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Phone</Label>
-              <Input className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" placeholder="01XXXXXXXXX" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
+              <Input className="mt-1" placeholder="01XXXXXXXXX" value={profile.phone} onChange={(e) => setProfile((p) => ({ ...p, phone: e.target.value }))} />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Gender</Label>
-              <Input className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" placeholder="Male / Female / Other" value={profile.gender} onChange={(e) => setProfile((p) => ({ ...p, gender: e.target.value }))} />
+              <Input className="mt-1" placeholder="Male / Female / Other" value={profile.gender} onChange={(e) => setProfile((p) => ({ ...p, gender: e.target.value }))} />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Date of Birth {age !== null && <span className="ml-1 text-foreground/80 normal-case">(Age {age})</span>}</Label>
-              <Input type="date" className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" value={profile.date_of_birth} onChange={(e) => setProfile((p) => ({ ...p, date_of_birth: e.target.value }))} />
+              <Input type="date" className="mt-1" value={profile.date_of_birth} onChange={(e) => setProfile((p) => ({ ...p, date_of_birth: e.target.value }))} />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground uppercase tracking-wide">Sport</Label>
@@ -325,8 +356,8 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                     onClick={() => handleSportClick(s)}
                     className={`py-2 rounded-xl text-xs font-semibold capitalize transition-all border ${
                       profile.sport === s
-                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30"
-                        : "bg-secondary/60 text-secondary-foreground border-white/10 hover:border-primary/40 backdrop-blur-sm"
+                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                        : "bg-secondary text-secondary-foreground border-border hover:border-primary/40"
                     }`}
                   >
                     {SPORT_LABEL[s]}
@@ -337,63 +368,91 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           </div>
           <div>
             <Label className="text-xs text-muted-foreground uppercase tracking-wide">Bio</Label>
-            <Textarea className="mt-1 bg-secondary/60 border-white/10 resize-none rounded-xl backdrop-blur-sm" rows={3} placeholder="Tell us about yourself..." value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
+            <Textarea className="mt-1 resize-none" rows={3} placeholder="Tell us about yourself..." value={profile.bio} onChange={(e) => setProfile((p) => ({ ...p, bio: e.target.value }))} />
           </div>
           <div>
             <Label className="text-xs text-muted-foreground uppercase tracking-wide">Guardian Contact (if under 18)</Label>
-            <Input className="mt-1 bg-secondary/60 border-white/10 rounded-xl backdrop-blur-sm" placeholder="01XXXXXXXXX" value={profile.guardian_contact} onChange={(e) => setProfile((p) => ({ ...p, guardian_contact: e.target.value }))} />
+            <Input className="mt-1" placeholder="01XXXXXXXXX" value={profile.guardian_contact} onChange={(e) => setProfile((p) => ({ ...p, guardian_contact: e.target.value }))} />
           </div>
         </motion.div>
       )}
 
-      {/* My Videos section */}
+      {/* My Videos — broader, gallery-style */}
       {showVideos && showVideos.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-3xl border border-white/10 bg-card/40 backdrop-blur-xl glass-card p-4 sm:p-6 shadow-lg"
+          className="rounded-2xl border border-border bg-card p-4 sm:p-6"
         >
           <div className="flex items-center gap-3 mb-4">
             <Video className="h-5 w-5 text-primary" />
             <h2 className="font-display text-xl text-foreground">My Videos</h2>
-            <Badge variant="outline" className="text-xs border-white/10 bg-white/5 text-muted-foreground">{showVideos.length}</Badge>
+            <Badge variant="outline" className="text-xs">{showVideos.length}</Badge>
           </div>
-          <div className="space-y-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {showVideos.map((vid) => (
               <motion.div
                 key={vid.id}
-                whileHover={{ x: 2 }}
-                className="flex items-center gap-3 p-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl backdrop-blur-sm transition-colors"
+                whileHover={{ y: -2 }}
+                className="group relative aspect-[9/16] rounded-xl overflow-hidden border border-border bg-secondary"
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-secondary overflow-hidden shrink-0 flex items-center justify-center">
-                  <Video className="h-4 w-4 text-muted-foreground" />
+                {vid.video_url ? (
+                  <video
+                    src={safeMediaUrl(vid.video_url) + "#t=1.5"}
+                    className="w-full h-full object-cover"
+                    preload="metadata"
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <Video className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                )}
+
+                {/* Bottom overlay */}
+                <div className="absolute inset-x-0 bottom-0 p-2.5 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                  <p className="text-[11px] text-white line-clamp-2 leading-snug">
+                    {vid.description || "No description"}
+                  </p>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-foreground truncate">{vid.description || "No description"}</p>
-                  <p className="text-xs text-muted-foreground">{new Date(vid.created_at).toLocaleDateString()}</p>
-                </div>
-                <Badge className={`text-xs rounded-full shrink-0 ${vid.status === "live" ? "bg-emerald-500/20 text-emerald-300 border-emerald-400/30" : vid.status === "pending_payment" ? "bg-amber-500/20 text-amber-300 border-amber-400/30" : "bg-muted text-muted-foreground border-border"}`}>
+
+                {/* Status pill */}
+                <Badge
+                  className={`absolute top-2 left-2 text-[10px] rounded-full ${
+                    vid.status === "live"
+                      ? "bg-emerald-500/90 text-white border-transparent"
+                      : vid.status === "pending_payment"
+                        ? "bg-amber-500/90 text-white border-transparent"
+                        : "bg-muted text-muted-foreground border-border"
+                  }`}
+                >
                   {vid.status.replace("_", " ")}
                 </Badge>
+
+                {/* Delete */}
                 {onDeleteVideo && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10 h-8 w-8 p-0 shrink-0">
-                        {deletingVideoId === vid.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                      </Button>
+                      <button
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-border text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        aria-label="Delete video"
+                      >
+                        {deletingVideoId === vid.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                      </button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-card border-border">
+                    <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle className="flex items-center gap-2 text-foreground">
+                        <AlertDialogTitle className="flex items-center gap-2">
                           <AlertTriangle className="h-5 w-5 text-destructive" /> Delete Video?
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-muted-foreground">
+                        <AlertDialogDescription>
                           This will permanently delete this video. This cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel className="bg-secondary border-border text-foreground">Cancel</AlertDialogCancel>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction onClick={() => onDeleteVideo(vid)} className="bg-destructive text-white hover:bg-destructive/90">Delete</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
