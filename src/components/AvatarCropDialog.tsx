@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Loader2 } from "lucide-react";
 
+interface PreviewInfo {
+  fullName?: string;
+  username?: string;
+  role?: string;
+  sportLabel?: string;
+  stats?: { label: string; value: string }[];
+}
+
 interface AvatarCropDialogProps {
   file: File | null;
   open: boolean;
@@ -13,6 +21,8 @@ interface AvatarCropDialogProps {
   aspect?: number;
   /** Output pixel width. Height derived from aspect. */
   outputWidth?: number;
+  /** Info rendered on top of the preview so it mirrors the real card. */
+  preview?: PreviewInfo;
 }
 
 /**
@@ -26,6 +36,7 @@ const AvatarCropDialog = ({
   onConfirm,
   aspect = 4 / 5,
   outputWidth = 1080,
+  preview,
 }: AvatarCropDialogProps) => {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null);
@@ -138,17 +149,20 @@ const AvatarCropDialog = ({
     <Dialog open={open} onOpenChange={(o) => !saving && onOpenChange(o)}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Position your photo</DialogTitle>
+          <DialogTitle>Preview your profile card</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
+          <p className="text-xs text-muted-foreground">
+            This is how your card will look. Drag the photo to reposition it.
+          </p>
           <div
             ref={frameRef}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
-            className="relative w-full overflow-hidden rounded-2xl bg-muted select-none touch-none cursor-grab active:cursor-grabbing"
+            className="relative w-full overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)] select-none touch-none cursor-grab active:cursor-grabbing"
             style={{ aspectRatio: String(aspect) }}
           >
             {imgUrl && imgSize && (
@@ -164,8 +178,44 @@ const AvatarCropDialog = ({
                 }}
               />
             )}
-            {/* Framing overlay */}
-            <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/40" />
+
+            {/* Top scrim, mirrors real card */}
+            <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background/40 to-transparent pointer-events-none" />
+
+            {/* Top-left role/sport label */}
+            {(preview?.role || preview?.sportLabel) && (
+              <div className="absolute top-4 left-4 pointer-events-none">
+                <div className="text-[11px] font-bold tracking-widest text-foreground/90 uppercase drop-shadow-sm">
+                  {preview?.role}
+                  {preview?.sportLabel ? <span className="text-foreground/60"> · {preview.sportLabel}</span> : null}
+                </div>
+              </div>
+            )}
+
+            {/* Glass bar — matches the real card */}
+            <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground pointer-events-none">
+              <div className="px-5 pt-2.5 pb-2 flex items-end justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="font-display text-2xl leading-tight truncate drop-shadow-sm">
+                    {preview?.fullName || "Your Name"}
+                  </div>
+                  <div className="text-xs text-foreground/70 truncate">@{preview?.username || "username"}</div>
+                </div>
+                <div className="rounded-full shrink-0 shadow-sm bg-primary text-primary-foreground text-xs px-3 py-1">
+                  Edit
+                </div>
+              </div>
+              {preview?.stats && preview.stats.length > 0 && (
+                <div className="px-5 pb-3 grid grid-cols-4 gap-2 border-t border-white/15 pt-2">
+                  {preview.stats.slice(0, 4).map((s) => (
+                    <div key={s.label} className="text-center min-w-0">
+                      <div className="text-[10px] uppercase tracking-widest text-foreground/70">{s.label}</div>
+                      <div className="font-display text-lg mt-0.5 truncate drop-shadow-sm">{s.value}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-1.5">
@@ -182,7 +232,7 @@ const AvatarCropDialog = ({
         <DialogFooter className="gap-2">
           <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={saving}>Cancel</Button>
           <Button onClick={handleConfirm} disabled={saving || !imgSize}>
-            {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Saving…</> : "Set photo"}
+            {saving ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Saving…</> : "Confirm & save"}
           </Button>
         </DialogFooter>
       </DialogContent>
