@@ -292,12 +292,28 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               </Button>
             </div>
 
-            {/* Bio inside the glass card */}
+            {/* Bio inside the glass card — preserves user line breaks, clamps to 2 lines with "see more" */}
             {profile.bio && (
               <div className="px-5 pb-2">
-                <p className="text-[12px] leading-snug text-foreground/85 line-clamp-3 drop-shadow-sm">
+                <p
+                  ref={bioRef}
+                  className="text-[12.5px] leading-[1.45] text-foreground/85 drop-shadow-sm whitespace-pre-line break-words overflow-hidden transition-[max-height] duration-300 ease-out"
+                  style={{
+                    maxHeight: bioExpanded ? "40rem" : "2.9em",
+                  }}
+                >
                   {profile.bio}
                 </p>
+                {(bioOverflows || bioExpanded) && (
+                  <button
+                    type="button"
+                    onClick={() => setBioExpanded((v) => !v)}
+                    className="mt-0.5 text-[11px] font-semibold text-primary hover:underline drop-shadow-sm"
+                    aria-expanded={bioExpanded}
+                  >
+                    {bioExpanded ? "see less" : "see more"}
+                  </button>
+                )}
               </div>
             )}
 
