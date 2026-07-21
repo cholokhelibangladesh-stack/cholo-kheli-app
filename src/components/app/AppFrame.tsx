@@ -16,7 +16,7 @@ import { initNative, isNative } from "@/lib/native";
  */
 
 // Routes considered "in-app" (authenticated shell shown)
-const APP_PREFIXES = ["/player", "/scout", "/admin"];
+const APP_PREFIXES = ["/player", "/scout", "/admin", "/resume"];
 
 const AppFrame = ({ children }: { children: React.ReactNode }) => {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
