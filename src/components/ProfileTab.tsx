@@ -11,6 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { safeMediaUrl } from "@/lib/sanitize";
+import AvatarCropDialog from "@/components/AvatarCropDialog";
 
 interface VideoRecord {
   id: string;
@@ -70,6 +71,8 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
+  const [pendingAvatarFile, setPendingAvatarFile] = useState<File | null>(null);
+  const [cropOpen, setCropOpen] = useState(false);
 
   useEffect(() => {
     if (!activeVideo) return;
@@ -126,21 +129,26 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     }
   };
 
-  const handleAvatarUpload = async (file: File) => {
+  const handleAvatarUpload = async (blob: Blob) => {
     if (!user) return;
     setUploading(true);
     try {
-      const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
-      const path = `${user.id}/avatar-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+      const path = `${user.id}/avatar-${Date.now()}.jpg`;
+      const { error } = await supabase.storage.from("avatars").upload(path, blob, { upsert: true, contentType: "image/jpeg" });
       if (error) throw error;
       const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(path);
-      await supabase.from("profiles").update({ avatar_url: publicUrl } as any).eq("user_id", user.id);
-      setProfile((p) => ({ ...p, avatar_url: publicUrl }));
-      toast({ title: "Avatar uploaded!" });
+      const bustedUrl = `${publicUrl}?v=${Date.now()}`;
+      await supabase.from("profiles").update({ avatar_url: bustedUrl } as any).eq("user_id", user.id);
+      setProfile((p) => ({ ...p, avatar_url: bustedUrl }));
+      toast({ title: "Avatar updated!" });
     } catch (err: any) {
       toast({ title: "Upload failed", description: err.message, variant: "destructive" });
     } finally { setUploading(false); }
+  };
+
+  const handleAvatarFileSelected = (file: File) => {
+    setPendingAvatarFile(file);
+    setCropOpen(true);
   };
 
   const handleSave = async () => {
@@ -234,7 +242,17 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           >
             {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
           </button>
-          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) handleAvatarFileSelected(f);
+              e.target.value = "";
+            }}
+          />
 
           {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
           <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
@@ -479,6 +497,16 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           )}
         </div>
       )}
+
+      <AvatarCropDialog
+        file={pendingAvatarFile}
+        open={cropOpen}
+        onOpenChange={(o) => {
+          setCropOpen(o);
+          if (!o) setPendingAvatarFile(null);
+        }}
+        onConfirm={handleAvatarUpload}
+      />
     </motion.div>
   );
 };
