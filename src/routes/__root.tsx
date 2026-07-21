@@ -22,7 +22,7 @@ import { useAuth } from "@/hooks/useAuth";
 import BanGuard from "@/components/BanGuard";
 import GlobalDragScroll from "@/components/GlobalDragScroll";
 
-const APP_PREFIXES = ["/player", "/scout", "/admin"];
+const APP_PREFIXES = ["/player", "/scout", "/admin", "/resume"];
 function useInAppShell() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user } = useAuth();
