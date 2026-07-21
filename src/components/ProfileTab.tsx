@@ -411,13 +411,14 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <button
-                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-border text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-background/80 backdrop-blur border border-border text-destructive flex items-center justify-center opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity z-10"
                         aria-label="Delete video"
                       >
                         {deletingVideoId === vid.id ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
                       </button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                       <AlertDialogHeader>
                         <AlertDialogTitle className="flex items-center gap-2">
                           <AlertTriangle className="h-5 w-5 text-destructive" /> Delete Video?
