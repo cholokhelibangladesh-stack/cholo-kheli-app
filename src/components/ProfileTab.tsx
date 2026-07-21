@@ -201,7 +201,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         transition={{ duration: 0.4 }}
         className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
-        {/* Image area */}
+        {/* Image area with overlaid glass bar */}
         <div className="relative aspect-[4/5] sm:aspect-[16/11] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
           {profile.avatar_url ? (
             <img
@@ -226,48 +226,48 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
             </div>
           </div>
 
-          {/* Avatar upload button */}
+          {/* Avatar upload button (top-right so it sits above the glass bar) */}
           <button
             onClick={() => fileRef.current?.click()}
-            className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 shadow-lg z-10"
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-all hover:scale-105 shadow-lg z-20"
             aria-label="Change photo"
           >
             {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
           </button>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleAvatarUpload(e.target.files[0])} />
-        </div>
 
-        {/* Glass bar — name + compact stats */}
-        <div className="relative bg-white/10 dark:bg-white/5 backdrop-blur-2xl border-t border-white/20 text-foreground">
-          <div className="px-5 pt-5 pb-4 flex items-end justify-between gap-4">
-            <div className="min-w-0">
-              <div className="font-display text-2xl sm:text-3xl leading-tight truncate text-foreground">
-                {profile.full_name || "Your Name"}
-              </div>
-              <div className="text-xs text-muted-foreground truncate">@{profile.username || "username"}</div>
-            </div>
-            <Button
-              size="sm"
-              onClick={() => editing ? handleSave() : setEditing(true)}
-              disabled={saving}
-              className="rounded-full shrink-0 shadow-sm"
-            >
-              {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
-              {editing ? "Save" : "Edit"}
-            </Button>
-          </div>
-
-          {/* Stats strip — 4 compact columns */}
-          {stats && (
-            <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-white/15 pt-3">
-              {ticketStats.map((s) => (
-                <div key={s.label} className="text-center min-w-0">
-                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</div>
-                  <div className="font-display text-lg sm:text-xl mt-0.5 truncate text-foreground">{s.value}</div>
+          {/* Glass bar — overlays bottom of the image so the backdrop-blur blurs the photo */}
+          <div className="absolute inset-x-0 bottom-0 bg-white/10 dark:bg-black/20 backdrop-blur-2xl border-t border-white/25 text-foreground">
+            <div className="px-5 pt-5 pb-4 flex items-end justify-between gap-4">
+              <div className="min-w-0">
+                <div className="font-display text-2xl sm:text-3xl leading-tight truncate text-foreground drop-shadow-sm">
+                  {profile.full_name || "Your Name"}
                 </div>
-              ))}
+                <div className="text-xs text-foreground/70 truncate">@{profile.username || "username"}</div>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => editing ? handleSave() : setEditing(true)}
+                disabled={saving}
+                className="rounded-full shrink-0 shadow-sm"
+              >
+                {saving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : editing ? <Save className="h-3 w-3 mr-1" /> : null}
+                {editing ? "Save" : "Edit"}
+              </Button>
             </div>
-          )}
+
+            {/* Stats strip — 4 compact columns */}
+            {stats && (
+              <div className="px-5 pb-5 grid grid-cols-4 gap-2 border-t border-white/15 pt-3">
+                {ticketStats.map((s) => (
+                  <div key={s.label} className="text-center min-w-0">
+                    <div className="text-[10px] uppercase tracking-widest text-foreground/70">{s.label}</div>
+                    <div className="font-display text-lg sm:text-xl mt-0.5 truncate text-foreground drop-shadow-sm">{s.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </motion.div>
 
