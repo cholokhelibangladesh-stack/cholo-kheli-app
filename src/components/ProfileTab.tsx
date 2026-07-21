@@ -228,7 +228,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
         className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_20px_60px_-25px_hsl(var(--primary)/0.35)]"
       >
         {/* Image area with overlaid glass bar */}
-        <div className="relative aspect-[4/5] sm:aspect-[16/12] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
+        <div className="relative aspect-[4/6.2] sm:aspect-[16/14] w-full overflow-hidden bg-gradient-to-b from-primary/25 via-primary/10 to-primary/30">
           {profile.avatar_url ? (
             <img
               src={safeMediaUrl(profile.avatar_url)}
@@ -236,6 +236,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               loading="eager"
               decoding="async"
               className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: "center 15%" }}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
