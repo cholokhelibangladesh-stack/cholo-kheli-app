@@ -297,9 +297,14 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
               <div className="px-5 pb-2">
                 <p
                   ref={bioRef}
-                  className="text-[12.5px] leading-[1.45] text-foreground/85 drop-shadow-sm whitespace-pre-line break-words overflow-hidden transition-[max-height] duration-300 ease-out"
+                  className="text-[12.5px] leading-[1.45] text-foreground/85 drop-shadow-sm whitespace-pre-line break-words overflow-hidden"
                   style={{
                     maxHeight: bioExpanded ? "40rem" : "2.9em",
+                    transition:
+                      "max-height 500ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    opacity: bioExpanded ? 1 : 0.95,
+                    transform: bioExpanded ? "translateY(0)" : "translateY(0)",
+                    willChange: "max-height, opacity",
                   }}
                 >
                   {profile.bio}
@@ -308,7 +313,7 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                   <button
                     type="button"
                     onClick={() => setBioExpanded((v) => !v)}
-                    className="mt-0.5 text-[11px] font-semibold text-primary hover:underline drop-shadow-sm"
+                    className="mt-0.5 text-[11px] font-semibold text-primary hover:underline drop-shadow-sm transition-opacity duration-300"
                     aria-expanded={bioExpanded}
                   >
                     {bioExpanded ? "see less" : "see more"}
