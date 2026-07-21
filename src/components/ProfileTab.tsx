@@ -370,18 +370,18 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
                   </p>
                 </div>
 
-                {/* Status pill */}
-                <Badge
-                  className={`absolute top-2 left-2 text-[10px] rounded-full ${
-                    vid.status === "live"
-                      ? "bg-emerald-500/90 text-white border-transparent"
-                      : vid.status === "pending_payment"
+                {/* Status pill (hidden for live) */}
+                {vid.status !== "live" && (
+                  <Badge
+                    className={`absolute top-2 left-2 text-[10px] rounded-full ${
+                      vid.status === "pending_payment"
                         ? "bg-amber-500/90 text-white border-transparent"
                         : "bg-muted text-muted-foreground border-border"
-                  }`}
-                >
-                  {vid.status.replace("_", " ")}
-                </Badge>
+                    }`}
+                  >
+                    {vid.status.replace("_", " ")}
+                  </Badge>
+                )}
 
                 {/* Delete */}
                 {onDeleteVideo && (
