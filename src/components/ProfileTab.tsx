@@ -89,13 +89,16 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     };
   }, [activeVideo]);
 
+  const [profile, setProfile] = useState<ProfileData>({
+    full_name: "", username: "", bio: "", phone: "", avatar_url: "",
+    sport: "", gender: "", date_of_birth: "", guardian_contact: "",
+  });
+
   // Measure whether the collapsed bio overflows and needs "see more"
   useEffect(() => {
     const el = bioRef.current;
     if (!el) { setBioOverflows(false); return; }
     const check = () => {
-      // Only meaningful in collapsed state; when expanded, keep the flag
-      // so the "see less" affordance stays visible.
       if (bioExpanded) return;
       setBioOverflows(el.scrollHeight - el.clientHeight > 1);
     };
@@ -104,11 +107,6 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
     ro.observe(el);
     return () => ro.disconnect();
   }, [profile.bio, bioExpanded]);
-
-  const [profile, setProfile] = useState<ProfileData>({
-    full_name: "", username: "", bio: "", phone: "", avatar_url: "",
-    sport: "", gender: "", date_of_birth: "", guardian_contact: "",
-  });
 
   const computeAge = (dob: string): number | null => {
     if (!dob) return null;
