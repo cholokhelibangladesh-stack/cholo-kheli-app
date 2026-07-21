@@ -497,6 +497,16 @@ const ProfileTab = ({ showVideos, onDeleteVideo, deletingVideoId, stats }: Profi
           )}
         </div>
       )}
+
+      <AvatarCropDialog
+        file={pendingAvatarFile}
+        open={cropOpen}
+        onOpenChange={(o) => {
+          setCropOpen(o);
+          if (!o) setPendingAvatarFile(null);
+        }}
+        onConfirm={handleAvatarUpload}
+      />
     </motion.div>
   );
 };
