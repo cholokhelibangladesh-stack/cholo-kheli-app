@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Loader2 } from "lucide-react";
 
+interface PreviewInfo {
+  fullName?: string;
+  username?: string;
+  role?: string;
+  sportLabel?: string;
+  stats?: { label: string; value: string }[];
+}
+
 interface AvatarCropDialogProps {
   file: File | null;
   open: boolean;
@@ -13,6 +21,8 @@ interface AvatarCropDialogProps {
   aspect?: number;
   /** Output pixel width. Height derived from aspect. */
   outputWidth?: number;
+  /** Info rendered on top of the preview so it mirrors the real card. */
+  preview?: PreviewInfo;
 }
 
 /**
