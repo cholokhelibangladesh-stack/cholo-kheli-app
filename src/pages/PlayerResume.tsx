@@ -45,6 +45,21 @@ const PlayerResume = () => {
   const [loading, setLoading] = useState(true);
   const [activeVideo, setActiveVideo] = useState<VideoRecord | null>(null);
   const [bioExpanded, setBioExpanded] = useState(false);
+  const [bioOverflows, setBioOverflows] = useState(false);
+  const bioRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const el = bioRef.current;
+    if (!el) { setBioOverflows(false); return; }
+    const check = () => {
+      if (bioExpanded) return;
+      setBioOverflows(el.scrollHeight - el.clientHeight > 1);
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [profile?.bio, bioExpanded]);
 
   useEffect(() => {
     if (!userId) return;
