@@ -36,6 +36,7 @@ const AvatarCropDialog = ({
   onConfirm,
   aspect = 4 / 5,
   outputWidth = 1080,
+  preview,
 }: AvatarCropDialogProps) => {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [imgSize, setImgSize] = useState<{ w: number; h: number } | null>(null);
