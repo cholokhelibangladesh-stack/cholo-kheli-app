@@ -154,14 +154,6 @@ const Auth = () => {
  return;
  }
  }
- if (bcRequired && !birthCertFile) {
- toast({ title:"Birth certificate required", description:"Please upload a valid birth certificate to create your account.", variant:"destructive" });
- return;
- }
- if (birthCertFile && birthCertFile.size > 8 * 1024 * 1024) {
- toast({ title:"File too large", description:"Birth certificate must be under 8 MB.", variant:"destructive" });
- return;
- }
  if (scoutDocsRequired && (!scoutOrgIdFile || !scoutCvFile)) {
  toast({ title:"Scout documents required", description:"Please upload your organization ID card and official CV to apply as a scout.", variant:"destructive" });
  return;
