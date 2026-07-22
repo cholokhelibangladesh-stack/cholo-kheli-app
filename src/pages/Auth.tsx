@@ -154,14 +154,6 @@ const Auth = () => {
  return;
  }
  }
- if (bcRequired && !birthCertFile) {
- toast({ title:"Birth certificate required", description:"Please upload a valid birth certificate to create your account.", variant:"destructive" });
- return;
- }
- if (birthCertFile && birthCertFile.size > 8 * 1024 * 1024) {
- toast({ title:"File too large", description:"Birth certificate must be under 8 MB.", variant:"destructive" });
- return;
- }
  if (scoutDocsRequired && (!scoutOrgIdFile || !scoutCvFile)) {
  toast({ title:"Scout documents required", description:"Please upload your organization ID card and official CV to apply as a scout.", variant:"destructive" });
  return;
@@ -590,41 +582,6 @@ const Auth = () => {
  </button>
  </div>
  </div>
- {!isLogin && selectedRole ==="player" && !isBcExempt && (
- <div className="p-4 rounded-xl border border-border bg-secondary/50 space-y-2">
- <div className="flex items-center gap-2">
- <FileText className={`h-4 w-4 ${birthCertFile ?"text-foreground" :"text-destructive"}`} />
- <Label className="text-sm font-semibold text-foreground">
- Birth Certificate <span className="text-destructive">*</span>
- </Label>
- </div>
- <p className="text-xs text-muted-foreground">
- A valid birth certificate is mandatory to create a player account. Accepted: PDF, JPG, PNG (max 8 MB). Only admins can view this document.
- </p>
- <input
- ref={bcRef}
- type="file"
- accept="application/pdf,image/jpeg,image/png"
- className="hidden"
- onChange={(e) => setBirthCertFile(e.target.files?.[0] || null)}
- />
- <div className="flex items-center gap-2">
- <Button
- type="button"
- variant="outline"
- size="sm"
- onClick={() => bcRef.current?.click()}
- className="border-border"
- >
- <Upload className="h-3.5 w-3.5 mr-2" />
- {birthCertFile ?"Replace file" :"Choose file"}
- </Button>
- <span className="text-xs text-muted-foreground truncate">
- {birthCertFile ? birthCertFile.name :"No file chosen"}
- </span>
- </div>
- </div>
-)}
  {!isLogin && selectedRole ==="scout" && (
  <div className="p-4 rounded-xl border border-border bg-secondary/50 space-y-4">
  <p className="text-sm font-semibold text-foreground">Scout verification documents</p>
@@ -741,7 +698,7 @@ const Auth = () => {
 )}
  <Button
  type="submit"
- disabled={loading || (!isLogin && !agreePrivacy) || (!isLogin && usernameStatus !=="ok") || (!isLogin && isMinor && !parentalConsent) || (bcRequired && !birthCertFile) || (scoutDocsRequired && (!scoutOrgIdFile || !scoutCvFile))}
+ disabled={loading || (!isLogin && !agreePrivacy) || (!isLogin && usernameStatus !=="ok") || (!isLogin && isMinor && !parentalConsent) || (scoutDocsRequired && (!scoutOrgIdFile || !scoutCvFile))}
  className="w-full bg-foreground text-background font-bold hover:bg-foreground/90 transition-all duration-300 disabled:opacity-50"
  >
  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : isLogin ? t("auth.signIn") : t("auth.createAccount")}

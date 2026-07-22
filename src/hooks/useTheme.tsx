@@ -25,10 +25,9 @@ const applyTheme = (nextTheme: Theme, persist = false) => {
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  // The app shell is dark-first. Keeping server and first client render dark
-  // removes the cold-load html.class hydration mismatch that caused blank
-  // preview states before the client bundle fully took over.
-  const [theme, setTheme] = useState<Theme>("dark");
+  // App defaults to light mode. Server and first client render match to
+  // avoid hydration mismatch; client effect applies any stored override.
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     let stored: Theme | null = null;
@@ -39,7 +38,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       stored = null;
     }
 
-    const nextTheme = stored ?? "dark";
+    const nextTheme = stored ?? "light";
     setTheme(nextTheme);
     applyTheme(nextTheme);
   }, []);
