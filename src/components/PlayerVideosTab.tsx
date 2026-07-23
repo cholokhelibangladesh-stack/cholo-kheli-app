@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from"react";
-import { Play, Loader2, Search, Heart, Share2, X, MoreHorizontal, User as UserIcon } from "lucide-react";
+import { useState, useEffect, useRef, useCallback, useMemo } from"react";
+import { Play, Loader2, Search, Heart, Share2, X, MoreHorizontal, User as UserIcon, SlidersHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from"@/components/ui/badge";
 import { Input } from"@/components/ui/input";
+import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
 import { supabase } from"@/integrations/supabase/client";
 import { useNavigate } from"@tanstack/react-router";
@@ -15,6 +17,112 @@ import { motion, AnimatePresence } from"framer-motion";
 import ScoutSelectPlayer from"@/components/ScoutSelectPlayer";
 import { safeMediaUrl } from"@/lib/sanitize";
 import { toast } from"@/hooks/use-toast";
+
+// ──────────────────────────────────────────────────────────────
+// Filter taxonomy
+// ──────────────────────────────────────────────────────────────
+const SPORTS = ["football", "cricket", "basketball", "hockey", "athletics", "swimming"] as const;
+type SportKey = typeof SPORTS[number];
+
+const POSITIONS_BY_SPORT: Record<SportKey, string[]> = {
+  football: ["goalkeeper", "defender", "fullback", "centre-back", "midfielder", "winger", "striker", "forward"],
+  cricket: ["batsman", "bowler", "all-rounder", "wicket-keeper", "fielder", "spinner", "pacer"],
+  basketball: ["point guard", "shooting guard", "small forward", "power forward", "center"],
+  hockey: ["goalkeeper", "defender", "midfielder", "forward"],
+  athletics: ["sprinter", "middle-distance", "long-distance", "jumper", "thrower"],
+  swimming: ["freestyle", "backstroke", "breaststroke", "butterfly", "medley"],
+};
+
+const PLAYSTYLES = [
+  "aggressive", "technical", "creative", "defensive", "fast", "physical",
+  "clinical", "playmaker", "clutch", "consistent", "versatile", "leader",
+];
+
+type Filters = { sport: SportKey | "any"; positions: string[]; playstyles: string[] };
+const EMPTY_FILTERS: Filters = { sport: "any", positions: [], playstyles: [] };
+
+const FilterPanel = ({
+  filters,
+  onChange,
+  onClear,
+  variant = "light",
+}: {
+  filters: Filters;
+  onChange: (f: Filters) => void;
+  onClear: () => void;
+  variant?: "light" | "dark";
+}) => {
+  const positions = filters.sport === "any" ? [] : POSITIONS_BY_SPORT[filters.sport];
+  const chip = (active: boolean) =>
+    `text-xs rounded-full px-3 py-1.5 border transition ${
+      active
+        ? "bg-primary text-primary-foreground border-primary"
+        : variant === "dark"
+        ? "bg-white/10 text-white/80 border-white/20 hover:bg-white/15"
+        : "bg-secondary text-foreground border-border hover:bg-secondary/70"
+    }`;
+  const label = variant === "dark" ? "text-white/70" : "text-muted-foreground";
+
+  const toggle = (list: string[], v: string) =>
+    list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className={`text-sm font-semibold ${variant === "dark" ? "text-white" : "text-foreground"}`}>Filters</h3>
+        <button onClick={onClear} className={`text-xs ${label} hover:underline`}>Clear all</button>
+      </div>
+
+      <div>
+        <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Sport</p>
+        <div className="flex flex-wrap gap-1.5">
+          <button className={chip(filters.sport === "any")} onClick={() => onChange({ ...filters, sport: "any", positions: [] })}>Any</button>
+          {SPORTS.map((s) => (
+            <button
+              key={s}
+              className={chip(filters.sport === s)}
+              onClick={() => onChange({ ...filters, sport: s, positions: [] })}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {positions.length > 0 && (
+        <div>
+          <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Positions</p>
+          <div className="flex flex-wrap gap-1.5">
+            {positions.map((p) => (
+              <button
+                key={p}
+                className={chip(filters.positions.includes(p))}
+                onClick={() => onChange({ ...filters, positions: toggle(filters.positions, p) })}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Playstyle</p>
+        <div className="flex flex-wrap gap-1.5">
+          {PLAYSTYLES.map((t) => (
+            <button
+              key={t}
+              className={chip(filters.playstyles.includes(t))}
+              onClick={() => onChange({ ...filters, playstyles: toggle(filters.playstyles, t) })}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface PlayerVideo {
  id: string;
