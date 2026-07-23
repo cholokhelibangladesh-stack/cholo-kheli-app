@@ -1,13 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from"react";
-import { Play, Loader2, Search, Heart, Share2, X, MoreHorizontal, User as UserIcon } from "lucide-react";
+import { useState, useEffect, useRef, useCallback, useMemo } from"react";
+import { Play, Loader2, Search, Heart, Share2, X, MoreHorizontal, User as UserIcon, SlidersHorizontal } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from"@/components/ui/badge";
 import { Input } from"@/components/ui/input";
+import { Button } from"@/components/ui/button";
 import { useAuth } from"@/hooks/useAuth";
 import { supabase } from"@/integrations/supabase/client";
 import { useNavigate } from"@tanstack/react-router";
@@ -15,6 +17,112 @@ import { motion, AnimatePresence } from"framer-motion";
 import ScoutSelectPlayer from"@/components/ScoutSelectPlayer";
 import { safeMediaUrl } from"@/lib/sanitize";
 import { toast } from"@/hooks/use-toast";
+
+// ──────────────────────────────────────────────────────────────
+// Filter taxonomy
+// ──────────────────────────────────────────────────────────────
+const SPORTS = ["football", "cricket", "basketball", "hockey", "athletics", "swimming"] as const;
+type SportKey = typeof SPORTS[number];
+
+const POSITIONS_BY_SPORT: Record<SportKey, string[]> = {
+  football: ["goalkeeper", "defender", "fullback", "centre-back", "midfielder", "winger", "striker", "forward"],
+  cricket: ["batsman", "bowler", "all-rounder", "wicket-keeper", "fielder", "spinner", "pacer"],
+  basketball: ["point guard", "shooting guard", "small forward", "power forward", "center"],
+  hockey: ["goalkeeper", "defender", "midfielder", "forward"],
+  athletics: ["sprinter", "middle-distance", "long-distance", "jumper", "thrower"],
+  swimming: ["freestyle", "backstroke", "breaststroke", "butterfly", "medley"],
+};
+
+const PLAYSTYLES = [
+  "aggressive", "technical", "creative", "defensive", "fast", "physical",
+  "clinical", "playmaker", "clutch", "consistent", "versatile", "leader",
+];
+
+type Filters = { sport: SportKey | "any"; positions: string[]; playstyles: string[] };
+const EMPTY_FILTERS: Filters = { sport: "any", positions: [], playstyles: [] };
+
+const FilterPanel = ({
+  filters,
+  onChange,
+  onClear,
+  variant = "light",
+}: {
+  filters: Filters;
+  onChange: (f: Filters) => void;
+  onClear: () => void;
+  variant?: "light" | "dark";
+}) => {
+  const positions = filters.sport === "any" ? [] : POSITIONS_BY_SPORT[filters.sport];
+  const chip = (active: boolean) =>
+    `text-xs rounded-full px-3 py-1.5 border transition ${
+      active
+        ? "bg-primary text-primary-foreground border-primary"
+        : variant === "dark"
+        ? "bg-white/10 text-white/80 border-white/20 hover:bg-white/15"
+        : "bg-secondary text-foreground border-border hover:bg-secondary/70"
+    }`;
+  const label = variant === "dark" ? "text-white/70" : "text-muted-foreground";
+
+  const toggle = (list: string[], v: string) =>
+    list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className={`text-sm font-semibold ${variant === "dark" ? "text-white" : "text-foreground"}`}>Filters</h3>
+        <button onClick={onClear} className={`text-xs ${label} hover:underline`}>Clear all</button>
+      </div>
+
+      <div>
+        <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Sport</p>
+        <div className="flex flex-wrap gap-1.5">
+          <button className={chip(filters.sport === "any")} onClick={() => onChange({ ...filters, sport: "any", positions: [] })}>Any</button>
+          {SPORTS.map((s) => (
+            <button
+              key={s}
+              className={chip(filters.sport === s)}
+              onClick={() => onChange({ ...filters, sport: s, positions: [] })}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {positions.length > 0 && (
+        <div>
+          <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Positions</p>
+          <div className="flex flex-wrap gap-1.5">
+            {positions.map((p) => (
+              <button
+                key={p}
+                className={chip(filters.positions.includes(p))}
+                onClick={() => onChange({ ...filters, positions: toggle(filters.positions, p) })}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <p className={`text-[11px] uppercase tracking-wide mb-2 ${label}`}>Playstyle</p>
+        <div className="flex flex-wrap gap-1.5">
+          {PLAYSTYLES.map((t) => (
+            <button
+              key={t}
+              className={chip(filters.playstyles.includes(t))}
+              onClick={() => onChange({ ...filters, playstyles: toggle(filters.playstyles, t) })}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface PlayerVideo {
  id: string;
@@ -338,11 +446,28 @@ const PlayerVideosTab = () => {
  } catch { /* user cancelled */ }
  }, [user, navigate]);
 
- const filteredVideos = videos.filter((v) =>
- !search ||
- v.full_name.toLowerCase().includes(search.toLowerCase()) ||
- v.position_tags.some((t) => t.toLowerCase().includes(search.toLowerCase()))
-);
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const activeFilterCount =
+    (filters.sport !== "any" ? 1 : 0) + filters.positions.length + filters.playstyles.length;
+
+  const filteredVideos = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return videos.filter((v) => {
+      if (q &&
+        !v.full_name.toLowerCase().includes(q) &&
+        !v.position_tags.some((t) => t.toLowerCase().includes(q))
+      ) return false;
+      if (filters.sport !== "any" && v.sport?.toLowerCase() !== filters.sport) return false;
+      if (filters.positions.length > 0 &&
+        !filters.positions.some((p) => v.position_tags.map((t) => t.toLowerCase()).includes(p))
+      ) return false;
+      if (filters.playstyles.length > 0 &&
+        !filters.playstyles.some((t) => v.trait_tags.map((x) => x.toLowerCase()).includes(t))
+      ) return false;
+      return true;
+    });
+  }, [videos, search, filters]);
+
 
  if (loading) {
  if (mobile) {
@@ -365,27 +490,50 @@ const PlayerVideosTab = () => {
  }
 
  // ── MOBILE: Reels feed ──────────────────────────────────────
- if (mobile) {
- if (filteredVideos.length === 0)
- return (
- <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)] gap-3">
- <p className="text-muted-foreground text-sm">No player videos available yet.</p>
- </div>
-);
-
+  if (mobile) {
  return (
  <div className="fixed inset-0 top-0 bg-black z-40">
  <div className="absolute top-0 left-0 right-0 z-50 px-4" style={{ paddingTop:"env(safe-area-inset-top, 16px)" }}>
- <div className="mt-3 relative">
- <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
- <Input
- placeholder="Search players, positions..."
- className="pl-10 bg-black/40 border-white/20 text-white placeholder:text-white/50 rounded-full backdrop-blur-md"
- value={search}
- onChange={(e) => setSearch(e.target.value)}
- />
+ <div className="mt-3 flex items-center gap-2">
+   <div className="relative flex-1">
+     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+     <Input
+       placeholder="Search players, positions..."
+       className="pl-10 bg-black/40 border-white/20 text-white placeholder:text-white/50 rounded-full backdrop-blur-md"
+       value={search}
+       onChange={(e) => setSearch(e.target.value)}
+     />
+   </div>
+   <Popover>
+     <PopoverTrigger asChild>
+       <button
+         aria-label="Filters"
+         className="relative shrink-0 h-10 w-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-md flex items-center justify-center text-white"
+       >
+         <SlidersHorizontal className="h-4 w-4" />
+         {activeFilterCount > 0 && (
+           <span className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+             {activeFilterCount}
+           </span>
+         )}
+       </button>
+     </PopoverTrigger>
+     <PopoverContent align="end" sideOffset={8} className="w-[88vw] max-w-sm bg-neutral-900/95 border-white/10 text-white backdrop-blur-xl">
+       <FilterPanel filters={filters} onChange={setFilters} onClear={() => setFilters(EMPTY_FILTERS)} variant="dark" />
+     </PopoverContent>
+   </Popover>
  </div>
  </div>
+
+ {filteredVideos.length === 0 && (
+   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center px-6">
+     <p className="text-white/70 text-sm">No reels match your filters.</p>
+     {activeFilterCount > 0 && (
+       <Button size="sm" variant="secondary" onClick={() => setFilters(EMPTY_FILTERS)}>Clear filters</Button>
+     )}
+   </div>
+ )}
+
 
  <div
  ref={containerRef}
@@ -424,15 +572,33 @@ const PlayerVideosTab = () => {
  // ── DESKTOP: Grid view ───────────────────────────────────────
  return (
  <div className="space-y-4">
- <div className="relative">
- <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
- <Input
- placeholder="Search players, positions..."
- className="pl-10 bg-card border-border rounded-full"
- value={search}
- onChange={(e) => setSearch(e.target.value)}
- />
+ <div className="flex items-center gap-2">
+   <div className="relative flex-1">
+     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+     <Input
+       placeholder="Search players, positions..."
+       className="pl-10 bg-card border-border rounded-full"
+       value={search}
+       onChange={(e) => setSearch(e.target.value)}
+     />
+   </div>
+   <Popover>
+     <PopoverTrigger asChild>
+       <Button variant="outline" size="icon" aria-label="Filters" className="relative rounded-full shrink-0">
+         <SlidersHorizontal className="h-4 w-4" />
+         {activeFilterCount > 0 && (
+           <span className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+             {activeFilterCount}
+           </span>
+         )}
+       </Button>
+     </PopoverTrigger>
+     <PopoverContent align="end" sideOffset={8} className="w-80">
+       <FilterPanel filters={filters} onChange={setFilters} onClear={() => setFilters(EMPTY_FILTERS)} />
+     </PopoverContent>
+   </Popover>
  </div>
+
 
  {filteredVideos.length === 0 ? (
  <p className="text-center text-muted-foreground py-12">No player videos available yet.</p>
