@@ -572,15 +572,33 @@ const PlayerVideosTab = () => {
  // ── DESKTOP: Grid view ───────────────────────────────────────
  return (
  <div className="space-y-4">
- <div className="relative">
- <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
- <Input
- placeholder="Search players, positions..."
- className="pl-10 bg-card border-border rounded-full"
- value={search}
- onChange={(e) => setSearch(e.target.value)}
- />
+ <div className="flex items-center gap-2">
+   <div className="relative flex-1">
+     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+     <Input
+       placeholder="Search players, positions..."
+       className="pl-10 bg-card border-border rounded-full"
+       value={search}
+       onChange={(e) => setSearch(e.target.value)}
+     />
+   </div>
+   <Popover>
+     <PopoverTrigger asChild>
+       <Button variant="outline" size="icon" aria-label="Filters" className="relative rounded-full shrink-0">
+         <SlidersHorizontal className="h-4 w-4" />
+         {activeFilterCount > 0 && (
+           <span className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+             {activeFilterCount}
+           </span>
+         )}
+       </Button>
+     </PopoverTrigger>
+     <PopoverContent align="end" sideOffset={8} className="w-80">
+       <FilterPanel filters={filters} onChange={setFilters} onClear={() => setFilters(EMPTY_FILTERS)} />
+     </PopoverContent>
+   </Popover>
  </div>
+
 
  {filteredVideos.length === 0 ? (
  <p className="text-center text-muted-foreground py-12">No player videos available yet.</p>
