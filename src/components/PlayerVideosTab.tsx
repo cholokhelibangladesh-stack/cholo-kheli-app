@@ -490,27 +490,50 @@ const PlayerVideosTab = () => {
  }
 
  // ── MOBILE: Reels feed ──────────────────────────────────────
- if (mobile) {
- if (filteredVideos.length === 0)
- return (
- <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)] gap-3">
- <p className="text-muted-foreground text-sm">No player videos available yet.</p>
- </div>
-);
-
+  if (mobile) {
  return (
  <div className="fixed inset-0 top-0 bg-black z-40">
  <div className="absolute top-0 left-0 right-0 z-50 px-4" style={{ paddingTop:"env(safe-area-inset-top, 16px)" }}>
- <div className="mt-3 relative">
- <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
- <Input
- placeholder="Search players, positions..."
- className="pl-10 bg-black/40 border-white/20 text-white placeholder:text-white/50 rounded-full backdrop-blur-md"
- value={search}
- onChange={(e) => setSearch(e.target.value)}
- />
+ <div className="mt-3 flex items-center gap-2">
+   <div className="relative flex-1">
+     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+     <Input
+       placeholder="Search players, positions..."
+       className="pl-10 bg-black/40 border-white/20 text-white placeholder:text-white/50 rounded-full backdrop-blur-md"
+       value={search}
+       onChange={(e) => setSearch(e.target.value)}
+     />
+   </div>
+   <Popover>
+     <PopoverTrigger asChild>
+       <button
+         aria-label="Filters"
+         className="relative shrink-0 h-10 w-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-md flex items-center justify-center text-white"
+       >
+         <SlidersHorizontal className="h-4 w-4" />
+         {activeFilterCount > 0 && (
+           <span className="absolute -top-1 -right-1 h-4 min-w-[16px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+             {activeFilterCount}
+           </span>
+         )}
+       </button>
+     </PopoverTrigger>
+     <PopoverContent align="end" sideOffset={8} className="w-[88vw] max-w-sm bg-neutral-900/95 border-white/10 text-white backdrop-blur-xl">
+       <FilterPanel filters={filters} onChange={setFilters} onClear={() => setFilters(EMPTY_FILTERS)} variant="dark" />
+     </PopoverContent>
+   </Popover>
  </div>
  </div>
+
+ {filteredVideos.length === 0 && (
+   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center px-6">
+     <p className="text-white/70 text-sm">No reels match your filters.</p>
+     {activeFilterCount > 0 && (
+       <Button size="sm" variant="secondary" onClick={() => setFilters(EMPTY_FILTERS)}>Clear filters</Button>
+     )}
+   </div>
+ )}
+
 
  <div
  ref={containerRef}
