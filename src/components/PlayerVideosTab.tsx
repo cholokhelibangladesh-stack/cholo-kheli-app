@@ -446,11 +446,28 @@ const PlayerVideosTab = () => {
  } catch { /* user cancelled */ }
  }, [user, navigate]);
 
- const filteredVideos = videos.filter((v) =>
- !search ||
- v.full_name.toLowerCase().includes(search.toLowerCase()) ||
- v.position_tags.some((t) => t.toLowerCase().includes(search.toLowerCase()))
-);
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const activeFilterCount =
+    (filters.sport !== "any" ? 1 : 0) + filters.positions.length + filters.playstyles.length;
+
+  const filteredVideos = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return videos.filter((v) => {
+      if (q &&
+        !v.full_name.toLowerCase().includes(q) &&
+        !v.position_tags.some((t) => t.toLowerCase().includes(q))
+      ) return false;
+      if (filters.sport !== "any" && v.sport?.toLowerCase() !== filters.sport) return false;
+      if (filters.positions.length > 0 &&
+        !filters.positions.some((p) => v.position_tags.map((t) => t.toLowerCase()).includes(p))
+      ) return false;
+      if (filters.playstyles.length > 0 &&
+        !filters.playstyles.some((t) => v.trait_tags.map((x) => x.toLowerCase()).includes(t))
+      ) return false;
+      return true;
+    });
+  }, [videos, search, filters]);
+
 
  if (loading) {
  if (mobile) {
